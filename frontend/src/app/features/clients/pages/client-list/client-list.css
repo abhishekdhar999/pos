@@ -1,0 +1,156 @@
+/* ====== Client Grid ====== */
+.client-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.client-card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.client-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.12);
+}
+
+.client-card h3 {
+  margin-bottom: 10px;
+  color: #2c3e50;
+}
+
+.btn-update {
+  background: #3498db;
+  color: #fff;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-update:hover {
+  background: #2980b9;
+}
+
+/* ====== Loading & Error ====== */
+.loading {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #3498db;
+}
+
+.error {
+  text-align: center;
+  font-size: 1rem;
+  color: #e74c3c;
+}
+
+/* ====== Modal ====== */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(2px);
+  z-index: 10;
+}
+
+.modal {
+  position: fixed;
+  top: 10%; /* 👈 appears near top */
+  left: 50%;
+  transform: translateX(-50%);
+  background: #fff;
+  width: 400px;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+  z-index: 20;
+  animation: slideDown 0.3s ease;
+}
+
+/* Slide down animation */
+@keyframes slideDown {
+  from { opacity: 0; transform: translate(-50%, -20%); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+
+.modal h2 {
+  margin-bottom: 20px;
+  color: #2c3e50;
+  text-align: center;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #34495e;
+}
+
+.form-group input {
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  transition: border 0.2s ease;
+}
+
+.form-group input:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 6px rgba(52,152,219,0.3);
+}
+
+/* ====== Modal Actions ====== */
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.btn-save {
+  flex: 1;
+  margin-right: 10px;
+  padding: 12px;
+  background: #27ae60;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-save:hover {
+  background: #219150;
+}
+
+.btn-cancel {
+  flex: 1;
+  padding: 12px;
+  background: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-cancel:hover {
+  background: #c0392b;
+}

@@ -1,0 +1,48 @@
+/* Container styling */
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+  text-align: center;
+  background: linear-gradient(135deg, #2c3e50, #34495e);
+  color: #ecf0f1;
+}
+
+/* Heading */
+.welcome-container h1 {
+  font-size: 2.8rem;
+  margin-bottom: 40px;
+  font-weight: bold;
+}
+
+/* Grid for buttons */
+.button-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+  width: 80%;
+  max-width: 800px;
+}
+
+/* Button styling */
+.btn-primary {
+  display: block;
+  padding: 18px 30px;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: #1abc9c;
+  border-radius: 10px;
+  text-decoration: none;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+/* Hover effect */
+.btn-primary:hover {
+  background-color: #16a085;
+  transform: translateY(-4px) scale(1.05);
+}

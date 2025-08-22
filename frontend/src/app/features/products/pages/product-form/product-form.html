@@ -1,0 +1,61 @@
+<div class="form-container">
+<!--  <h2>➕ Add Product</h2>-->
+
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="form-card">
+
+    <!-- Product Name -->
+    <div class="form-group">
+      <label>Name</label>
+      <input type="text" formControlName="name" placeholder="Enter product name" />
+      @if (productForm.get('name')?.invalid && productForm.get('name')?.touched) {
+        <div class="error">Name is required</div>
+      }
+    </div>
+
+    <!-- Barcode -->
+    <div class="form-group">
+      <label>Barcode</label>
+      <input type="text" formControlName="barcode" placeholder="Enter barcode" />
+      @if (productForm.get('barcode')?.invalid && productForm.get('barcode')?.touched) {
+        <div class="error">Barcode is required</div>
+      }
+    </div>
+
+    <!-- Price -->
+    <div class="form-group">
+      <label>Price</label>
+      <input type="number" formControlName="price" placeholder="Enter price" />
+      @if (productForm.get('price')?.invalid && productForm.get('price')?.touched) {
+        <div class="error">Price must be greater than 0</div>
+      }
+    </div>
+
+    <!-- Image URL -->
+    <div class="form-group">
+      <label>Image URL</label>
+      <input type="file" formControlName="imageUrl" placeholder="Enter image URL" />
+      @if (productForm.get('imageUrl')?.invalid && productForm.get('imageUrl')?.touched) {
+        <div class="error">Image URL is required</div>
+      }
+    </div>
+
+    <!-- Client Dropdown -->
+    <div class="form-group">
+      <label>Client</label>
+      <select formControlName="clientName">
+        <option value="">-- Select Client --</option>
+        @for (client of clients; track client.id) {
+          <option [value]="client.name">{{ client.name }}</option>
+        }
+      </select>
+      @if (productForm.get('clientName')?.invalid && productForm.get('clientName')?.touched) {
+        <div class="error">Please select a client</div>
+      }
+    </div>
+
+    <!-- Submit Button -->
+    <button type="submit" [disabled]="productForm.invalid" class="submit-btn">
+      💾 Save Product
+    </button>
+  </form>
+</div>

@@ -1,0 +1,43 @@
+/* Container */
+.client-dashboard {
+  text-align: center;
+  padding: 40px;
+  background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+  min-height: 80vh;
+}
+
+/* Heading */
+.client-dashboard h2 {
+  font-size: 2.4rem;
+  margin-bottom: 30px;
+  color: #2c3e50;
+  font-weight: 700;
+}
+
+/* Menu grid */
+.menu {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  flex-wrap: wrap;
+}
+
+/* Buttons */
+.menu-btn {
+  padding: 18px 30px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  background: #3498db;
+  color: white;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* Hover */
+.menu-btn:hover {
+  background: #2980b9;
+  transform: translateY(-3px) scale(1.05);
+}

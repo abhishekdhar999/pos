@@ -1,0 +1,36 @@
+@if (loading) {
+  <div class="loading">⏳ Loading clients...</div>
+}
+@else if (error) {
+  <p class="error">{{ error }}</p>
+}
+@else {
+  <div class="client-grid">
+    @for (client of clients; track client.id) {
+      <div class="client-card">
+        <h3>{{ client.name }}</h3>
+        <p><strong>ID:</strong> {{ client.id }}</p>
+        <button class="btn-update" (click)="openUpdateModal(client)">✏️ Update</button>
+      </div>
+    }
+  </div>
+}
+
+<!-- Update Modal -->
+@if (selectedClient) {
+  <div class="modal-backdrop" (click)="closeModal()"></div>
+  <div class="modal">
+    <h2>✏️ Update Client</h2>
+    <form (ngSubmit)="updateClient()">
+      <div class="form-group">
+        <label for="name">Client Name</label>
+        <input id="name" [(ngModel)]="selectedClient.name" name="name" required />
+      </div>
+
+      <div class="modal-actions">
+        <button type="submit" class="btn-save">💾 Save</button>
+        <button type="button" class="btn-cancel" (click)="closeModal()">❌ Cancel</button>
+      </div>
+    </form>
+  </div>
+}
