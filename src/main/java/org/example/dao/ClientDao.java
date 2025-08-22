@@ -18,8 +18,8 @@ public class ClientDao extends AbstractDao {
 private static final String select_id = "select client from ClientPojo client where client.id=:id";
 private static final String select_name = "select client from ClientPojo client where client.name=:name";
 private static final String select_all = "select client from ClientPojo client ";
-
-
+private static final String count_all = "SELECT COUNT(c) FROM ClientPojo c ";
+//    select count(*) from ClientPojo client
 @PersistenceContext
 private EntityManager em;
 
@@ -44,6 +44,11 @@ TypedQuery<ClientPojo> query = em.createQuery(select_id, ClientPojo.class);
     public List<ClientPojo> getAllClients() throws ApiException {
       TypedQuery<ClientPojo> query = em.createQuery(select_all, ClientPojo.class);
       return query.getResultList();
+    }
+
+    public long countClients() {
+        String countQuery = "SELECT COUNT(c) FROM ClientPojo c";
+        return em.createQuery(countQuery, Long.class).getSingleResult();
     }
 
     public void updateClient(ClientPojo p) {

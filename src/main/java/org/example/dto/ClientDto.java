@@ -2,15 +2,11 @@ package org.example.dto;
 
 
 import org.example.api.ClientApi;
-import org.example.dao.ClientDao;
-import org.example.models.ClientData;
-import org.example.models.ClientForm;
+import org.example.models.data.ClientData;
+import org.example.models.form.ClientForm;
 import org.example.pojo.ClientPojo;
-import org.example.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;

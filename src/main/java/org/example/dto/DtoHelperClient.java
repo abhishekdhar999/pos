@@ -1,7 +1,7 @@
 package org.example.dto;
 
-import org.example.models.ClientData;
-import org.example.models.ClientForm;
+import org.example.models.data.ClientData;
+import org.example.models.form.ClientForm;
 import org.example.pojo.ClientPojo;
 import org.example.util.StringUtil;
 import org.springframework.http.HttpStatus;

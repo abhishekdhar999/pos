@@ -6,21 +6,14 @@ import org.example.api.ProductApi;
 import org.example.dto.ApiException;
 import org.example.dto.ProductDto;
 import org.example.dto.ProductDtoHelper;
-import org.example.models.ClientForm;
-import org.example.models.ProductData;
-import org.example.models.ProductForm;
+import org.example.models.form.ProductForm;
 import org.example.pojo.ClientPojo;
+import org.example.pojo.InventoryPojo;
 import org.example.pojo.ProductPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.example.dto.ProductDtoHelper.*;
 
 @Service
 @Transactional
@@ -41,18 +34,27 @@ public class ProductFlow {
     private ProductDtoHelper productDtoHelper;
 
     public  Integer gettingClientIdByName(String name) throws ApiException {
-        return clientApi.getClientByName(name);
+        ClientPojo pojo =  clientApi.getClientByName(name);
+        return pojo.getId();
     }
 
-    public void createProduct(ProductPojo product) throws ApiException {
-        productApi.createProduct(product);
+    public void createProduct(ProductPojo productPojo) throws ApiException {
+        productApi.createProduct(productPojo);
     }
 
-    public void create(ProductForm form) throws ApiException {
-        ClientPojo clientPojo = clientApi.getClientByName(form.getClientName());
-       ProductPojo product =  productDto.convert(form,clientPojo);
-        productApi.createProduct(product);
+    public InventoryPojo getInventoryByProductId(int id) throws ApiException {
+        return inventoryApi.getInventoryByProductId(id);
     }
+
+    public ProductPojo getProductById(int id) throws ApiException {
+
+
+        return productApi.getProductById(id);
+    }
+//    public ProductPojo getProduct(int id) throws ApiException {}
+//    public void create(ProductPojo pojo) throws ApiException {
+//        productApi.createProduct(pojo);
+//    }
 
 
 }

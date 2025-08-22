@@ -2,13 +2,11 @@ package org.example.api;
 
 import org.example.dao.ProductDao;
 import org.example.dto.ApiException;
-import org.example.models.ProductData;
 import org.example.pojo.ProductPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Service
 @Transactional(rollbackOn = ApiException.class)
@@ -28,5 +26,9 @@ public class ProductApi {
 
     public void createProduct(ProductPojo pojo) throws ApiException {
         productDao.createProduct(pojo);
+    }
+
+    public ProductPojo getProductById(int id) throws ApiException {
+       return productDao.getProductById(id);
     }
 }

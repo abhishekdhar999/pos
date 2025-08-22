@@ -293,3 +293,5 @@ Caused by: java.lang.IllegalStateException: Persistence annotations are not supp
 2025-08-19 17:34:26 WARN  AutowiredAnnotationBeanPostProcessor:440 - Autowired annotation is not supported on static fields: private static org.example.api.ClientApi org.example.dto.ProductDtoHelper.clientApi
 2025-08-19 17:38:28 WARN  AutowiredAnnotationBeanPostProcessor:440 - Autowired annotation is not supported on static fields: private static org.example.api.InventoryApi org.example.dto.ProductDtoHelper.inventoryApi
 2025-08-19 17:38:28 WARN  AutowiredAnnotationBeanPostProcessor:440 - Autowired annotation is not supported on static fields: private static org.example.api.ClientApi org.example.dto.ProductDtoHelper.clientApi
+2025-08-20 18:21:11 WARN  SqlExceptionHelper:137 - SQL Error: 1146, SQLState: 42S02
+2025-08-20 18:21:11 ERROR SqlExceptionHelper:142 - Table 'mydb.productpojo' doesn't exist

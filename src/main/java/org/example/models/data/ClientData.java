@@ -1,4 +1,6 @@
-package org.example.models;
+package org.example.models.data;
+
+import org.example.models.form.ClientForm;
 
 public class ClientData extends ClientForm {
 

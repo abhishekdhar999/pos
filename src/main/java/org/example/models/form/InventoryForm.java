@@ -1,4 +1,4 @@
-package org.example.models;
+package org.example.models.form;
 
 public class InventoryForm {
     int productId;

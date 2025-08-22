@@ -1,6 +1,6 @@
-package org.example.models;
+package org.example.models.data;
 
-import org.example.pojo.InventoryPojo;
+import org.example.models.form.InventoryForm;
 
 public class InventoryData extends InventoryForm {
     int id;

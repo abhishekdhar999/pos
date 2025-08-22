@@ -15,8 +15,13 @@ public class InventoryApi {
     @Autowired
     private  InventoryDao inventoryDao;
 
-    public  InventoryPojo getInventoryById(int id) throws ApiException {
-       return inventoryDao.getInventoryById(id);
+
+    public  InventoryPojo getInventoryByProductId(int id) throws ApiException {
+       return inventoryDao.getInventoryByProductId(id);
+    }
+
+    public void createInventory(InventoryPojo inventoryPojo) throws ApiException{
+        inventoryDao.createInventory(inventoryPojo);
     }
 
 }

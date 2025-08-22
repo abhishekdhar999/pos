@@ -3,19 +3,13 @@ package org.example.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.example.dao.ProductDao;
 import org.example.dto.ApiException;
 import org.example.dto.ProductDto;
-import org.example.models.ProductData;
-import org.example.models.ProductForm;
+import org.example.models.data.ProductData;
+import org.example.models.form.ProductForm;
 import org.example.pojo.ProductPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.persistence.Id;
-import java.io.IOException;
-import java.util.List;
 
 @Api
 @RestController
@@ -44,5 +38,11 @@ public class ProductController {
     @RequestMapping(value = "/product",method = RequestMethod.POST)
     public void createProduct(@RequestBody ProductForm form) throws ApiException {
         productDto.createProduct(form);
+    }
+
+    @ApiOperation(value = "get product by id")
+    @RequestMapping(value = "/product/{id}",method = RequestMethod.GET)
+    public ProductData getProductById(@PathVariable int id) throws ApiException {
+       return productDto.getProductById(id);
     }
 }

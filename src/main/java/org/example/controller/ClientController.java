@@ -2,18 +2,18 @@ package org.example.controller;
 
 import org.example.dto.ApiException;
 import org.example.dto.ClientDto;
-import org.example.models.ClientData;
-import org.example.models.ClientForm;
+import org.example.models.data.ClientData;
+import org.example.models.form.ClientForm;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.example.pojo.ClientPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 import static org.example.dto.DtoHelperClient.convert;
+
 
 @Api
 @RestController
@@ -44,8 +44,6 @@ public class ClientController {
 
         return clientDto.getClientByName(name);
     }
-
-// todo @controler advice
 
     @ApiOperation(value = "get all clients")
     @RequestMapping(value = "/clients/all",method = RequestMethod.GET)

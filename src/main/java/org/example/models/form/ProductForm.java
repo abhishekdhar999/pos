@@ -1,13 +1,11 @@
-package org.example.models;
+package org.example.models.form;
 
 public class ProductForm {
     String name;
     String barcode;
     double price;
     String imageUrl;
-String category;
-String sku;
-String clientName;
+    String clientName;
 
 
 public String getClientName() {
@@ -48,28 +46,5 @@ public void setName(String name) {
     public void setImageUrl(String imageUrl) {
     this.imageUrl = imageUrl;
     }
-
-
-    public int getClientId() {
-    return clientId;
-    }
-    public void setClientId(int clientId) {
-    this.clientId = clientId;
-    }
-
-    public String getCategory() {
-    return category;
-    }
-    public void setCategory(String category) {
-    this.category = category;
-    }
-
-    public String getSku() {
-    return sku;
-    }
-    public void setSku(String sku) {
-    this.sku = sku;
-    }
-
 
 }

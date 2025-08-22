@@ -14,15 +14,19 @@ import javax.transaction.Transactional;
 @Transactional
 public class InventoryDao extends AbstractDao {
 
-    private static final String select_id = "select inventory from InventoryPojo inventory where inventory.id=:id ";
+    private static final String select_id = "select inventory from InventoryPojo inventory where inventory.productId = :id";
 
     @PersistenceContext
     private  EntityManager em;
 
-    public  InventoryPojo getInventoryById(int id) throws ApiException {
+    public  InventoryPojo getInventoryByProductId(int id) throws ApiException {
         TypedQuery<InventoryPojo> query = em.createQuery(select_id, InventoryPojo.class);
         query.setParameter("id", id);
        return query.getSingleResult();
 
+    }
+
+    public void createInventory(InventoryPojo inventoryPojo) throws ApiException{
+        em.persist(inventoryPojo);
     }
 }

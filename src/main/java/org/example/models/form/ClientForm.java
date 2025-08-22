@@ -1,4 +1,4 @@
-package org.example.models;
+package org.example.models.form;
 
 
 public class ClientForm {
@@ -12,11 +12,6 @@ public class ClientForm {
     public void setName(String name) {
 
         this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "ClientForm{name='" + name + "'}";
     }
 
 }

@@ -1,8 +1,7 @@
 package org.example.dto;
 
-import org.example.models.InventoryData;
-import org.example.models.InventoryForm;
-import org.example.models.ProductData;
+import org.example.models.data.InventoryData;
+import org.example.models.form.InventoryForm;
 import org.example.pojo.InventoryPojo;
 
 public class InventoryDtoHelper {
@@ -18,10 +17,18 @@ public class InventoryDtoHelper {
 
     }
 
-    public static InventoryPojo convertFormToPojo(InventoryForm form){
+    public static InventoryPojo convertFormToPojo(InventoryForm form,int id) throws ApiException{
           InventoryPojo inventoryPojo = new InventoryPojo();
-          inventoryPojo.setProductId(form.getProductId());
+          inventoryPojo.setId(id);
           inventoryPojo.setQuantity(form.getQuantity());
+          return inventoryPojo;
+    }
+
+    public static InventoryPojo convertInventoryFormToInventoryPojo(InventoryForm form,int id) throws ApiException{
+          InventoryPojo inventoryPojo = new InventoryPojo();
+          inventoryPojo.setQuantity(form.getQuantity());
+          inventoryPojo.setProductId(id);
+
           return inventoryPojo;
     }
 }

@@ -1,5 +1,8 @@
-package org.example.models;
+package org.example.models.data;
 
+import org.example.models.form.ProductForm;
+
+@lombok.Data
 public class ProductData extends ProductForm {
     int id;
 int quantity;
