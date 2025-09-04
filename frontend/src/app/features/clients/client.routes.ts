@@ -5,8 +5,8 @@ import {ClientList} from './pages/client-list/client-list';
 import {ClientsDashboard} from './clients-dashboard/clients-dashboard';
 
 export const routes: Routes = [
-  { path: '', component: ClientsDashboard },      // /clients (landing page)
-  { path: 'list', component: ClientList },   // /clients/list
+  // { path: '', component: ClientsDashboard },      // /clients (landing page)
+  { path: '', component: ClientList },   // /clients/list
   { path: 'new', component: ClientForm },    // /clients/new
   { path: ':id/edit', component: ClientForm }
 ];

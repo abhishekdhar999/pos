@@ -10,25 +10,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Objects;
 
 
 @Service
 @Transactional
 public class InventoryFlow {
     @Autowired
-    private ClientApi clientApi;
-
-    @Autowired
     private ProductApi productApi;
 
-    @Autowired
-    private InventoryApi inventoryApi;
-
-    public ClientPojo getClientByIdInInventoryFlow(int id) throws ApiException {
-       return clientApi.getClientById(id);
+    public ProductPojo getProductByBarcode(String barcode) throws ApiException{
+        ProductPojo productPojo = productApi.getByBarcode(barcode);
+        if(Objects.isNull(productPojo)){
+            throw new ApiException("Barcode doesn't exists.");
+        }
+        return productPojo;
     }
 
-//    public ProductPojo getProductByIdInInventoryFlow(int id) throws ApiException {
-//
-//    }
+    public ProductPojo getProductByProductId(Integer productId) throws ApiException {
+        return productApi.getById(productId);
+    }
 }

@@ -7,55 +7,60 @@ import org.example.models.form.ClientForm;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.example.pojo.ClientPojo;
+import org.example.utils.PaginatedResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static org.example.dto.DtoHelperClient.convert;
-
 
 @Api
 @RestController
-@RequestMapping(value = "/api")
+@RequestMapping(value = "/api/clients")
 public class ClientController {
-
-
     @Autowired
     private ClientDto clientDto;
 
-    @ApiOperation(value = "client is being created")
-    @RequestMapping(value = "/clients", method = RequestMethod.POST)
-    public void createClient(@RequestBody ClientForm form) throws ApiException {
-
-        clientDto.operationOnClient(form);
-    }
-@ApiOperation(value="fetching client by id")
-@RequestMapping(value = "/clients/{id}",method = RequestMethod.GET)
-    public ClientData getClientById(@PathVariable int id) throws ApiException {
-
-      return clientDto.get(id);
-
+    @ApiOperation("adds a client")
+    @RequestMapping(value = "/create", method = RequestMethod.POST)
+    public void add(@RequestBody ClientForm client) throws ApiException {
+        clientDto.add(client);
     }
 
-    @ApiOperation(value = "get client by name")
-    @RequestMapping(value = "/clients/{name}",method = RequestMethod.GET)
-    public ClientData getClientByName(@PathVariable String name) throws ApiException {
-
-        return clientDto.getClientByName(name);
+    @ApiOperation("updates a client")
+    @RequestMapping(path = "/{id}", method = RequestMethod.PUT)
+    public void update(@PathVariable Integer id,  @RequestBody ClientForm client) throws ApiException{
+        clientDto.update(id, client);
     }
 
-    @ApiOperation(value = "get all clients")
-    @RequestMapping(value = "/clients/all",method = RequestMethod.GET)
-    public List<ClientData> getAllClients() throws ApiException {
-        return clientDto.getAll();
+    @ApiOperation("gets all the client")
+    @RequestMapping(method = RequestMethod.GET)
+    public PaginatedResponse<ClientData> getAll(@RequestParam(defaultValue = "0") Integer page,
+                                                @RequestParam(defaultValue = "10") Integer size){
+        List<ClientData> clientDataList = clientDto.getAll(page, size);
+Long total = clientDto.getTotalCount();
+        PaginatedResponse<ClientData> response = new PaginatedResponse<>();
+        response.setPage(page);
+        response.setSize(size);
+        response.setData(clientDataList);
+        response.setTotalPages(total);
+        return response;
     }
 
-    @ApiOperation(value = "update client by id")
-    @RequestMapping(value = "/clients/update/{id}",method = RequestMethod.PUT)
-    public void updateClientById(@PathVariable int id,@RequestBody ClientForm form ) throws ApiException {
+    @RequestMapping(path = "/{id}" , method = RequestMethod.GET)
+    public ClientData getById(@PathVariable Integer id) throws ApiException{
+        return clientDto.getById(id);
+    }
 
-clientDto.updateOperationOnClient(form,id);
+    @RequestMapping(path = "/count", method = RequestMethod.GET)
+    public Long getTotalCount(){
+        return clientDto.getTotalCount();
+    }
+
+    @RequestMapping(path = "/search-by-name", method = RequestMethod.GET)
+    public List<String> searchByName(@RequestParam Integer page, @RequestParam Integer size, @RequestParam String name){
+        return clientDto.searchByName(page, size, name);
     }
 
 

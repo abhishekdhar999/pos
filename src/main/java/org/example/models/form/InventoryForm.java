@@ -1,19 +1,14 @@
 package org.example.models.form;
 
-public class InventoryForm {
-    int productId;
-    int quantity;
+import com.sun.istack.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
-    public int getProductId() {
-        return productId;
-    }
-    public void setProductId(int productId) {
-        this.productId = productId;
-    }
-    public int getQuantity() {
-        return quantity;
-    }
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+@Getter
+@Setter
+public class InventoryForm {
+    @NotNull
+    private String barcode;
+    @NotNull
+    private Integer quantity;
 }

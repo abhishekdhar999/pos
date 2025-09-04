@@ -1,4 +1,3 @@
-
 <div class="client-dashboard">
   <h2>👥 Client Management</h2>
 
@@ -6,9 +5,15 @@
     <button routerLink="/clients/list" class="menu-btn">
       📋 View Clients
     </button>
-    <button routerLink="/clients/new" class="menu-btn">
+
+    <button
+      routerLink="/clients/new"
+      class="menu-btn">
       ➕ Add New Client
     </button>
   </div>
-</div>
 
+  @if (!isSupervisor) {
+    <p class="warning">⚠️ Only supervisors can add new clients.</p>
+  }
+</div>

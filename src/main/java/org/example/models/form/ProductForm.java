@@ -1,50 +1,20 @@
 package org.example.models.form;
 
+import com.sun.istack.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class ProductForm {
-    String name;
-    String barcode;
-    double price;
-    String imageUrl;
-    String clientName;
-
-
-public String getClientName() {
-	return clientName;
-}
-public void setClientName(String clientName) {
-    this.clientName = clientName;
-}
-
-
-public String getName() {
-    return name;
-}
-public void setName(String name) {
-    this.name = name;
-}
-
-
-    public String getBarcode() {
-    return barcode;
-}
-    public void setBarcode(String barcode) {
-    this.barcode = barcode;
-    }
-
-
-    public double getPrice() {
-    return price;
-    }
-    public void setPrice(double price) {
-    this.price = price;
-    }
-
-
-    public String getImageUrl() {
-    return imageUrl;
-    }
-    public void setImageUrl(String imageUrl) {
-    this.imageUrl = imageUrl;
-    }
-
+    @NotNull
+    private String barcode;
+    @NotNull
+    private String clientName;
+    @NotNull
+    private String name;
+    @NotNull
+    private Double price;
+    @NotNull
+    private String imageUrl;
 }

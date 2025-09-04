@@ -1,0 +1,51 @@
+<div class="signup-container">
+  <div class="signup-card">
+    <h2>Signup</h2>
+
+    <form [formGroup]="authForm" (ngSubmit)="onSignup()">
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="Enter your email" />
+
+        <div class="error" *ngIf="email?.touched && email?.invalid">
+          <small *ngIf="email?.errors?.['required']">Email is required.</small>
+          <small *ngIf="email?.errors?.['email']">Enter a valid email.</small>
+        </div>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          placeholder="Enter your password" />
+
+        <div class="error" *ngIf="password?.touched && password?.invalid">
+          <small *ngIf="password?.errors?.['required']">Password is required.</small>
+          <small *ngIf="password?.errors?.['minlength']">
+            Password must be at least 6 characters.
+          </small>
+          <small *ngIf="password?.errors?.['pattern']">
+            Password must contain at least 1 letter and 1 number.
+          </small>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="btn" [disabled]="authForm.invalid || isLoading">
+        @if (isLoading) {
+          <span>Signing up...</span>
+        } @else {
+          <span>Signup</span>
+        }
+      </button>
+    </form>
+  </div>
+</div>

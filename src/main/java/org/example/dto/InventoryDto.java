@@ -4,49 +4,117 @@ import org.example.api.InventoryApi;
 import org.example.flow.InventoryFlow;
 import org.example.flow.ProductFlow;
 import org.example.models.data.InventoryData;
+import org.example.models.data.OperationResponse;
 import org.example.models.form.InventoryForm;
+import org.example.models.form.ProductForm;
 import org.example.pojo.InventoryPojo;
+import org.example.utils.UtilMethods;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import static org.example.dto.InventoryDtoHelper.*;
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
-@Service
+import static org.example.utils.UtilMethods.convertFileToInventoryFormList;
+
+
+@Component
+
 public class InventoryDto {
 
     @Autowired
-    InventoryApi inventoryApi;
+    private InventoryApi inventoryApi;
 
-    @Autowired
-    ProductFlow productFlow;
     @Autowired
     private InventoryFlow inventoryFlow;
 
-    public InventoryData getInventoryByProductId(int id) throws ApiException{
-
-        InventoryPojo inventoryPojo = new InventoryPojo();
-        inventoryPojo = inventoryApi.getInventoryByProductId(id);
-
-   InventoryData  inventoryData = convertInventoryPojoToInventoryData(inventoryPojo);
-        return inventoryData;
+    public void add(InventoryForm inventoryForm) throws ApiException {
+        UtilMethods.normalizeInventoryForm(inventoryForm);
+        UtilMethods.validateInventoryForm(inventoryForm);
+        InventoryPojo inventoryPojo = convert(inventoryForm);
+        inventoryApi.add(inventoryPojo);
     }
 
-    public void updateInventoryById(int id ,InventoryForm form) throws ApiException{
-        InventoryPojo inventoryPojo = new InventoryPojo();
-        inventoryPojo = inventoryApi.getInventoryByProductId(id);
 
 
+    public List<OperationResponse<InventoryForm>> bulkUpload(MultipartFile file) throws ApiException {
+
+        List<InventoryForm> inventoryFormList = convertFileToInventoryFormList(file);
+
+        for (InventoryForm inventoryForm : inventoryFormList) {
+            System.out.println("Barcode: " + inventoryForm.getBarcode());
+
+            System.out.println("Price: " + inventoryForm.getQuantity());
+
+        }
+
+        List<InventoryPojo> inventoryPojoList = new ArrayList<>();
+        List<OperationResponse<InventoryForm>> operationResponseList = new ArrayList<>();
+
+        boolean errorOccured = false;
+        for(InventoryForm inventoryForm: inventoryFormList){
+            OperationResponse<InventoryForm> operationResponse = new OperationResponse<>();
+            operationResponse.setData(inventoryForm);
+            operationResponse.setMessage("No error");
+            try{
+                UtilMethods.normalizeInventoryForm(inventoryForm);
+                UtilMethods.validateInventoryForm(inventoryForm);
+                InventoryPojo inventoryPojo = convert(inventoryForm);
+                inventoryPojoList.add(inventoryPojo);
+            }catch (ApiException e){
+                operationResponse.setMessage(e.getMessage());
+                errorOccured = true;
+            }
+            operationResponseList.add(operationResponse);
+        }
+        if(!errorOccured){
+            inventoryApi.bulkUpload(inventoryPojoList);
+        }
+        return operationResponseList;
     }
-//need product id
-    public void createInventory(int id,InventoryForm form) throws ApiException{
 
-       InventoryPojo inventoryPojo = convertInventoryFormToInventoryPojo(form,id);
-        inventoryApi.createInventory(inventoryPojo);
-
+    public List<InventoryData> getAll() throws ApiException{
+        List<InventoryPojo> inventoryPojoList = inventoryApi.getAll();
+        List<InventoryData> inventoryDataList = new ArrayList<>();
+        for(InventoryPojo inventoryPojo: inventoryPojoList){
+            inventoryDataList.add(convert(inventoryPojo));
+        }
+        return inventoryDataList;
     }
 
-//    public ProducctPojo convert(int id,InventoryForm form) throws ApiException {
-//       inventoryFlow.getProductByIdInInventoryFlow(id);
-//      convertFormToPojo(form,id);
-//    }
+    public void edit(InventoryForm inventoryForm) throws ApiException {
+        UtilMethods.normalizeInventoryForm(inventoryForm);
+        UtilMethods.validateInventoryForm(inventoryForm);
+        InventoryPojo inventoryPojo = convert(inventoryForm);
+        inventoryApi.edit(inventoryPojo);
+    }
+
+    public InventoryData getByProductId(Integer productId) throws ApiException{
+        InventoryPojo inventoryPojo = inventoryApi.getByProductId(productId);
+        if(Objects.isNull(inventoryPojo)){
+            throw new ApiException("Out of stock");
+        }
+        return convert(inventoryPojo);
+    }
+
+    public InventoryData getByBarcode(String barcode) throws ApiException {
+        Integer productId = inventoryFlow.getProductByBarcode(barcode).getId();
+        return getByProductId(productId);
+    }
+
+
+    private InventoryPojo convert(InventoryForm inventoryForm) throws ApiException{
+        Integer productId = inventoryFlow.getProductByBarcode(inventoryForm.getBarcode()).getId();
+        return DtoHelper.convertInventoryFormToInventoryPojo(inventoryForm, productId);
+    }
+
+    private InventoryData convert(InventoryPojo inventoryPojo) throws ApiException{
+        String barcode = inventoryFlow.getProductByProductId(inventoryPojo.getProductId()).getBarcode();
+        return DtoHelper.convertInventoryPojoToInventoryData(inventoryPojo, barcode);
+    }
+
 }

@@ -1,21 +1,17 @@
-<div class="form-container">
-  <h2>➕ Add Client</h2>
 
-  <form [formGroup]="clientForm" (ngSubmit)="onSubmit()" class="form">
-    <!-- Name Field -->
+<div class="client-form">
+  <h2>➕ Add New Client</h2>
+
+  <form [formGroup]="clientForm" (ngSubmit)="onSubmit()">
     <div class="form-group">
       <label for="name">Client Name</label>
-      <input type="text" id="name" formControlName="name" placeholder="Enter client name" />
-
-      <small class="error" *ngIf="clientForm.get('name')?.invalid && clientForm.get('name')?.touched">
-        ⚠️ Name is required
-      </small>
+      <input id="name" type="text" formControlName="name" placeholder="Enter client name" />
+      @if (clientForm.controls['name'].touched && clientForm.controls['name'].invalid) {
+        <small class="error">Name is required</small>
+      }
     </div>
 
-    <!-- Submit Button -->
-    <button type="submit" class="btn-submit" [disabled]="clientForm.invalid">
-      💾 Save Client
-    </button>
+    <button type="submit" [disabled]="clientForm.invalid">Save</button>
   </form>
 </div>
 

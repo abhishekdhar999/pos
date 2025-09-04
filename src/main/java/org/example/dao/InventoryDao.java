@@ -5,28 +5,45 @@ import org.example.dto.ApiException;
 import org.example.pojo.InventoryPojo;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Repository
 @Transactional
-public class InventoryDao extends AbstractDao {
+public class InventoryDao  {
 
-    private static final String select_id = "select inventory from InventoryPojo inventory where inventory.productId = :id";
-
+    private static String updateQuery = "update InventoryPojo p set p.quantity=:quantity where p.productId=:productId";
+    private static String getByProductQuery = "select p from InventoryPojo p where p.productId=:productId";
+    private static String getAllQuery = "select p from InventoryPojo p";
     @PersistenceContext
-    private  EntityManager em;
+    private EntityManager em;
 
-    public  InventoryPojo getInventoryByProductId(int id) throws ApiException {
-        TypedQuery<InventoryPojo> query = em.createQuery(select_id, InventoryPojo.class);
-        query.setParameter("id", id);
-       return query.getSingleResult();
-
+    public void add(InventoryPojo inventoryPojo){
+        em.persist(inventoryPojo);
     }
 
-    public void createInventory(InventoryPojo inventoryPojo) throws ApiException{
-        em.persist(inventoryPojo);
+    public void update(InventoryPojo inventoryPojo){
+        Query query = em.createQuery(updateQuery);
+
+        query.setParameter("quantity", inventoryPojo.getQuantity());
+        query.setParameter("productId", inventoryPojo.getProductId());
+
+        query.executeUpdate();
+    }
+
+    public List<InventoryPojo> getAll(){
+        Query query = em.createQuery(getAllQuery, InventoryPojo.class);
+        return query.getResultList();
+    }
+
+    public InventoryPojo getByProductId(Integer productId){
+        Query query = em.createQuery(getByProductQuery);
+        query.setParameter("productId", productId);
+        try {
+            return (InventoryPojo) query.getSingleResult();
+        }catch (NoResultException noResultException){
+            return null;
+        }
     }
 }

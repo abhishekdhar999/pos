@@ -1,10 +1,5 @@
 package org.example.config;
 
-
-import java.util.Properties;
-
-import javax.sql.DataSource;
-
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,11 +10,13 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+import javax.sql.DataSource;
+import java.util.Properties;
+
 @EnableTransactionManagement
 @Configuration
 public class DbConfig {
-
-    public static final String PACKAGE_POJO = "org.example";
+    public static final String PACKAGE_POJO = "org.example.pojo";
 
     @Value("${jdbc.driverClassName}")
     private String jdbcDriver;
@@ -35,7 +32,6 @@ public class DbConfig {
     private String hibernateShowSql;
     @Value("${hibernate.hbm2ddl.auto}")
     private String hibernateHbm2ddl;
-
 
     @Bean(name = "dataSource")
     public DataSource getDataSource() {
@@ -67,7 +63,6 @@ public class DbConfig {
         Properties jpaProperties = new Properties();
         jpaProperties.put("hibernate.dialect", hibernateDialect);
         jpaProperties.put("hibernate.show_sql", hibernateShowSql);
-        jpaProperties.put("hibernate.hbm2ddl.auto", hibernateHbm2ddl);
         jpaProperties.put("hibernate.hbm2ddl.auto", hibernateHbm2ddl);
         bean.setJpaProperties(jpaProperties);
         return bean;

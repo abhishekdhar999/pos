@@ -4,54 +4,74 @@ import org.example.pojo.ClientPojo;
 import org.example.dto.ApiException;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import javax.transaction.Transactional;
+
+
 
 @Repository
 @Transactional
-public class ClientDao extends AbstractDao {
+public class ClientDao  {
 
-
-    private static final String delete_id = "delete from ClientPojo client where id=:id";
-private static final String select_id = "select client from ClientPojo client where client.id=:id";
-private static final String select_name = "select client from ClientPojo client where client.name=:name";
-private static final String select_all = "select client from ClientPojo client ";
-private static final String count_all = "SELECT COUNT(c) FROM ClientPojo c ";
+    private static final String getAllQuery = "select p from ClientPojo p";
+    private static final String update = "update ClientPojo set name=:name where id=:id";
+    private static final String getByIdQuery = "select p from ClientPojo p where id=:id";
+    private static final String getByNameQuery = "select p from ClientPojo p where name=:name";
+    private static final String getTotalCountQuery = "select count(p) from ClientPojo p";
+    private static final String searchByBarcodeQuery = "select p.name from ClientPojo p where p.name like :name";
 //    select count(*) from ClientPojo client
 @PersistenceContext
 private EntityManager em;
 
 
-  public void insertClient(ClientPojo p){
-    em.persist(p);
-
+    public void add(ClientPojo client) {
+        em.persist(client);
     }
 
-    public ClientPojo getSingleClient(int id) throws ApiException {
-TypedQuery<ClientPojo> query = em.createQuery(select_id, ClientPojo.class);
+    public List<ClientPojo> getAll(Integer page, Integer size) {
+        Query query = em.createQuery(getAllQuery);
+        query.setFirstResult(page*size);
+        query.setMaxResults(size);
+        return query.getResultList();
+    }
+
+    public void update(Integer id, String name) {
+        Query query = em.createQuery(update);
         query.setParameter("id", id);
-        return getSingle(query);
-    }
-
-    public ClientPojo getClientByName(String name) throws ApiException {
-        TypedQuery<ClientPojo> query = em.createQuery(select_name, ClientPojo.class);
         query.setParameter("name", name);
-        return getSingle(query);
+        query.executeUpdate();
     }
 
-    public List<ClientPojo> getAllClients() throws ApiException {
-      TypedQuery<ClientPojo> query = em.createQuery(select_all, ClientPojo.class);
-      return query.getResultList();
+    public ClientPojo getById(Integer id) {
+        Query query = em.createQuery(getByIdQuery);
+        query.setParameter("id", id);
+        try {
+            return (ClientPojo) query.getSingleResult();
+        } catch (NoResultException noResultException) {
+            return null;
+        }
     }
 
-    public long countClients() {
-        String countQuery = "SELECT COUNT(c) FROM ClientPojo c";
-        return em.createQuery(countQuery, Long.class).getSingleResult();
+    public ClientPojo getByName(String name) {
+        Query query = em.createQuery(getByNameQuery);
+        query.setParameter("name", name);
+        try {
+            return (ClientPojo) query.getSingleResult();
+        } catch (NoResultException noResultException) {
+            return null;
+        }
     }
 
-    public void updateClient(ClientPojo p) {
-      em.merge(p);
+    public Long getTotalCount(){
+        Query query = em.createQuery(getTotalCountQuery);
+        return (Long) query.getSingleResult();
+    }
+
+    public List<String> searchByName(Integer page, Integer size, String name) {
+        Query query = em.createQuery(searchByBarcodeQuery);
+        query.setParameter("name", "%"+name+"%");
+        query.setFirstResult(page*size);
+        query.setMaxResults(size);
+        return query.getResultList();
     }
 }

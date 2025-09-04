@@ -1,23 +1,16 @@
 package org.example.models.data;
 
-import org.example.models.form.ProductForm;
 
-@lombok.Data
-public class ProductData extends ProductForm {
-    int id;
-int quantity;
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
+import lombok.Getter;
+import lombok.Setter;
+@Getter
+@Setter
+public class ProductData {
+    private Integer id;
+    private String barcode;
+    private String clientName;
+    private String name;
+    private Double price;
+    private String imageUrl;
+    private Integer quantity;
 }

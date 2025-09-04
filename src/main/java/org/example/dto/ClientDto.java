@@ -5,79 +5,56 @@ import org.example.api.ClientApi;
 import org.example.models.data.ClientData;
 import org.example.models.form.ClientForm;
 import org.example.pojo.ClientPojo;
+import org.example.utils.UtilMethods;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.example.dto.DtoHelper.convertClientFormToClientPojo;
 
-import static org.example.dto.DtoHelperClient.*;
-
+@Component
 @Service
 public class ClientDto {
 
     @Autowired
     private ClientApi clientApi;
 
-
-    public void operationOnClient(ClientForm form) throws ApiException {
-
-        ClientPojo clientByName = clientApi.getClientByName(form.getName());
-
-        //  checking if name already exist
-        checkAlreadyExist(clientByName);
-
-        //   converting form into pojo
-        ClientPojo client = convert(form);
-
-        // converting into lowercase
-        normalize(client);
-
-        // checking if name is empty
-        checkNameIsValid(client);
-
-      clientApi.addClient(client);
+    public void add(ClientForm client) throws ApiException {
+        UtilMethods.normalizeClientForm(client);
+        UtilMethods.validateClientForm(client);
+        ClientPojo clientPojo = convertClientFormToClientPojo(client);
+        clientApi.add(clientPojo);
     }
 
-//    @Transactional(rollbackOn = ApiException.class)
-    public ClientData get(int id) throws ApiException {
-      ClientPojo client =   clientApi.getClientById(id);
-        checkExist(client);
-       ClientData clientdata = convert(client);
-
-        return clientdata;
+    public List<ClientData> getAll(Integer page, Integer size) {
+        List<ClientPojo> clientPojoList = clientApi.getAll(page, size);
+        return DtoHelper.convertClientPojoListToClientDataList(clientPojoList);
     }
 
-    public ClientData getClientByName(String name) throws ApiException {
-        ClientPojo client = clientApi.getClientByName(name);
-        checkExist(client);
-        ClientData clientdata = convert(client);
-        return clientdata;
+    public void update(Integer id, ClientForm clientForm) throws ApiException{
+        UtilMethods.normalizeClientForm(clientForm);
+        UtilMethods.validateClientForm(clientForm);
+        clientApi.update(id, clientForm.getName());
     }
 
-    public List<ClientData> getAll() throws ApiException {
-        List<ClientPojo> allClientspojo = clientApi.getAllClients();
-        List<ClientData> allClientsdata = new ArrayList<>();
-        for(ClientPojo client : allClientspojo){
-            ClientData clientdata = convert(client);
-            allClientsdata.add(clientdata);
-        }
-        return allClientsdata;
+    public ClientData getById(Integer id) throws ApiException{
+        ClientPojo clientPojo = clientApi.getById(id);
+        return DtoHelper.convertClientPojoToClientData(clientPojo);
     }
 
-public void updateOperationOnClient(ClientForm form,int id) throws ApiException {
+    public Long getTotalCount(){
+        return clientApi.getTotalCount();
+    }
 
-    ClientPojo client = clientApi.getClientById(id);
-
-    checkExist(client);
-
-  ClientPojo updatedClient =  updateClient(form,client);
-
-clientApi.clientUpdate(updatedClient);
+    public List<String> searchByName(Integer page, Integer size, String name) {
+        return clientApi.searchByName(page, size, name);
+    }
 }
 
 
 
 
-}
+

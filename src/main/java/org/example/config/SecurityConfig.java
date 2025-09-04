@@ -1,6 +1,8 @@
 package org.example.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -14,48 +16,52 @@ import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .csrf().disable()   // disable CSRF for APIs
-//                .cors()             // enable CORS
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers("/pos/api/**").permitAll() // allow all requests to your API
-//                .anyRequest().authenticated();
-        http
+        http//
+
                 .csrf().disable()
-                .cors() // hook into the bean below
+                // Match only these URLs
+                .requestMatchers()//
+                .antMatchers("/api/**")//
+                .antMatchers("/api/**", "/session/**")//  // ✅ Add session endpoints
+                .and().authorizeRequests()//
+                .antMatchers("/session/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/products/get-by**").hasAuthority("operator")
+                .antMatchers( "/api/clients").hasAuthority("supervisor")
+                .antMatchers("/api/products").hasAuthority("supervisor")
+//                .antMatchers("/api/order").hasAuthority("supervisor")
+                .antMatchers("/api/order").permitAll()
+                .antMatchers("/api/inventory").permitAll()
+                .antMatchers("/api/**").hasAnyAuthority("supervisor", "operator")//
+                // Ignore CSRF and CORS
                 .and()
-                .authorizeRequests()
-                .antMatchers("/pos/api/**").permitAll()
-                .anyRequest().authenticated();
-    }
+                .cors();
 
 
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
-        configuration.setAllowCredentials(true);
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return source;
     }
     @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList("http://localhost:4200"));
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        config.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        config.addAllowedOrigin("http://localhost:4200");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
+        return source;
     }
+
 }
 
+//http
+//        .csrf().disable()
+//                .cors() // enables CorsConfigurationSource
+//                .and()
+//                .authorizeRequests()
+//                .antMatchers("/session/**").permitAll()
+//                .antMatchers("/api/**").authenticated();

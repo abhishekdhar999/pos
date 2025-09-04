@@ -3,17 +3,16 @@ package org.example.dto;
 import org.springframework.http.HttpStatus;
 
 public class ApiException extends Exception {
-    private final HttpStatus status;
-    private static final long serialVersionUID = 1L;
-
-    public ApiException(String message, HttpStatus status) {
+    public ApiException(String message) {
         super(message);
-        this.status = status;
     }
-    public HttpStatus getStatus() {
-        return status;
+    
+    public ApiException(String message, Throwable cause) {
+        super(message, cause);
     }
 
-
-
+    public ApiException(String nameCannotBeEmpty, HttpStatus httpStatus, String s, String s1) {
+        super(s1);
+    }
 }
+

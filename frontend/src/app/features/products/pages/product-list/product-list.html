@@ -1,1 +1,560 @@
-<p>product-list works!</p>
+
+<div class="product-dashboard">
+  <!-- Header Section -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h1 class="dashboard-title">
+        <span class="icon">📦</span>
+        Product Management
+      </h1>
+      <p class="dashboard-subtitle">Manage your product catalog and inventory efficiently</p>
+    </div>
+
+
+    @if (isSupervisor) {
+      <div class="header-actions">
+        <!-- Add Product Dropdown -->
+        <div class="dropdown-container" (click)="onDropdownClick($event)">
+          <button class="action-btn primary" (click)="toggleAddProductDropdown()">
+            <span class="btn-icon">➕</span>
+            Add Product
+            <span class="dropdown-arrow">▼</span>
+          </button>
+
+          @if (showAddProductDropdown) {
+            <div class="dropdown-menu">
+              <button class="dropdown-item" (click)="openSingleProductModal()">
+                <span class="item-icon">📝</span>
+                Add Single Product
+              </button>
+              <button class="dropdown-item" (click)="openBulkProductModal()">
+                <span class="item-icon">📁</span>
+                Bulk Upload Products
+              </button>
+            </div>
+          }
+        </div>
+
+        <!-- Inventory Dropdown -->
+        <div class="dropdown-container" (click)="onDropdownClick($event)">
+          <button class="action-btn secondary" (click)="toggleInventoryDropdown()">
+            <span class="btn-icon">📊</span>
+            Inventory
+            <span class="dropdown-arrow">▼</span>
+          </button>
+
+          @if (showInventoryDropdown) {
+            <div class="dropdown-menu">
+              <button class="dropdown-item" (click)="openSingleInventoryModal()">
+                <span class="item-icon">📝</span>
+                Add Single Inventory
+              </button>
+              <button class="dropdown-item" (click)="openBulkInventoryModal()">
+                <span class="item-icon">📁</span>
+                Bulk Upload Inventory
+              </button>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </div>
+
+<!--  all modals-->
+
+  <!-- Single Inventory Modal -->
+  @if (showSingleInventoryModal) {
+    <div class="modal-backdrop" (click)="closeSingleInventoryModal()"></div>
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">
+          <span class="modal-icon">📊</span>
+          Add Inventory
+        </h2>
+        <button class="modal-close" (click)="closeSingleInventoryModal()">×</button>
+      </div>
+
+      <form [formGroup]="inventoryForm" (ngSubmit)="uploadBulkInventory()" class="modal-form">
+        <div class="form-group">
+          <label for="inventoryProduct" class="form-label">Barcode</label>
+          <select id="inventoryProduct" formControlName="barcode" class="form-input">
+            <option value="">Select a barcode</option>
+            @for (product of products; track product.barcode) {
+              <option [value]="product.barcode">{{ product.barcode }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="inventoryQuantity" class="form-label">Quantity</label>
+          <input
+            id="inventoryQuantity"
+            type="number"
+            formControlName="quantity"
+            placeholder="0"
+            class="form-input"
+            min="0"
+          />
+        </div>
+
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" (click)="closeSingleInventoryModal()">
+            Cancel
+          </button>
+          <button type="submit" class="btn-primary"  (click)="onSubmitInventory()">
+            <span class="btn-icon">💾</span>
+            Add Inventory
+          </button>
+        </div>
+      </form>
+    </div>
+  }
+  <!-- Single Product Modal -->
+  @if (showSingleProductModal) {
+    <div class="modal-backdrop" (click)="closeSingleProductModal()"></div>
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">
+          <span class="modal-icon">➕</span>
+          Add New Product
+        </h2>
+        <button class="modal-close" (click)="closeSingleProductModal()">×</button>
+      </div>
+
+      <form [formGroup]="productForm" (ngSubmit)="onSubmitProduct()" class="modal-form">
+        <div class="form-group">
+          <label for="productName" class="form-label">Product Name</label>
+          <input
+            id="productName"
+            type="text"
+            formControlName="name"
+            placeholder="Enter product name"
+            class="form-input"
+          />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="productPrice" class="form-label">Price</label>
+            <input
+              id="productPrice"
+              type="number"
+              formControlName="price"
+              placeholder="0.00"
+              class="form-input"
+              step="0.01"
+              min="0"
+            />
+          </div>
+
+        </div>
+
+        <div class="form-group">
+          <label for="productBarcode" class="form-label">Barcode</label>
+          <input
+            id="productBarcode"
+            type="text"
+            formControlName="barcode"
+            placeholder="Enter barcode"
+            class="form-input"
+
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="productImage" class="form-label">Image URL</label>
+          <input
+            id="productImage"
+            type="url"
+            formControlName="imageUrl"
+            placeholder="https://example.com/image.jpg"
+            class="form-input"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="productClient" class="form-label">Client Name</label>
+          <input
+            id="productClient"
+            type="text"
+            formControlName="clientName"
+            placeholder="Enter client name"
+            class="form-input"
+          />
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" (click)="closeSingleProductModal()">
+            Cancel
+          </button>
+          <button type="submit" class="btn-primary">
+            <span class="btn-icon">💾</span>
+            Save Product
+          </button>
+        </div>
+      </form>
+    </div>
+  }
+
+  <!-- Bulk Product Upload Modal -->
+  @if (showBulkProductModal) {
+
+
+<!--    <div class="modal-backdrop" (click)="closeBulkProductModal()"></div>-->
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">
+          <span class="modal-icon">📁</span>
+          Bulk Upload Products
+        </h2>
+        <button class="modal-close" (click)="closeBulkProductModal()">×</button>
+      </div>
+
+
+      <div class="modal-content">
+        <div class="upload-instructions">
+          <h3>Instructions:</h3>
+          <ul>
+            <li>Upload a CSV file with product data</li>
+            <li>Columns: Name, Price, Barcode, ImageURL, ClientName, Quantity</li>
+            <li>First row should contain headers</li>
+          </ul>
+        </div>
+
+        <div class="file-upload-area">
+          <input
+            type="file"
+            accept=".csv,.xlsx,.xls,.tsv"
+            (change)="onFileSelected($event)"
+            class="file-input"
+            id="productFile"
+          />
+          <label for="productFile" class="file-label">
+            <span class="file-icon">📁</span>
+            <span class="file-text">Choose file or drag and drop</span>
+          </label>
+        </div>
+
+        @if (selectedFile) {
+          <div class="selected-file">
+            <span class="file-name">{{ selectedFile.name }}</span>
+            <span class="file-size">({{ selectedFile.size  }})</span>
+          </div>
+        }
+
+        <!-- Error Download Section -->
+        @if(uploadErrors.length > 0){
+          <div class="error-section">
+            <div class="error-actions">
+              <button (click)="downloadErrors()" class="btn-secondary">
+                ⬇ Download Error Report ({{ uploadErrors.length }} errors)
+              </button>
+              <button (click)="clearErrors()" class="btn-secondary">
+                🗑️ Clear Errors
+              </button>
+            </div>
+          </div>
+        }
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" (click)="closeBulkProductModal()">
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn-primary"
+            (click)="uploadBulkProducts()"
+            [disabled]="!selectedFile">
+            <span class="btn-icon">📤</span>
+            Upload Products
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+
+  <!-- Bulk Inventory Upload Modal -->
+  @if (showBulkInventoryModal) {
+    <div class="modal-backdrop" (click)="closeBulkInventoryModal()"></div>
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">
+          <span class="modal-icon">📁</span>
+          Bulk Upload Inventory
+        </h2>
+        <button class="modal-close" (click)="closeBulkInventoryModal()">×</button>
+      </div>
+
+      <div class="modal-content">
+        <div class="upload-instructions">
+          <h3>Instructions:</h3>
+          <ul>
+            <li>Upload a CSV file with inventory data</li>
+            <li>Columns: ProductID, Quantity, Location, Notes</li>
+            <li>First row should contain headers</li>
+          </ul>
+        </div>
+
+        <div class="file-upload-area">
+          <input
+            type="file"
+            accept=".csv,.xlsx,.xls,.tsv"
+            (change)="onInventoryFileSelected($event)"
+            class="file-input"
+            id="inventoryFile"
+          />
+          <label for="inventoryFile" class="file-label">
+            <span class="file-icon">📁</span>
+            <span class="file-text">Choose file or drag and drop</span>
+          </label>
+        </div>
+
+        @if (inventoryFile) {
+          <div class="selected-file">
+            <span class="file-name">{{ inventoryFile.name }}</span>
+            <span class="file-size">({{ inventoryFile.size }})</span>
+          </div>
+        }
+
+        <!-- Error Download Section -->
+        @if(uploadErrors.length > 0){
+          <div class="error-section">
+            <div class="error-actions">
+              <button (click)="downloadErrors()" class="btn-secondary">
+                ⬇ Download Error Report ({{ uploadErrors.length }} errors)
+              </button>
+              <button (click)="clearErrors()" class="btn-secondary">
+                🗑️ Clear Errors
+              </button>
+            </div>
+          </div>
+        }
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" (click)="closeBulkInventoryModal()">
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn-primary"
+            (click)="uploadBulkInventory()"
+            [disabled]="!inventoryFile">
+            <span class="btn-icon">📤</span>
+            Upload Inventory
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+  <!-- Update Product Modal -->
+  @if (selectedProduct) {
+    <div class="modal-backdrop" (click)="closeUpdateModal()"></div>
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-title">
+          <span class="modal-icon">✏️</span>
+          Update Product
+        </h2>
+        <button class="modal-close" (click)="closeUpdateModal()">×</button>
+      </div>
+
+      <form (ngSubmit)="updateProduct()" class="modal-form">
+        <div class="form-group">
+          <label for="updateName" class="form-label">Product Name</label>
+          <input
+            id="updateName"
+            type="text"
+            [(ngModel)]="selectedProduct.name"
+            name="name"
+            required
+            class="form-input"
+          />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="updatePrice" class="form-label">Price</label>
+            <input
+              id="updatePrice"
+              type="number"
+              [(ngModel)]="selectedProduct.price"
+              name="price"
+              required
+              class="form-input"
+              step="0.01"
+              min="0"
+            />
+          </div>
+
+<!--          <div class="form-group">-->
+<!--            <label for="updateQuantity" class="form-label">Quantity</label>-->
+<!--            <input-->
+<!--              id="updateQuantity"-->
+<!--              type="number"-->
+<!--              [(ngModel)]="selectedProduct.quantity"-->
+<!--              name="quantity"-->
+<!--              required-->
+<!--              class="form-input"-->
+<!--              min="0"-->
+<!--            />-->
+<!--          </div>-->
+        </div>
+
+        <div class="form-group">
+          <label for="updateBarcode" class="form-label">Barcode</label>
+          <input
+            id="updateBarcode"
+            type="text"
+            [(ngModel)]="selectedProduct.barcode"
+            name="barcode"
+            required
+            class="form-input"
+            readonly
+            title="Barcode cannot be changed once set"
+            (mouseenter)="onBarcodeHover()"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="updateImage" class="form-label">Image URL</label>
+          <input
+            id="updateImage"
+            type="url"
+            [(ngModel)]="selectedProduct.imageUrl"
+            name="imageUrl"
+            required
+            class="form-input"
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="updateClient" class="form-label">Client Name</label>
+          <input
+            id="updateClient"
+            type="text"
+            [(ngModel)]="selectedProduct.clientName"
+            name="clientName"
+            required
+            class="form-input"
+            readonly
+            title="client name cannot be changed "
+            (mouseenter)="onClientHover()"
+          />
+        </div>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" (click)="closeUpdateModal()">
+            Cancel
+          </button>
+          <button type="submit" class="btn-primary">
+            <span class="btn-icon">💾</span>
+            Update Product
+          </button>
+        </div>
+      </form>
+    </div>
+  }
+
+
+  <!-- Loading State -->
+  @if (loading) {
+    <div class="loading-container">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading products...</p>
+    </div>
+  }
+
+  <!-- Product Grid -->
+  @if (!loading && products.length > 0) {
+    <div class="product-grid">
+      @for (product of products; track product.id) {
+        <div class="product-card">
+          <!-- Image -->
+          <div class="product-image">
+            @if (product.imageUrl) {
+              <img [src]="product.imageUrl" alt="{{ product.name }}" class="product-img" />
+            } @else {
+              <div class="product-placeholder">{{ product.name[0] }}</div>
+            }
+          </div>
+
+          <!-- Name -->
+          <h2 class="product-name">{{ product.name }}</h2>
+
+          <!-- Barcode + Client (inline) -->
+          <div class="barcode-client">
+            <span class="product-barcode">{{ product.barcode }}</span>
+            <span class="separator">•</span>
+            <span class="product-client">{{ product.clientName }}</span>
+          </div>
+
+          <!-- Details -->
+          <div class="product-details">
+            <div class="detail-row">
+              <span class="detail-label">Price:</span>
+              <span class="detail-value price">₹{{ product.price }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Quantity:</span>
+              <span
+                class="detail-value quantity"
+                [class.low]="product.quantity < 5"
+              >
+        {{ product.quantity }}
+      </span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Status:</span>
+              <span
+                class="product-status"
+                [class.in-stock]="product.quantity > 0"
+                [class.out-of-stock]="product.quantity === 0"
+              >
+        {{ product.quantity > 0 ? 'In Stock' : 'Out of Stock' }}
+      </span>
+            </div>
+          </div>
+
+          <!-- Footer with Edit Button -->
+          @if (isSupervisor) {
+          <div class="product-footer">
+            <button class="action-btn edit-btn" (click)="openUpdateModal(product)">
+              <span class="btn-icon">✏️</span> Edit
+            </button>
+          </div>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-container">
+      <div class="pagination-info">
+        <span class="page-info">Page {{ page + 1 }} of {{ totalPages }}</span>
+        <span class="total-info">Showing {{ products.length }} products</span>
+      </div>
+      <div class="pagination-controls">
+        <button
+          class="pagination-btn"
+          (click)="prevPage()"
+          [disabled]="page === 0"
+          [class.disabled]="page === 0">
+          <span class="btn-icon">←</span>
+          Previous
+        </button>
+        <button
+          class="pagination-btn"
+          (click)="nextPage()"
+          [disabled]="page >= totalPages - 1"
+          [class.disabled]="page >= totalPages - 1">
+          Next
+          <span class="btn-icon">→</span>
+        </button>
+      </div>
+    </div>
+  }
+
+</div>

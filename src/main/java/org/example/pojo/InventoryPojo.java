@@ -1,37 +1,25 @@
 package org.example.pojo;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+
+@Getter
+@Setter
 
 @Entity
 public class InventoryPojo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-    private int productId;
-    private int quantity;
+    private Integer id;
 
+    @Column(nullable = false, unique = true)
+    private Integer productId;
 
-    public int getId() {
-        return id;
-    }
+    @Column(nullable = false)
+    private Integer quantity;
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getProductId() {
-        return productId;
-    }
-    public void setProductId(int productId) {
-        this.productId = productId;
-    }
-    public int getQuantity() {
-        return quantity;
-    }
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 }

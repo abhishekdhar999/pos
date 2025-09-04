@@ -1,24 +1,15 @@
 package org.example.dao;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
-public abstract class AbstractDao {
 
-    @PersistenceContext
-    private EntityManager em;
-
-    protected <T> T getSingle(TypedQuery<T> query) {
-        return query.getResultList().stream().findFirst().orElse(null);
-
-    }
-
-    protected <T> TypedQuery<T> getQuery(String jpql, Class<T> clazz) {
-        return em.createQuery(jpql, clazz);
-    }
-
-    protected EntityManager em() {
-        return em;
-    }
+public abstract class AbstractDao extends HibernateDaoSupport {
+    
+//    @Autowired
+//    public void setSessionFactory(SessionFactory sessionFactory) {
+//        super.setSessionFactory(sessionFactory);
+//    }
 }
+
