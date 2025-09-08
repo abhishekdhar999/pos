@@ -21,33 +21,136 @@ import java.util.*;
 @Setter
 public class UtilMethods {
 
+public static InventoryUploadResult converFileToInventoryFormListForBulk(MultipartFile file) throws ApiException{
+    InventoryUploadResult result = new InventoryUploadResult();
+    try (BufferedReader reader = new BufferedReader(
+            new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
 
-   public static List<InventoryForm>    convertFileToInventoryFormList(MultipartFile file) throws ApiException{
-       List<InventoryForm> inventories = new ArrayList<>();
-       try (BufferedReader reader = new BufferedReader(
-               new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
+        String line;
+        boolean firstLine = true; // skip header if any
+        int rowNum = 1;
 
-           String line;
-           boolean firstLine = true; // skip header if any
-           while ((line = reader.readLine()) != null) {
-               if (firstLine) {
-                   firstLine = false;
-                   continue; // skip header
-               }
-               String[] columns = line.split("\t"); // split by tab
-               if (columns.length < 4) continue; // adjust based on required fields
+        while ((line = reader.readLine()) != null) {
+            rowNum++;
+            if (firstLine) {
+                firstLine = false;
+                continue; // skip header
+            }
 
-               InventoryForm inventoryForm = new InventoryForm();
-               inventoryForm.setBarcode(columns[0]);
-               inventoryForm.setQuantity(Integer.parseInt(columns[1]));
-               inventories.add(inventoryForm);
-           }
+            String[] columns = line.split("\t");
+            if (columns.length != 2) {
+                result.getErrors().add("Row " + rowNum + " is invalid: " + line);
+                continue;
+            }
 
-       } catch (Exception e) {
-           throw new ApiException("Failed to process TSV file: " + e.getMessage());
-       }
-       return inventories;
-   }
+            String barcode = columns[0].trim();
+            String qtyStr = columns[1].trim();
+
+            if (barcode.isEmpty()) {
+                result.getErrors().add("Row " + rowNum + " missing barcode");
+                continue;
+            }
+
+            try {
+                int qty = Integer.parseInt(qtyStr);
+
+                InventoryForm inventoryForm = new InventoryForm();
+                inventoryForm.setBarcode(barcode);
+                inventoryForm.setQuantity(qty);
+
+                result.getInventories().add(inventoryForm);
+            } catch (NumberFormatException e) {
+                result.getErrors().add("Row " + rowNum + " invalid quantity: " + qtyStr);
+            }
+        }
+
+    } catch (Exception e) {
+        throw new ApiException("Failed to process TSV file: " + e.getMessage());
+    }
+
+    return result;
+}
+
+    public static InventoryUploadResult convertFileToInventoryFormList(MultipartFile file) throws ApiException {
+        InventoryUploadResult result = new InventoryUploadResult();
+
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
+
+            String line;
+            boolean firstLine = true; // skip header if any
+            int rowNum = 1;
+
+            while ((line = reader.readLine()) != null) {
+                rowNum++;
+                if (firstLine) {
+                    firstLine = false;
+                    continue; // skip header
+                }
+
+                String[] columns = line.split("\t");
+                if (columns.length != 2) {
+                    result.getErrors().add("Row " + rowNum + " is invalid: " + line);
+                    continue;
+                }
+
+                String barcode = columns[0].trim();
+                String qtyStr = columns[1].trim();
+
+                if (barcode.isEmpty()) {
+                    result.getErrors().add("Row " + rowNum + " missing barcode");
+                    continue;
+                }
+
+                try {
+                    int qty = Integer.parseInt(qtyStr);
+
+                    InventoryForm inventoryForm = new InventoryForm();
+                    inventoryForm.setBarcode(barcode);
+                    inventoryForm.setQuantity(qty);
+
+                    System.out.println("barcode: " + barcode);
+                    System.out.println("qty: " + qty);
+                    result.getInventories().add(inventoryForm);
+                } catch (NumberFormatException e) {
+                    result.getErrors().add("Row " + rowNum + " invalid quantity: " + qtyStr);
+                }
+            }
+
+        } catch (Exception e) {
+            throw new ApiException("Failed to process TSV file: " + e.getMessage());
+        }
+
+        return result;
+    }
+
+//   public static List<InventoryForm>    convertFileToInventoryFormList(MultipartFile file) throws ApiException{
+//       List<InventoryForm> inventories = new ArrayList<>();
+//
+//       try (BufferedReader reader = new BufferedReader(
+//               new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
+//
+//           String line;
+//           boolean firstLine = true; // skip header if any
+//           while ((line = reader.readLine()) != null) {
+//               if (firstLine) {
+//                   firstLine = false;
+//                   continue; // skip header
+//               }
+//               String[] columns = line.split("\t"); // split by tab
+//               if (columns.length < 2) continue; // adjust based on required fields
+//
+//               InventoryForm inventoryForm = new InventoryForm();
+//               inventoryForm.setBarcode(columns[0]);
+//               inventoryForm.setQuantity(Integer.parseInt(columns[1]));
+//               inventories.add(inventoryForm);
+//           }
+//
+//       } catch (Exception e) {
+//           throw new ApiException("Failed to process TSV file: " + e.getMessage());
+//       }
+//       return inventories;
+//   }
     public static List<ProductForm> convertFileInToProductFormList(MultipartFile file) throws ApiException {
         List<ProductForm> products = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(

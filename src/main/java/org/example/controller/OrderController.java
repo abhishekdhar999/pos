@@ -37,10 +37,6 @@ public class OrderController {
         return orderDto.getOrderDetails(orderId);
     }
 
-    @RequestMapping(path = "/invoiced/{id}", method = RequestMethod.PUT)
-    public void makeOrderInvoiced(@PathVariable Integer id, OrderPojo orderPojo) throws ApiException{
-        orderDto.makeOrderInvoiced(id);
-    }
 
     @ApiOperation("getting all order's detail.")
     @RequestMapping(method = RequestMethod.GET)

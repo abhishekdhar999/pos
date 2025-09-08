@@ -14188,3 +14188,118 @@ org.example.dto.ApiException: name already exists
 	at org.eclipse.jetty.util.thread.QueuedThreadPool.runJob(QueuedThreadPool.java:782)
 	at org.eclipse.jetty.util.thread.QueuedThreadPool$Runner.run(QueuedThreadPool.java:914)
 	at java.lang.Thread.run(Thread.java:750)
+2025-09-05 12:38:38 WARN  AnnotationConfigWebApplicationContext:550 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'invoiceController' defined in file [/Users/abhishekdhar/IdeaProjects/pos/target/classes/org/example/controller/InvoiceController.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.example.controller.InvoiceController]: Constructor threw exception; nested exception is java.lang.Error: Unresolved compilation problems: 
+	InvoiceDto cannot be resolved to a type
+	InvoiceDto cannot be resolved to a type
+	InvoiceDto cannot be resolved to a type
+
+2025-09-05 12:38:38 ERROR DispatcherServlet:502 - Context initialization failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'invoiceController' defined in file [/Users/abhishekdhar/IdeaProjects/pos/target/classes/org/example/controller/InvoiceController.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.example.controller.InvoiceController]: Constructor threw exception; nested exception is java.lang.Error: Unresolved compilation problems: 
+	InvoiceDto cannot be resolved to a type
+	InvoiceDto cannot be resolved to a type
+	InvoiceDto cannot be resolved to a type
+
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1155)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1099)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:513)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:483)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:306)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:197)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:761)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:866)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:542)
+	at org.springframework.web.servlet.FrameworkServlet.configureAndRefreshWebApplicationContext(FrameworkServlet.java:668)
+	at org.springframework.web.servlet.FrameworkServlet.initWebApplicationContext(FrameworkServlet.java:540)
+	at org.springframework.web.servlet.FrameworkServlet.initServletBean(FrameworkServlet.java:494)
+	at org.springframework.web.servlet.HttpServletBean.init(HttpServletBean.java:136)
+	at javax.servlet.GenericServlet.init(GenericServlet.java:244)
+	at org.eclipse.jetty.servlet.ServletHolder.initServlet(ServletHolder.java:599)
+	at org.eclipse.jetty.servlet.ServletHolder.initialize(ServletHolder.java:425)
+	at org.eclipse.jetty.servlet.ServletHandler.lambda$initialize$0(ServletHandler.java:751)
+	at java.util.stream.SortedOps$SizedRefSortingSink.end(SortedOps.java:352)
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:483)
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:472)
+	at java.util.stream.StreamSpliterators$WrappingSpliterator.forEachRemaining(StreamSpliterators.java:312)
+	at java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:743)
+	at java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:742)
+	at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:580)
+	at org.eclipse.jetty.servlet.ServletHandler.initialize(ServletHandler.java:744)
+	at org.eclipse.jetty.servlet.ServletContextHandler.startContext(ServletContextHandler.java:361)
+	at org.eclipse.jetty.webapp.WebAppContext.startWebapp(WebAppContext.java:1443)
+	at org.eclipse.jetty.maven.plugin.JettyWebAppContext.startWebapp(JettyWebAppContext.java:328)
+	at org.eclipse.jetty.webapp.WebAppContext.startContext(WebAppContext.java:1407)
+	at org.eclipse.jetty.server.handler.ContextHandler.doStart(ContextHandler.java:821)
+	at org.eclipse.jetty.servlet.ServletContextHandler.doStart(ServletContextHandler.java:276)
+	at org.eclipse.jetty.webapp.WebAppContext.doStart(WebAppContext.java:524)
+	at org.eclipse.jetty.maven.plugin.JettyWebAppContext.doStart(JettyWebAppContext.java:397)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:72)
+	at org.eclipse.jetty.maven.plugin.JettyRunMojo.restartWebApp(JettyRunMojo.java:513)
+	at org.eclipse.jetty.maven.plugin.JettyRunMojo$1.onPathWatchEvents(JettyRunMojo.java:357)
+	at org.eclipse.jetty.util.PathWatcher.notifyEvents(PathWatcher.java:1342)
+	at org.eclipse.jetty.util.PathWatcher.run(PathWatcher.java:1169)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.example.controller.InvoiceController]: Constructor threw exception; nested exception is java.lang.Error: Unresolved compilation problems: 
+	InvoiceDto cannot be resolved to a type
+	InvoiceDto cannot be resolved to a type
+	InvoiceDto cannot be resolved to a type
+
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:154)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:89)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1147)
+	... 40 more
+Caused by: java.lang.Error: Unresolved compilation problems: 
+	InvoiceDto cannot be resolved to a type
+	InvoiceDto cannot be resolved to a type
+	InvoiceDto cannot be resolved to a type
+
+	at org.example.controller.InvoiceController.<init>(InvoiceController.java:18)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:142)
+	... 42 more
+2025-09-07 22:16:57 WARN  AnnotationConfigWebApplicationContext:1005 - Exception thrown from LifecycleProcessor on context close
+java.lang.IllegalStateException: LifecycleProcessor not initialized - call 'refresh' before invoking lifecycle methods via the context: WebApplicationContext for namespace 'dispatcher-servlet': startup date [Sun Sep 07 22:15:20 IST 2025]; root of context hierarchy
+	at org.springframework.context.support.AbstractApplicationContext.getLifecycleProcessor(AbstractApplicationContext.java:417)
+	at org.springframework.context.support.AbstractApplicationContext.doClose(AbstractApplicationContext.java:1002)
+	at org.springframework.context.support.AbstractApplicationContext.close(AbstractApplicationContext.java:961)
+	at org.springframework.web.servlet.FrameworkServlet.destroy(FrameworkServlet.java:829)
+	at org.eclipse.jetty.servlet.ServletHolder.destroyInstance(ServletHolder.java:461)
+	at org.eclipse.jetty.servlet.ServletHolder.doStop(ServletHolder.java:442)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.stop(AbstractLifeCycle.java:93)
+	at org.eclipse.jetty.servlet.ServletHandler.doStop(ServletHandler.java:280)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.stop(AbstractLifeCycle.java:93)
+	at org.eclipse.jetty.util.component.ContainerLifeCycle.stop(ContainerLifeCycle.java:180)
+	at org.eclipse.jetty.util.component.ContainerLifeCycle.doStop(ContainerLifeCycle.java:201)
+	at org.eclipse.jetty.server.handler.AbstractHandler.doStop(AbstractHandler.java:117)
+	at org.eclipse.jetty.security.SecurityHandler.doStop(SecurityHandler.java:371)
+	at org.eclipse.jetty.security.ConstraintSecurityHandler.doStop(ConstraintSecurityHandler.java:425)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.stop(AbstractLifeCycle.java:93)
+	at org.eclipse.jetty.util.component.ContainerLifeCycle.stop(ContainerLifeCycle.java:180)
+	at org.eclipse.jetty.util.component.ContainerLifeCycle.doStop(ContainerLifeCycle.java:201)
+	at org.eclipse.jetty.server.handler.AbstractHandler.doStop(AbstractHandler.java:117)
+	at org.eclipse.jetty.server.session.SessionHandler.doStop(SessionHandler.java:519)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.stop(AbstractLifeCycle.java:93)
+	at org.eclipse.jetty.util.component.ContainerLifeCycle.stop(ContainerLifeCycle.java:180)
+	at org.eclipse.jetty.util.component.ContainerLifeCycle.doStop(ContainerLifeCycle.java:201)
+	at org.eclipse.jetty.server.handler.AbstractHandler.doStop(AbstractHandler.java:117)
+	at org.eclipse.jetty.server.handler.ContextHandler.stopContext(ContextHandler.java:915)
+	at org.eclipse.jetty.servlet.ServletContextHandler.stopContext(ServletContextHandler.java:368)
+	at org.eclipse.jetty.webapp.WebAppContext.stopWebapp(WebAppContext.java:1448)
+	at org.eclipse.jetty.maven.plugin.JettyWebAppContext.stopWebapp(JettyWebAppContext.java:342)
+	at org.eclipse.jetty.webapp.WebAppContext.stopContext(WebAppContext.java:1413)
+	at org.eclipse.jetty.server.handler.ContextHandler.doStop(ContextHandler.java:979)
+	at org.eclipse.jetty.servlet.ServletContextHandler.doStop(ServletContextHandler.java:285)
+	at org.eclipse.jetty.webapp.WebAppContext.doStop(WebAppContext.java:547)
+	at org.eclipse.jetty.maven.plugin.JettyWebAppContext.doStop(JettyWebAppContext.java:433)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.stop(AbstractLifeCycle.java:93)
+	at org.eclipse.jetty.maven.plugin.JettyRunMojo.restartWebApp(JettyRunMojo.java:495)
+	at org.eclipse.jetty.maven.plugin.JettyRunMojo$1.onPathWatchEvents(JettyRunMojo.java:357)
+	at org.eclipse.jetty.util.PathWatcher.notifyEvents(PathWatcher.java:1342)
+	at org.eclipse.jetty.util.PathWatcher.run(PathWatcher.java:1169)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-08 00:07:09 WARN  PageNotFound:1161 - No mapping found for HTTP request with URI [/pos/session/current] in DispatcherServlet with name 'dispatcher'
+2025-09-08 00:28:07 WARN  PageNotFound:1161 - No mapping found for HTTP request with URI [/pos/api/auth/logout] in DispatcherServlet with name 'dispatcher'

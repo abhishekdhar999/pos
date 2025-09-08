@@ -8,11 +8,15 @@ import org.example.dto.InventoryDto;
 import org.example.models.data.InventoryData;
 import org.example.models.data.OperationResponse;
 import org.example.models.form.InventoryForm;
+import org.example.utils.BulkResponse;
+import org.example.utils.BulkUploadResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+
+//import static com.sun.nio.zipfs.ZipFileAttributeView.AttrID.method;
 
 @Api
 @RestController
@@ -36,6 +40,27 @@ public class InventoryController {
         }
         return inventoryDto.bulkUpload(file);
     }
+
+    @ApiOperation("bulk uploading")
+    @RequestMapping(path = "/bulk",method = RequestMethod.PUT)
+    public BulkUploadResult<InventoryForm> bulk(@RequestParam("file") MultipartFile file) throws ApiException{
+        if(file.isEmpty()){
+            throw new ApiException("file is empty");
+        }
+        return inventoryDto.bulk(file);
+    }
+
+
+//    @ApiOperation("add inventories of mulitple products")
+//    @RequestMapping(path = "/bulk-upload", method = RequestMethod.PUT)
+//    public List<OperationResponse<InventoryForm>> Upload(@RequestParam("file") MultipartFile file) throws ApiException{
+//        if(file.isEmpty()){
+//            throw new ApiException("file is empty");
+//        }
+//       return inventoryDto.bulkUpload(file);
+//        return inventoryDto.upload(file);
+//    }
+
 
     @ApiOperation("edit inventory of a product")
     @RequestMapping(method = RequestMethod.PUT)

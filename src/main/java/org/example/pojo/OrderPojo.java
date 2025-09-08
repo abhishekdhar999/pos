@@ -3,6 +3,7 @@ package org.example.pojo;
 import java.time.ZonedDateTime;
 
 import com.sun.istack.NotNull;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.enums.OrderStatus;
@@ -24,4 +25,7 @@ public class OrderPojo {
     @Enumerated(EnumType.STRING) // 👈 Store enum as VARCHAR instead of ordinal
     @Column(nullable = false)
     private OrderStatus status;
+
+
+    private Boolean isInvoiced = false;
 }

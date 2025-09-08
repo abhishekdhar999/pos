@@ -13,9 +13,9 @@ import java.util.List;
 @Transactional
 public class InventoryDao  {
 
-    private static String updateQuery = "update InventoryPojo p set p.quantity=:quantity where p.productId=:productId";
-    private static String getByProductQuery = "select p from InventoryPojo p where p.productId=:productId";
-    private static String getAllQuery = "select p from InventoryPojo p";
+    private static final String  updateQuery = "update InventoryPojo p set p.quantity=:quantity where p.productId=:productId";
+    private static final String getByProductQuery = "select p from InventoryPojo p where p.productId=:productId";
+    private static final String getAllQuery = "select p from InventoryPojo p";
     @PersistenceContext
     private EntityManager em;
 

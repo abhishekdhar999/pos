@@ -10,7 +10,7 @@ export class OrderService {
   private apiURLCreateClient = "http://localhost:8080/pos/api/clients/create"
   private apiURLGetClients = "http://localhost:8080/pos/api/clients"
   private apiURLUpdateClient ="http://localhost:8080/pos/api/clients/update"
-
+private apiurl ='http://localhost:8080/pos/api'
 
   constructor(private http : HttpClient) {
   }
@@ -36,5 +36,26 @@ export class OrderService {
     });
   }
 
+  generateInvoice(orderId: number): Observable<Blob> {
+    return this.http.put(`${this.apiurl}/invoice/generate/${orderId}`, {}, {  // ← Change to PUT
+      responseType: 'blob',
+      withCredentials: true
+    });
+  }
+
+
+
+  downloadInvoice(orderId: number): Observable<Blob> {
+    return this.http.get(`http://localhost:8080/pos/api/invoice/download/${orderId}`, {
+      responseType: 'blob',
+      withCredentials: true
+    });
+  }
+
+  resyncOrder(orderId: number): Observable<any> {
+    return this.http.post(`http://localhost:8080/pos/api/order/resync/${orderId}`, {}, {
+      withCredentials: true
+    });
+  }
 
 }

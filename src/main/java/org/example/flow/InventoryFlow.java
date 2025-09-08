@@ -30,4 +30,6 @@ public class InventoryFlow {
     public ProductPojo getProductByProductId(Integer productId) throws ApiException {
         return productApi.getById(productId);
     }
+
+
 }

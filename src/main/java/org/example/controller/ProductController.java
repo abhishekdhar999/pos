@@ -65,6 +65,8 @@ public class ProductController {
 
     }
 
+
+
     @ApiOperation("get by id")
     @RequestMapping(path = "/id/{id}", method = RequestMethod.GET)
     public ProductData getById(@PathVariable Integer id) throws ApiException{

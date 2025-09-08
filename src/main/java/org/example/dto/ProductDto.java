@@ -56,8 +56,7 @@ public class ProductDto {
     }
 
     public List<OperationResponse<ProductForm>> batchAdd(MultipartFile file) throws ApiException {
-        List<ProductForm> productFormListt = new ArrayList<>();
-        productFormListt = convertFileInToProductFormList(file);
+        List<ProductForm> productFormListt = convertFileInToProductFormList(file);
 
         for (ProductForm productForm : productFormListt) {
             System.out.println("Barcode: " + productForm.getBarcode());

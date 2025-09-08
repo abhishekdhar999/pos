@@ -15,7 +15,6 @@ import org.example.pojo.OrderPojo;
 import org.example.pojo.ProductPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import javax.transaction.Transactional;
 import java.time.ZoneId;
@@ -45,6 +44,8 @@ public class OrderFlow {
         // Step 1: Validate everything first
         int i = 0;
         Map<OrderItemPojo, InventoryPojo> validatedItems = new HashMap<>();
+        List<OrderItemPojo> allItems = new ArrayList<>(); // Store all items for saving
+        
         for (OrderItemPojo item : orderItemPojoList) {
             try {
                 ProductPojo product = productApi.getByBarcode(barcodeList.get(i));
@@ -67,6 +68,7 @@ public class OrderFlow {
                 }
 
                 validatedItems.put(item, inventory);
+                allItems.add(item); // Add to all items
 
             } catch (ApiException e) {
                 OrderError error = new OrderError();
@@ -74,23 +76,28 @@ public class OrderFlow {
                 error.setIndex(i);
                 error.setMessage(e.getMessage());
                 orderErrorList.add(error);
+                
+                // Still add the item to allItems even if validation failed
+                allItems.add(item);
             }
             i++;
         }
 
-        // Step 2: Decide based on errors
+        // Step 2: Save all order items (both valid and invalid)
+        for (OrderItemPojo item : allItems) {
+            item.setOrderId(order.getId());
+            orderItemApi.addOrderItem(item);
+        }
+
+        // Step 3: Decide status and reduce inventory
         if (!orderErrorList.isEmpty()) {
             order.setStatus(OrderStatus.UNFULFILLABLE);
             orderApi.updateOrder(order);
-//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
         } else {
-            // All good → persist items & reduce inventory
+            // All good → reduce inventory
             for (Map.Entry<OrderItemPojo, InventoryPojo> entry : validatedItems.entrySet()) {
                 OrderItemPojo item = entry.getKey();
                 InventoryPojo inventory = entry.getValue();
-
-                item.setOrderId(order.getId());
-                orderItemApi.addOrderItem(item);
 
                 inventory.setQuantity(inventory.getQuantity() - item.getQuantity());
                 inventoryApi.edit(inventory);
@@ -147,15 +154,12 @@ public class OrderFlow {
         }
 
         if (allAvailable) {
-            // Reduce inventory
-            for (OrderItemPojo orderItemPojo : orderItemPojoList) {
-                InventoryPojo inventory = inventoryApi.getByProductId(orderItemPojo.getProductId());
-                inventory.setQuantity(inventory.getQuantity() - orderItemPojo.getQuantity());
-                inventoryApi.edit(inventory);
-            }
-
-            // Mark order as fulfillable
+            // Mark order as fulfillable (DO NOT reduce inventory during resync)
             orderPojo.setStatus(OrderStatus.FULFILLABLE);
+            orderApi.updateOrder(orderPojo);
+        } else {
+            // Mark order as unfulfillable when inventory is insufficient
+            orderPojo.setStatus(OrderStatus.UNFULFILLABLE);
             orderApi.updateOrder(orderPojo);
         }
 
@@ -181,4 +185,6 @@ public class OrderFlow {
     public OrderPojo getOrderById(Integer orderId) throws ApiException {
         return orderApi.getById(orderId);
     }
+
+
 }

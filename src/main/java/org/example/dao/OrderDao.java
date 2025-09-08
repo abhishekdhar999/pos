@@ -1,5 +1,6 @@
 package org.example.dao;
 
+import org.example.enums.OrderStatus;
 import org.example.models.form.OrderFilters;
 import org.example.pojo.OrderPojo;
 import org.example.utils.Constants;
@@ -30,6 +31,8 @@ public class OrderDao {
         em.persist(orderPojo);
         return orderPojo.getId();
     }
+
+
     public void updateOrder(OrderPojo orderPojo){
         em.merge(orderPojo);
     }
@@ -71,7 +74,7 @@ public class OrderDao {
             query.setParameter("orderId", orderFilters.getOrderId());
         }
         if(!orderFilters.getStatus().isEmpty()){
-            query.setParameter("status", orderFilters.getStatus());
+            query.setParameter("status", OrderStatus.valueOf(orderFilters.getStatus()));
         }
         return query.getResultList();
     }
@@ -86,6 +89,8 @@ public class OrderDao {
             return null;
         }
     }
+
+
 
     public List<OrderPojo> getBetweenDates(ZonedDateTime startDate, ZonedDateTime endDate){
         Query query = em.createQuery(getBetweenDatesQuery);
@@ -119,7 +124,7 @@ public class OrderDao {
             query.setParameter("orderId", orderFilters.getOrderId());
         }
         if(!orderFilters.getStatus().isEmpty()){
-            query.setParameter("status", orderFilters.getStatus());
+            query.setParameter("status", OrderStatus.valueOf(orderFilters.getStatus()));
         }
         return (Long) query.getSingleResult();
     }
