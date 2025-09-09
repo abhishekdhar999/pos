@@ -32,13 +32,13 @@
     </button>
 <!--  }-->
 
-  <button type="button" class="resync-all-btn" (click)="resyncAllOrders()" [disabled]="resyncingAll">
-    @if (resyncingAll) {
-      ⏳ Resyncing All...
-    } @else {
-      🔄 Resync All Orders
-    }
-  </button>
+<!--  <button type="button" class="resync-all-btn" (click)="resyncAllOrders()" [disabled]="resyncingAll">-->
+<!--    @if (resyncingAll) {-->
+<!--      ⏳ Resyncing All...-->
+<!--    } @else {-->
+<!--      🔄 Resync All Orders-->
+<!--    }-->
+<!--  </button>-->
 </div>
 
 <section class="orders">
@@ -56,40 +56,57 @@
       </thead>
       <tbody>
         @for (order of orders; track order.id) {
-          <tr>
+          <tr (click)="viewOrderDetails(order.id)" class="clickable-row">
             <td>{{ order.id }}</td>
             <td>{{ order.status }}</td>
             <td>{{ order.dateTime | date: 'short' }}</td>
             <td>
-              <div class="action-buttons">
+              <div class="action-buttons" (click)="$event.stopPropagation()">
 
                 @if (order.status === 'FULFILLABLE') {
+                  @if (!order.isInvoiced) {
+                    <button
+                      type="button"
+                      class="invoice-btn"
+                      (click)="generateInvoice(order.id)"
+                      [disabled]="generatingInvoice === order.id"
+                      title="Generate Invoice">
+                      @if (generatingInvoice === order.id) {
+                        ⏳ Generating...
+                      } @else {
+                        📄 Generate Invoice
+                      }
+                    </button>
+                  } @else {
+                    <button
+                      type="button"
+                      class="download-invoice-btn"
+                      (click)="downloadInvoice(order.id)"
+                      [disabled]="downloadingInvoice === order.id"
+                      title="Download Invoice">
+                      @if (downloadingInvoice === order.id) {
+                        ⏳ Downloading...
+                      } @else {
+                        📥 Download Invoice
+                      }
+                    </button>
+                  }
+                }
+
+                @if (order.status !== 'FULFILLABLE') {
                   <button
                     type="button"
-                    class="invoice-btn"
-                    (click)="generateInvoice(order.id)"
-                    [disabled]="generatingInvoice === order.id"
-                    title="Generate Invoice">
-                    @if (generatingInvoice === order.id) {
-                      ⏳ Generating...
+                    class="resync-btn"
+                    (click)="resyncOrder(order.id)"
+                    [disabled]="resyncingOrders.has(order.id)"
+                    title="Resync Order">
+                    @if (resyncingOrders.has(order.id)) {
+                      ⏳ Resyncing...
                     } @else {
-                      📄 Generate Invoice
+                      🔄 Resync
                     }
                   </button>
                 }
-
-                <button
-                  type="button"
-                  class="resync-btn"
-                  (click)="resyncOrder(order.id)"
-                  [disabled]="resyncingOrders.has(order.id)"
-                  title="Resync Order">
-                  @if (resyncingOrders.has(order.id)) {
-                    ⏳ Resyncing...
-                  } @else {
-                    🔄 Resync
-                  }
-                </button>
               </div>
             </td>
           </tr>
@@ -195,6 +212,60 @@
         <button type="button" class="create-order-btn" (click)="createOrder()" >
           Create Order ({{ cartItems.length }} items)
         </button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Order Items Modal -->
+@if (showOrderItemsModal) {
+  <div class="modal-overlay" (click)="closeOrderItemsModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Order #{{ selectedOrderId }} Details</h2>
+        <button type="button" class="close-btn" (click)="closeOrderItemsModal()">×</button>
+      </div>
+
+      <div class="modal-body">
+        @if (loadingOrderItems) {
+          <p>Loading order details...</p>
+        } @else if (orderDetails) {
+          <div class="order-info">
+            <p><strong>Order ID:</strong> {{ orderDetails.id }}</p>
+            <p><strong>Status:</strong> {{ orderDetails.status }}</p>
+            <p><strong>Date:</strong> {{ orderDetails.dateTime | date: 'medium' }}</p>
+          </div>
+
+          <div class="order-items-section">
+            <h3>Order Items ({{ orderItems.length }})</h3>
+            @if (orderItems.length > 0) {
+              <div class="order-items-list">
+                @for (item of orderItems; track item.id) {
+                  <div class="order-item">
+                    <div class="item-info">
+                      <span class="item-name">Product ID: {{ item.productId }}</span>
+                      <span class="item-quantity">Quantity: {{ item.quantity }}</span>
+                    </div>
+                    <div class="item-price">
+                      <span>Price: ₹{{ item.sellingPrice }}</span>
+                      <span class="item-total">Total: ₹{{ item.sellingPrice * item.quantity }}</span>
+                    </div>
+                  </div>
+                }
+              </div>
+              
+              <div class="order-total">
+                <strong>Order Total: ₹{{ getOrderTotal() }}</strong>
+              </div>
+            } @else {
+              <p>No items in this order.</p>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="cancel-btn" (click)="closeOrderItemsModal()">Close</button>
       </div>
     </div>
   </div>

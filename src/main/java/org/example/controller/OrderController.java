@@ -7,12 +7,9 @@ import org.example.dto.OrderDto;
 import org.example.models.data.ErrorData;
 import org.example.models.data.OrderData;
 import org.example.models.data.OrderError;
-import org.example.models.form.OrderFilters;
+import org.example.models.form.OrderFiltersForm;
 import org.example.models.form.OrderItemForm;
-import org.example.pojo.OrderPojo;
-import org.example.utils.PaginatedResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,7 +37,7 @@ public class OrderController {
 
     @ApiOperation("getting all order's detail.")
     @RequestMapping(method = RequestMethod.GET)
-    public List<OrderData> getAll(@ModelAttribute OrderFilters orderfilters) throws ApiException{
+    public List<OrderData> getAll(@ModelAttribute OrderFiltersForm orderfilters) throws ApiException{
         return orderDto.getAll(orderfilters);
     }
 
@@ -48,8 +45,8 @@ public class OrderController {
 
     @ApiOperation("getting total no. of orders")
     @RequestMapping(path = "/get-total-count", method = RequestMethod.GET)
-    public Long getTotalCount(@ModelAttribute OrderFilters orderFilters){
-        return orderDto.getTotalCount(orderFilters);
+    public Long getTotalCount(@ModelAttribute OrderFiltersForm orderFiltersForm){
+        return orderDto.getTotalCount(orderFiltersForm);
     }
 
     @ApiOperation(value = "re sync the order")

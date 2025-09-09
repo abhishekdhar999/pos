@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
 import java.util.Base64;
+import java.util.Objects;
 
 @Component
 public class InvoiceDto {
@@ -27,25 +28,39 @@ public class InvoiceDto {
     @Autowired
     private OrderApi orderApi;
 
-    public void generateInvoice(int orderId, HttpServletResponse response) throws ApiException {
+    public InvoiceResponse generateInvoice(int orderId) throws ApiException {
 
+        OrderPojo orderPojoo =  orderFlow.getOrderById(orderId);
+        if(Objects.isNull(orderPojoo)){
+            throw new ApiException("Order id not found");
+        }
+        if(orderPojoo.getIsInvoiced()){
+            throw new ApiException("Order has already invoiced");
+        }
 
         InvoiceResponse res = invoiceFlow.generateInvoice(orderId);
-        String base64Pdf = res.getBase64Pdf();
-        System.out.println("base64Pdf: " + base64Pdf);
+           OrderPojo orderPojo =  orderFlow.getOrderById(orderId);
+           orderPojo.setIsInvoiced(Boolean.TRUE);
+            orderApi.updateOrder(orderPojo);
+        InvoiceResponse invoiceResponse = new InvoiceResponse();
+        invoiceResponse.setInvoiceId(res.getInvoiceId());
+
+        return invoiceResponse;
+    }
+
+    public void downloadInvoice(Integer orderId,HttpServletResponse response) throws ApiException {
+     InvoiceResponse downloadInvoiceResponse = invoiceClient.downloadInvoice(orderId);
+System.out.println("downloadInvoiceResponse:"+downloadInvoiceResponse);
+        byte[] pdfBytes = Base64.getDecoder().decode(downloadInvoiceResponse.getBase64Pdf());
         try {
-            byte[] pdfBytes = Base64.getDecoder().decode(base64Pdf);
             response.setContentType("application/pdf");
-            response.setHeader("Content-Disposition", "attachment; filename=invoice-" + orderId + ".pdf"); // or inline;
+            response.setHeader("Content-Disposition", "attachment; filename=myfile.pdf"); // or inline;
             response.setContentLength(pdfBytes.length);
             OutputStream out = response.getOutputStream();
             out.write(pdfBytes);
             out.flush();
-           OrderPojo orderPojo =  orderFlow.getOrderById(orderId);
-           orderPojo.setIsInvoiced(Boolean.TRUE);
-            orderApi.updateOrder(orderPojo);
         } catch (Exception e) {
-            throw new ApiException("Error while invoice generation");
+            throw new ApiException("Error while downloading invoice.");
         }
     }
 

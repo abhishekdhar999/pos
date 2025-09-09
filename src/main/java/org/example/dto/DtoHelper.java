@@ -136,6 +136,7 @@ public class DtoHelper {
         OrderData orderData = new OrderData();
         orderData.setId(orderPojo.getId());
         orderData.setStatus(orderPojo.getStatus());
+        orderData.setIsInvoiced(orderPojo.getIsInvoiced());
         ZonedDateTime dateTime = orderPojo.getDateTime();
         orderData.setDateTime(dateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
         orderData.setOrderItems(orderItemDataList);

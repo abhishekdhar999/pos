@@ -41,10 +41,19 @@ export class OrderList implements OnInit{
 
   // Invoice generation properties
   generatingInvoice: number | null = null;
+  downloadingInvoice: number | null = null;
+  orderInvoiceIds: Map<number, number> = new Map(); // orderId -> invoiceId
 
   // Resync properties
   resyncingAll = false;
   resyncingOrders = new Set<number>();
+
+  // Order details modal properties
+  showOrderItemsModal = false;
+  selectedOrderId: number | null = null;
+  orderDetails: any = null;
+  orderItems: any[] = [];
+  loadingOrderItems = false;
 
   constructor(
     private orderService: OrderService,
@@ -72,7 +81,11 @@ export class OrderList implements OnInit{
     this.loading = true;
     this.orderService.getOrders(this.filter).subscribe({
       next: (data: any) => {
-        console.log("data",data);
+        console.log("Order data received:", data);
+        // Log each order's isInvoiced status
+        data.forEach((order: any, index: number) => {
+          console.log(`Order ${index + 1} (ID: ${order.id}): isInvoiced = ${order.isInvoiced}, status = ${order.status}`);
+        });
         this.orders = data;
         this.totalPages =100;
         this.loading = false;
@@ -253,19 +266,16 @@ export class OrderList implements OnInit{
     this.generatingInvoice = orderId;
 
     this.orderService.generateInvoice(orderId).subscribe({
-      next: (blob: Blob) => {
-        // Create a blob URL and trigger download
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `invoice-${orderId}.pdf`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        window.URL.revokeObjectURL(url);
+      next: (response: any) => {
+        // Store the invoice ID for this order
+        console.log("response",response)
+        if (response.invoiceId) {
+          this.orderInvoiceIds.set(orderId, response.invoiceId);
+        }
 
-        this.toastService.success('Invoice downloaded successfully');
+        this.toastService.success('Invoice generated successfully');
         this.generatingInvoice = null;
+        this.fetchOrders(); // Refresh the order list to update isInvoiced status
       },
       error: (err) => {
         console.error('Error generating invoice', err);
@@ -273,6 +283,49 @@ export class OrderList implements OnInit{
         this.generatingInvoice = null;
       }
     });
+  }
+
+  downloadInvoice(orderId: number): void {
+    this.downloadingInvoice = orderId;
+    this.orderService.downloadInvoice(orderId).subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `invoice-${orderId}.pdf`;
+        link.click(); // 👈 no need to attach to body
+        window.URL.revokeObjectURL(url);
+
+        this.toastService.success('Invoice downloaded successfully');
+        this.downloadingInvoice = null;
+      },
+      error: (err) => {
+        console.error('Error downloading invoice', err);
+        this.toastService.error('Failed to download invoice');
+        this.downloadingInvoice = null;
+      }
+    });
+    // this.orderService.downloadInvoice(orderId).subscribe({
+    //   next: (blob: Blob) => {
+    //     // Create a blob URL and trigger download
+    //     const url = window.URL.createObjectURL(blob);
+    //     const link = document.createElement('a');
+    //     link.href = url;
+    //     link.download = `invoice-${orderId}.pdf`;
+    //     document.body.appendChild(link);
+    //     link.click();
+    //     document.body.removeChild(link);
+    //     window.URL.revokeObjectURL(url);
+    //
+    //     this.toastService.success('Invoice downloaded successfully');
+    //     this.downloadingInvoice = null;
+    //   },
+    //   error: (err) => {
+    //     console.error('Error downloading invoice', err);
+    //     this.toastService.error('Failed to download invoice');
+    //     this.downloadingInvoice = null;
+    //   }
+    // });
   }
 
   resyncOrder(orderId: number): void {
@@ -314,6 +367,41 @@ export class OrderList implements OnInit{
       this.resyncingAll = false;
       this.fetchOrders(); // Refresh the order list
     });
+  }
+
+  // Order details modal methods
+  viewOrderDetails(orderId: number): void {
+    this.selectedOrderId = orderId;
+    this.showOrderItemsModal = true;
+    this.loadOrderDetails(orderId);
+  }
+
+  closeOrderItemsModal(): void {
+    this.showOrderItemsModal = false;
+    this.selectedOrderId = null;
+    this.orderDetails = null;
+    this.orderItems = [];
+  }
+
+  loadOrderDetails(orderId: number): void {
+    this.loadingOrderItems = true;
+    this.orderService.getOrderDetails(orderId).subscribe({
+      next: (orderData: any) => {
+        this.orderDetails = orderData;
+        this.orderItems = orderData.orderItems || [];
+        this.loadingOrderItems = false;
+      },
+      error: (err) => {
+        console.error('Error loading order details', err);
+        this.toastService.error('Failed to load order details');
+        this.loadingOrderItems = false;
+      }
+    });
+  }
+
+  getOrderTotal(): number {
+    return this.orderItems.reduce((total, item) =>
+      total + (item.sellingPrice * item.quantity), 0);
   }
 
 }

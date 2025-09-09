@@ -13,6 +13,7 @@ public class OrderData {
     private Integer id;
     private String dateTime;
     private OrderStatus status;
+    private Boolean isInvoiced;
     private List<OrderItemData> orderItems = new ArrayList<>();
 
     public void addOrderItem(OrderItemData orderItemData){

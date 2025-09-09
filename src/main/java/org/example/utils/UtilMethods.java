@@ -192,23 +192,23 @@ return products;
             throw new ApiException("Client should not be null");
         }else if (clientForm.getName().isEmpty()) {
             throw new ApiException("Client name should not be empty");
-        } else if (clientForm.getName().length() > Constants.MAX_LENGTH) {
-            throw new ApiException("Client name should not exceed "+ Constants.MAX_LENGTH+" letters");
+        } else if (clientForm.getName().length() > FinalValues.MAXIMUM_LENGTH) {
+            throw new ApiException("Client name should not exceed "+ FinalValues.MAXIMUM_LENGTH +" letters");
         }
     }
 
     public static void validateProductForm(ProductForm productForm) throws ApiException{
         if(Objects.isNull(productForm)){
             throw new ApiException("Product should not be null");
-        } else if (productForm.getBarcode().length() > Constants.MAX_LENGTH) {
-            throw new ApiException("Barcode should not exceed "+ Constants.MAX_LENGTH+" letters");
-        } else if (productForm.getName().length() > Constants.MAX_LENGTH) {
-            throw new ApiException("Product name should not exceed "+ Constants.MAX_LENGTH+" letters");
-        } else if (productForm.getImageUrl().length() > Constants.MAX_URL_LENGTH) {
-            throw new ApiException("Barcode should not exceed "+Constants.MAX_URL_LENGTH+" letters");
+        } else if (productForm.getBarcode().length() > FinalValues.MAXIMUM_LENGTH) {
+            throw new ApiException("Barcode should not exceed "+ FinalValues.MAXIMUM_LENGTH +" letters");
+        } else if (productForm.getName().length() > FinalValues.MAXIMUM_LENGTH) {
+            throw new ApiException("Product name should not exceed "+ FinalValues.MAXIMUM_LENGTH +" letters");
+        } else if (productForm.getImageUrl().length() > FinalValues.URL_LENGTH) {
+            throw new ApiException("Barcode should not exceed "+ FinalValues.URL_LENGTH +" letters");
         } else if (productForm.getPrice() <= 0.0) {
             throw new ApiException("Mrp should be greater then 0");
-        } else if (productForm.getPrice() > Constants.MAX_MRP) {
+        } else if (productForm.getPrice() > FinalValues.FINAL_PRICE) {
             throw new ApiException("Mrp should not exceed ₹");
         }
     }
@@ -224,10 +224,10 @@ return products;
     public static void validateInventoryForm(InventoryForm inventoryForm) throws ApiException{
         if(inventoryForm.getQuantity() <= 0){
             throw new ApiException("Quantity should be greater than 0");
-        } else if (inventoryForm.getQuantity() > Constants.MAX_INVENTORY) {
-            throw new ApiException("Quantity should not exceed "+Constants.MAX_INVENTORY);
-        } else if(inventoryForm.getBarcode().length() > Constants.MAX_LENGTH){
-            throw new ApiException("Barcode should not be greater then "+Constants.MAX_LENGTH+" letters");
+        } else if (inventoryForm.getQuantity() > FinalValues.FINAL_INVENTORY) {
+            throw new ApiException("Quantity should not exceed "+ FinalValues.FINAL_INVENTORY);
+        } else if(inventoryForm.getBarcode().length() > FinalValues.MAXIMUM_LENGTH){
+            throw new ApiException("Barcode should not be greater then "+ FinalValues.MAXIMUM_LENGTH +" letters");
         }
     }
 
@@ -238,12 +238,12 @@ return products;
     public static void validateOrderForm(OrderItemForm orderItemForm) throws ApiException {
         if(orderItemForm.getQuantity() <= 0){
             throw new ApiException("Quantity should be greater than 0.");
-        } else if (orderItemForm.getQuantity() > Constants.MAX_INVENTORY) {
-            throw new ApiException("Quantity should not exceed "+ Constants.MAX_INVENTORY);
+        } else if (orderItemForm.getQuantity() > FinalValues.FINAL_INVENTORY) {
+            throw new ApiException("Quantity should not exceed "+ FinalValues.FINAL_INVENTORY);
         } else if (orderItemForm.getSellingPrice() <= 0) {
             throw new ApiException("Selling Price should be greater than 0.");
-        } else if (orderItemForm.getBarcode().length() > Constants.MAX_LENGTH) {
-            throw new ApiException("Barcode should not exceed "+ Constants.MAX_LENGTH+" letters");
+        } else if (orderItemForm.getBarcode().length() > FinalValues.MAXIMUM_LENGTH) {
+            throw new ApiException("Barcode should not exceed "+ FinalValues.MAXIMUM_LENGTH +" letters");
         }
     }
 
@@ -281,7 +281,7 @@ return products;
 
     public static ZonedDateTime parseStartDate(String startDate) {
         if(startDate.isEmpty()){
-            return ZonedDateTime.parse(Constants.MIN_DATE);
+            return ZonedDateTime.parse(FinalValues.START_DATE);
         } else {
             return ZonedDateTime.parse(startDate);
         }

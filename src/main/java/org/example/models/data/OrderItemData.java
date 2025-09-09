@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class OrderItemData {
     private Integer id;
+    private String productName;
     private Integer productId;
     private Integer quantity;
     private Double sellingPrice;

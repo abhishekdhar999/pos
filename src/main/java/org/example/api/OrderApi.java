@@ -2,7 +2,7 @@ package org.example.api;
 
 import org.example.dao.OrderDao;
 import org.example.dto.ApiException;
-import org.example.models.form.OrderFilters;
+import org.example.models.form.OrderFiltersForm;
 import org.example.pojo.OrderPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,13 +28,13 @@ public class OrderApi {
 
 
 
-    public List<OrderPojo> getAllOrders(OrderFilters orderFilters) throws ApiException {
-        Long totalCount = orderDao.getTotalCount(orderFilters);
-        if(totalCount!=0 && (long) orderFilters.getPage()*orderFilters.getSize() >= totalCount){
+    public List<OrderPojo> getAllOrders(OrderFiltersForm orderFiltersForm) throws ApiException {
+        Long totalCount = orderDao.getTotalCount(orderFiltersForm);
+        if(totalCount!=0 && (long) orderFiltersForm.getPage()* orderFiltersForm.getSize() >= totalCount){
             // not gonna invoked by fronted, most probably.
             throw new ApiException("Invalid page number");
         }
-        return orderDao.getAllOrders(orderFilters);
+        return orderDao.getAllOrders(orderFiltersForm);
     }
 
     public void makeOrderInvoiced(Integer id) throws ApiException {
@@ -55,7 +55,7 @@ public class OrderApi {
         return orderDao.getBetweenDates(startDate, endDate);
     }
 
-    public Long getTotalCount(OrderFilters orderFilters) {
-        return orderDao.getTotalCount(orderFilters);
+    public Long getTotalCount(OrderFiltersForm orderFiltersForm) {
+        return orderDao.getTotalCount(orderFiltersForm);
     }
 }

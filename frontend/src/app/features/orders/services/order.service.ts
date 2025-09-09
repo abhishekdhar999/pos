@@ -36,24 +36,30 @@ private apiurl ='http://localhost:8080/pos/api'
     });
   }
 
-  generateInvoice(orderId: number): Observable<Blob> {
-    return this.http.put(`${this.apiurl}/invoice/generate/${orderId}`, {}, {  // ← Change to PUT
-      responseType: 'blob',
+  generateInvoice(orderId: number): Observable<any> {
+    return this.http.post(`${this.apiurl}/invoice/generate/${orderId}`, {}, {
       withCredentials: true
     });
   }
 
 
 
-  downloadInvoice(orderId: number): Observable<Blob> {
+  downloadInvoice(orderId: number): Observable<any> {
     return this.http.get(`http://localhost:8080/pos/api/invoice/download/${orderId}`, {
-      responseType: 'blob',
+      responseType: 'blob' as 'json',
       withCredentials: true
     });
   }
+
 
   resyncOrder(orderId: number): Observable<any> {
     return this.http.post(`http://localhost:8080/pos/api/order/resync/${orderId}`, {}, {
+      withCredentials: true
+    });
+  }
+
+  getOrderDetails(orderId: number): Observable<any> {
+    return this.http.get(`${this.apiurl}/order/${orderId}`, {
       withCredentials: true
     });
   }

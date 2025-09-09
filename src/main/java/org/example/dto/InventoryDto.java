@@ -69,7 +69,7 @@ public class InventoryDto {
         // Row-level processing
         for (InventoryForm inventoryForm : result.getInventories()) {
             try {
-                add(inventoryForm); // your DB save method
+                add(inventoryForm);
                 successCount++;
             } catch (Exception e) {
                 BulkResponse<InventoryForm> failure = new BulkResponse<>();

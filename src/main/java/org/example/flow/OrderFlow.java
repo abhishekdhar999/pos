@@ -8,7 +8,7 @@ import org.example.dto.ApiException;
 import org.example.enums.OrderStatus;
 import org.example.models.data.ErrorData;
 import org.example.models.data.OrderError;
-import org.example.models.form.OrderFilters;
+import org.example.models.form.OrderFiltersForm;
 import org.example.pojo.InventoryPojo;
 import org.example.pojo.OrderItemPojo;
 import org.example.pojo.OrderPojo;
@@ -178,13 +178,15 @@ public class OrderFlow {
         return orderItemApi.getByOrderId(orderId);
     }
 
-    public List<OrderPojo> getAllOrders(OrderFilters orderFilters) throws ApiException{
-        return orderApi.getAllOrders(orderFilters);
+    public List<OrderPojo> getAllOrders(OrderFiltersForm orderFiltersForm) throws ApiException{
+        return orderApi.getAllOrders(orderFiltersForm);
     }
 
     public OrderPojo getOrderById(Integer orderId) throws ApiException {
         return orderApi.getById(orderId);
     }
+
+
 
 
 }

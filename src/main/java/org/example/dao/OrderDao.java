@@ -1,9 +1,9 @@
 package org.example.dao;
 
 import org.example.enums.OrderStatus;
-import org.example.models.form.OrderFilters;
+import org.example.models.form.OrderFiltersForm;
 import org.example.pojo.OrderPojo;
-import org.example.utils.Constants;
+import org.example.utils.FinalValues;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -47,34 +47,34 @@ public class OrderDao {
     }
 
 
-    public List<OrderPojo> getAllOrders(OrderFilters orderFilters) {
+    public List<OrderPojo> getAllOrders(OrderFiltersForm orderFiltersForm) {
         String editedQuery = new String(getBetweenDatesQuery);
-        if(!Objects.isNull(orderFilters.getOrderId())){
+        if(!Objects.isNull(orderFiltersForm.getOrderId())){
             editedQuery+=" and p.id=:orderId";
         }
-        if(!orderFilters.getStatus().isEmpty()){
+        if(!orderFiltersForm.getStatus().isEmpty()){
             editedQuery+=" and p.status=:status";
         }
         editedQuery+=" order by p.id desc";
 
         Query query = em.createQuery(editedQuery);
-        query.setMaxResults(orderFilters.getSize());
-        query.setFirstResult(orderFilters.getPage()*orderFilters.getSize());
-        if(orderFilters.getStartDate().isEmpty()){
-            query.setParameter("startDate", ZonedDateTime.parse(Constants.MIN_DATE));
+        query.setMaxResults(orderFiltersForm.getSize());
+        query.setFirstResult(orderFiltersForm.getPage()* orderFiltersForm.getSize());
+        if(orderFiltersForm.getStartDate().isEmpty()){
+            query.setParameter("startDate", ZonedDateTime.parse(FinalValues.START_DATE));
         } else {
-            query.setParameter("startDate", ZonedDateTime.parse(orderFilters.getStartDate()));
+            query.setParameter("startDate", ZonedDateTime.parse(orderFiltersForm.getStartDate()));
         }
-        if(orderFilters.getEndDate().isEmpty()){
+        if(orderFiltersForm.getEndDate().isEmpty()){
             query.setParameter("endDate", ZonedDateTime.now());
         } else {
-            query.setParameter("endDate", ZonedDateTime.parse(orderFilters.getEndDate()));
+            query.setParameter("endDate", ZonedDateTime.parse(orderFiltersForm.getEndDate()));
         }
-        if(!Objects.isNull(orderFilters.getOrderId())){
-            query.setParameter("orderId", orderFilters.getOrderId());
+        if(!Objects.isNull(orderFiltersForm.getOrderId())){
+            query.setParameter("orderId", orderFiltersForm.getOrderId());
         }
-        if(!orderFilters.getStatus().isEmpty()){
-            query.setParameter("status", OrderStatus.valueOf(orderFilters.getStatus()));
+        if(!orderFiltersForm.getStatus().isEmpty()){
+            query.setParameter("status", OrderStatus.valueOf(orderFiltersForm.getStatus()));
         }
         return query.getResultList();
     }
@@ -100,31 +100,31 @@ public class OrderDao {
         return orderPojoList;
     }
 
-    public Long getTotalCount(OrderFilters orderFilters) {
+    public Long getTotalCount(OrderFiltersForm orderFiltersForm) {
         String editedQuery = new String(getTotalCountQuery);
-        if(!Objects.isNull(orderFilters.getOrderId())){
+        if(!Objects.isNull(orderFiltersForm.getOrderId())){
             editedQuery+=" and p.id=:orderId";
         }
-        if(!orderFilters.getStatus().isEmpty()){
+        if(!orderFiltersForm.getStatus().isEmpty()){
             editedQuery+=" and p.status=:status";
         }
 
         Query query = em.createQuery(editedQuery);
-        if(orderFilters.getStartDate().isEmpty()){
-            query.setParameter("startDate", ZonedDateTime.parse(Constants.MIN_DATE));
+        if(orderFiltersForm.getStartDate().isEmpty()){
+            query.setParameter("startDate", ZonedDateTime.parse(FinalValues.START_DATE));
         } else {
-            query.setParameter("startDate", ZonedDateTime.parse(orderFilters.getStartDate()));
+            query.setParameter("startDate", ZonedDateTime.parse(orderFiltersForm.getStartDate()));
         }
-        if(orderFilters.getEndDate().isEmpty()){
+        if(orderFiltersForm.getEndDate().isEmpty()){
             query.setParameter("endDate", ZonedDateTime.now());
         } else {
-            query.setParameter("endDate", ZonedDateTime.parse(orderFilters.getEndDate()));
+            query.setParameter("endDate", ZonedDateTime.parse(orderFiltersForm.getEndDate()));
         }
-        if(!Objects.isNull(orderFilters.getOrderId())){
-            query.setParameter("orderId", orderFilters.getOrderId());
+        if(!Objects.isNull(orderFiltersForm.getOrderId())){
+            query.setParameter("orderId", orderFiltersForm.getOrderId());
         }
-        if(!orderFilters.getStatus().isEmpty()){
-            query.setParameter("status", OrderStatus.valueOf(orderFilters.getStatus()));
+        if(!orderFiltersForm.getStatus().isEmpty()){
+            query.setParameter("status", OrderStatus.valueOf(orderFiltersForm.getStatus()));
         }
         return (Long) query.getSingleResult();
     }

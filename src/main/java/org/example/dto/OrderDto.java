@@ -6,7 +6,7 @@ import org.example.models.data.ErrorData;
 import org.example.models.data.OrderData;
 import org.example.models.data.OrderError;
 import org.example.models.data.OrderItemData;
-import org.example.models.form.OrderFilters;
+import org.example.models.form.OrderFiltersForm;
 import org.example.models.form.OrderItemForm;
 import org.example.pojo.OrderItemPojo;
 import org.example.pojo.OrderPojo;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class OrderDto {
@@ -50,12 +49,10 @@ public class OrderDto {
         return DtoHelper.convertToOrderData(orderPojo, orderItemDataList);
     }
 
-    public void makeOrderInvoiced(Integer id) throws ApiException {
-        orderApi.makeOrderInvoiced(id);
-    }
 
-    public List<OrderData> getAll(OrderFilters orderFilters) throws ApiException{
-        List<OrderPojo> orderPojoList = orderFlow.getAllOrders(orderFilters);
+
+    public List<OrderData> getAll(OrderFiltersForm orderFiltersForm) throws ApiException{
+        List<OrderPojo> orderPojoList = orderFlow.getAllOrders(orderFiltersForm);
         List<OrderData> orderDataList = new ArrayList<>();
         for(OrderPojo orderPojo: orderPojoList){
             List<OrderItemPojo> orderItemPojoList = orderFlow.getOrderItemsByOrderId(orderPojo.getId());
@@ -65,8 +62,8 @@ public class OrderDto {
         return orderDataList;
     }
 
-    public Long getTotalCount(OrderFilters orderFilters) {
-        return orderApi.getTotalCount(orderFilters);
+    public Long getTotalCount(OrderFiltersForm orderFiltersForm) {
+        return orderApi.getTotalCount(orderFiltersForm);
     }
 
     public ErrorData<OrderError> resync(Integer id) throws ApiException{
