@@ -1,5 +1,6 @@
 package org.example.InvoiceClient;
 
+import org.example.models.data.InvoiceData;
 import org.example.models.data.InvoiceRequest;
 import org.example.utils.InvoiceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,19 +34,30 @@ public class InvoiceClient {
         String url = "http://localhost:8000/pos/api/invoice/download/{orderId}";
         // adjust port/context-path for invoice-app
 
-        // POST request -> Base64 string as response
-        InvoiceResponse resp = restTemplate.getForObject(url, InvoiceResponse.class, orderId);
+        // GET request -> Raw PDF bytes as response
+        byte[] pdfBytes = restTemplate.getForObject(url, byte[].class, orderId);
+        
+        // Convert PDF bytes to Base64 string
+        String base64Pdf = java.util.Base64.getEncoder().encodeToString(pdfBytes);
+        
+        // Create InvoiceResponse object
+        InvoiceResponse resp = new InvoiceResponse();
+        resp.setBase64Pdf(base64Pdf);
+        resp.setInvoiceId(orderId); // Set the order ID as invoice ID
+        
         return resp;
     }
 
-    public List<Integer> getInvoice(ZonedDateTime startDate, ZonedDateTime endDate) {
-        String url = "http://localhost:8000/pos/api/invoice/get"+"?startDate="+startDate.toString()+"&endDate="+endDate.toString();
-        ResponseEntity<List<Integer>> response = restTemplate.exchange(
+    public List<InvoiceData> getInvoice(ZonedDateTime startDate, ZonedDateTime endDate) {
+
+        String url = "http://localhost:8000/pos/api/invoice/get";
+        ResponseEntity<List<InvoiceData>> response = restTemplate.exchange(
                 url,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<List<Integer>>() {}
+                new ParameterizedTypeReference<List<InvoiceData>>() {}
         );
+        System.out.println("response"+response.getBody());
         return response.getBody();
     }
 }

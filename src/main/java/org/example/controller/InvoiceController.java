@@ -4,14 +4,16 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.example.dto.ApiException;
 import org.example.dto.InvoiceDto;
+import org.example.models.data.InvoiceData;
+import org.example.models.form.InvoiceFilterForm;
+import org.example.models.form.OrderFiltersForm;
+import org.example.pojo.InvoicePojo;
 import org.example.utils.InvoiceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Api
 @RestController
@@ -29,6 +31,12 @@ public class InvoiceController {
     @RequestMapping(path = "/download/{id}",method = RequestMethod.GET)
     public void downloadInvoice(@PathVariable Integer id,HttpServletResponse response ) throws ApiException {
         invoiceDto.downloadInvoice( id,response);
+    }
+
+    @ApiOperation(value = "get invoices")
+    @RequestMapping(path="/get",method = RequestMethod.GET)
+    public List<InvoiceData> getInvoices(@ModelAttribute InvoiceFilterForm filterForm) throws ApiException {
+return invoiceDto.getInvoices(filterForm);
     }
 
 }

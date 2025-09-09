@@ -2,6 +2,7 @@ package org.example.config;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,6 +39,7 @@ public class ControllerConfig extends WebMvcConfigurerAdapter {
                 .paths(PathSelectors.regex("/api.*"))//
                 .build();
     }
+
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {

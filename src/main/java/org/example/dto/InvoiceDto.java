@@ -5,6 +5,9 @@ import org.example.InvoiceClient.InvoiceClient;
 import org.example.api.OrderApi;
 import org.example.flow.InvoiceFlow;
 import org.example.flow.OrderFlow;
+import org.example.models.data.InvoiceData;
+import org.example.models.form.InvoiceFilterForm;
+import org.example.pojo.InvoicePojo;
 import org.example.pojo.OrderPojo;
 import org.example.utils.InvoiceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
 import java.util.Base64;
+import java.util.List;
 import java.util.Objects;
 
 @Component
@@ -62,6 +66,9 @@ System.out.println("downloadInvoiceResponse:"+downloadInvoiceResponse);
         } catch (Exception e) {
             throw new ApiException("Error while downloading invoice.");
         }
+    }
+    public List<InvoiceData> getInvoices(InvoiceFilterForm filterForm) throws ApiException {
+        return invoiceFlow.getInvoices(filterForm);
     }
 
 

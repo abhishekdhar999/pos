@@ -21,7 +21,7 @@ public class ReportsDto {
 //        List<DaySalesReportData> daySalesReports =  reportApi.getDaysSalesReport()
 //    }
 
-   public void generateDayReports(){
+   public void generateDayReports() throws ApiException {
       reportsFlow.generateDayReport();
    }
 }

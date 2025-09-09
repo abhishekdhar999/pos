@@ -38,6 +38,7 @@ import java.util.Properties;
 
 public class SpringConfig  {
 
+
     @Bean(name = "restTemplate")
     public RestTemplate getRestTemplate() {
         return new RestTemplate();
@@ -47,6 +48,7 @@ public class SpringConfig  {
     public BCryptPasswordEncoder getBCryptPasswordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
 
 
 }

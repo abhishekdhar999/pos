@@ -8,8 +8,11 @@ import org.example.api.OrderApi;
 import org.example.api.OrderItemApi;
 import org.example.api.ProductApi;
 import org.example.dto.ApiException;
+import org.example.models.data.InvoiceData;
 import org.example.models.data.InvoiceItem;
 import org.example.models.data.InvoiceRequest;
+import org.example.models.form.InvoiceFilterForm;
+import org.example.pojo.InvoicePojo;
 import org.example.pojo.OrderItemPojo;
 import org.example.pojo.OrderPojo;
 import org.example.pojo.ProductPojo;
@@ -72,5 +75,11 @@ public class InvoiceFlow {
         invoiceRequest.setInvoiceDateTime(ZonedDateTime.now().format(formatter));
 
         return invoiceClient.generateInvoice(invoiceRequest);
+    }
+
+    public List<InvoiceData> getInvoices(InvoiceFilterForm filterForm) throws ApiException {
+        ZonedDateTime startDate = ZonedDateTime.parse(filterForm.getStartDate());
+        ZonedDateTime endDate = ZonedDateTime.parse(filterForm.getEndDate());
+       return invoiceClient.getInvoice(startDate, endDate);
     }
 }
