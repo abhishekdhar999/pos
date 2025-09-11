@@ -2,9 +2,10 @@ package org.example.enums;
 
 
 public enum OrderStatus {
-    FULFILLABLE("Fulfillable"),
-    UNFULFILLABLE("Unfulfillable"),
-    CREATED("Created");
+    FULFILLABLE("FULFILLABLE"),
+    UNFULFILLABLE("UNFULFILLABLE"),
+    CREATED("CREATED"),
+    INVOICED("INVOICED");
 
 
     private final String displayName;

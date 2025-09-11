@@ -1,6 +1,7 @@
 package org.example.dao;
 
 import org.example.dto.ApiException;
+import org.example.models.form.DaySalesReportsForm;
 import org.example.pojo.DaySalesReportPojo;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +16,7 @@ import java.util.List;
 @Transactional
 public class SalesReportDao {
     private static final String getDailySalesReportQuery = "select p from DaySalesReportPojo p where p.dateTime>=:startDate and p.dateTime<=:endDate order by p.id desc";
-
+private static final String getTotalQuery = "select count(p) from DaySalesReportPojo p";
     @PersistenceContext
     private EntityManager em;
 
@@ -31,4 +32,18 @@ public class SalesReportDao {
         query.setParameter("endDate", endDate);
         return query.getResultList();
     }
+    public List<DaySalesReportPojo> getDaySalesReportsBetweenDates(ZonedDateTime startDate,ZonedDateTime endDate) throws ApiException{
+        Query query = em.createQuery(getDailySalesReportQuery);
+        query.setParameter("startDate", startDate);
+        query.setParameter("endDate", endDate);
+        return  query.getResultList();
+    }
+
+    public Long getTotalDayReports(){
+Query query = em.createQuery(getTotalQuery);
+return (Long) query.getSingleResult();
+    }
+
+
+
 }

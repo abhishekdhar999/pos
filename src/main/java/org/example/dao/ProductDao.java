@@ -12,7 +12,7 @@ import java.util.List;
 @Transactional
 public class ProductDao {
 
-    private static final String getAllQuery = "select p from ProductPojo p";
+    private static  String getAllQuery = "select p from ProductPojo p ";
     private static final String getByBarcodeQuery = "select p from ProductPojo p where barcode=:barcode";
     private static final String getByIdQuery = "select p from ProductPojo p where id=:id";
     private static final String updateQuery = "update ProductPojo p set p.barcode=:barcode, p.clientId=:clientId, p.name=:name, p.price=:price, p.imageUrl=:imageUrl where id=:id";
@@ -33,11 +33,11 @@ public class ProductDao {
     }
 
     public List<ProductPojo> getAll(Integer page, Integer size, String keyword){
-        String newQuery = getAllQuery;
-//        if(!keyword.isEmpty()){
-//            newQuery+="where p.barcode like :keyword or p.name like :keyword";
-//        }
-        TypedQuery<ProductPojo> query = em.createQuery(newQuery, ProductPojo.class);
+        StringBuilder newQuery = new StringBuilder(getAllQuery);
+        if(!keyword.isEmpty()){
+            newQuery.append(" where lower(p.barcode) like :keyword or lower(p.name) like :keyword");
+        }
+        TypedQuery<ProductPojo> query = em.createQuery(newQuery.toString(), ProductPojo.class);
         if(!keyword.isEmpty()){
             keyword = "%"+keyword.toLowerCase().trim()+"%";
             query.setParameter("keyword", keyword);
@@ -50,7 +50,7 @@ public class ProductDao {
 
 
 
-    public ProductPojo getByBarcode(String barcode){
+    public ProductPojo getByBarcode(String barcode) {
         Query query = em.createQuery(getByBarcodeQuery);
         query.setParameter("barcode", barcode);
         try{

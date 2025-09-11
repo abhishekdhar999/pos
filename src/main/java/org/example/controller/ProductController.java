@@ -5,14 +5,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.example.dto.ApiException;
 import org.example.dto.ProductDto;
-import org.example.models.data.OperationResponse;
+import org.example.models.data.Response;
 import org.example.models.data.ProductData;
 import org.example.models.form.ProductForm;
-import org.example.pojo.ProductPojo;
 import org.example.utils.PaginatedResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -39,7 +37,7 @@ public class ProductController {
         response.setData(data);
         response.setPage(page);
         response.setSize(size);
-
+        response.setTotalPages(productDto.getTotalCount() / size + 1);
         return response;
     }
 
@@ -48,43 +46,26 @@ public class ProductController {
     public void update(@PathVariable Integer id, @RequestBody ProductForm productForm) throws ApiException{
         productDto.update(id, productForm);
     }
-
-//    @ApiOperation("Add multiple products using tsv.")
-//    @RequestMapping(path = "/upload", method = RequestMethod.POST)
-//    public List<OperationResponse<ProductForm>> bulkUpload(@RequestBody List<ProductForm> productFormList) throws ApiException{
-//        return productDto.batchAdd(productFormList);
-//    }
-
     @ApiOperation("Add multiple products using tsv.")
     @RequestMapping(path = "/upload", method = RequestMethod.POST)
-    public List<OperationResponse<ProductForm>> Upload (@RequestParam("file") MultipartFile file) throws ApiException{
-        if (file.isEmpty()) {
-            throw new ApiException("File is empty");
-        }
-        return productDto.batchAdd(file);
-
+    public List<Response<ProductForm>> Upload (@RequestBody List<ProductForm> productFormsList) throws ApiException{
+        return productDto.bulkUpload(productFormsList);
     }
-
-
-
     @ApiOperation("get by id")
     @RequestMapping(path = "/id/{id}", method = RequestMethod.GET)
     public ProductData getById(@PathVariable Integer id) throws ApiException{
         return productDto.getById(id);
     }
-
     @ApiOperation("Get by barcode")
     @RequestMapping(path = "/barcode/{barcode}", method = RequestMethod.GET)
     public ProductData getByBarcode(@PathVariable String barcode) throws ApiException{
         return productDto.getByBarcode(barcode);
     }
-
     @ApiOperation("getting total no. of products")
     @RequestMapping(path = "/count", method = RequestMethod.GET)
     public Long getTotalCount(){
         return productDto.getTotalCount();
     }
-
     @ApiOperation("search by barcode")
     @RequestMapping(path = "/search", method = RequestMethod.GET)
     public List<String> searchByBarcode(@RequestParam Integer page, @RequestParam Integer size, @RequestParam String barcode){

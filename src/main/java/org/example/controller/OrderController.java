@@ -9,6 +9,7 @@ import org.example.models.data.OrderData;
 import org.example.models.data.OrderError;
 import org.example.models.form.OrderFiltersForm;
 import org.example.models.form.OrderItemForm;
+import org.example.utils.PaginatedResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,10 +36,21 @@ public class OrderController {
     }
 
 
+//    @ApiOperation("getting all order's detail.")
+//    @RequestMapping(method = RequestMethod.GET)
+//    public List<OrderData> getAll(@ModelAttribute OrderFiltersForm orderfilters) throws ApiException{
+//        return orderDto.getAll(orderfilters);
+//    }
     @ApiOperation("getting all order's detail.")
     @RequestMapping(method = RequestMethod.GET)
-    public List<OrderData> getAll(@ModelAttribute OrderFiltersForm orderfilters) throws ApiException{
-        return orderDto.getAll(orderfilters);
+    public PaginatedResponse<OrderData> getAll(@ModelAttribute OrderFiltersForm orderfilters) throws ApiException {
+        List<OrderData> data = orderDto.getAll(orderfilters);
+        PaginatedResponse<OrderData> response = new PaginatedResponse<>();
+        response.setData(data);
+        response.setPage(orderfilters.getPage());
+        response.setSize(orderfilters.getSize());
+response.setTotalPages(orderDto.getTotalCount(orderfilters) / orderfilters.getSize() + 1);
+        return response;
     }
 
 

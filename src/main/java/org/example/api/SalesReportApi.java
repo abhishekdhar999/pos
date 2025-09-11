@@ -2,6 +2,7 @@ package org.example.api;
 
 import org.example.dao.SalesReportDao;
 import org.example.dto.ApiException;
+import org.example.models.data.DaySalesReportData;
 import org.example.models.form.DaySalesReportsForm;
 import org.example.pojo.DaySalesReportPojo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,5 +24,11 @@ public class SalesReportApi {
         ZonedDateTime startDate = ZonedDateTime.parse(daySalesReportsForm.getStartDate());
         ZonedDateTime endDate = ZonedDateTime.parse(daySalesReportsForm.getEndDate());
       return  salesReportDao.getDaySalesReports(startDate,endDate,daySalesReportsForm.getPage(),daySalesReportsForm.getSize());
+    }
+    public Long getTotalDayReports(){
+        return salesReportDao.getTotalDayReports();
+    }
+    public List<DaySalesReportPojo> getDaySalesReportsBetweenDates(ZonedDateTime startDate, ZonedDateTime endDate) throws ApiException{
+        return salesReportDao.getDaySalesReportsBetweenDates(startDate,endDate);
     }
 }

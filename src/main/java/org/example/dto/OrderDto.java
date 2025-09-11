@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.example.dto.DtoHelper.convertToOrderData;
+
 @Component
 public class OrderDto {
     @Autowired
@@ -26,7 +28,6 @@ public class OrderDto {
     private OrderFlow orderFlow;
 
     public ErrorData<OrderError> create(List<OrderItemForm> orderItemFormList){
-
         List<OrderError> orderErrorList = UtilMethods.validateOrderFormList(orderItemFormList);
         List<OrderItemPojo> orderItemPojoList = DtoHelper.convertOrderFormListToOrderItemPojoList(orderItemFormList);
 
@@ -46,26 +47,21 @@ public class OrderDto {
         OrderPojo orderPojo = orderFlow.getOrderById(orderId);
         List<OrderItemPojo> orderItemPojoList = orderFlow.getOrderItemsByOrderId(orderId);
         List<OrderItemData> orderItemDataList = DtoHelper.convertOrderItemPojoListToOrderItemDataList(orderItemPojoList);
-        return DtoHelper.convertToOrderData(orderPojo, orderItemDataList);
+        return convertToOrderData(orderPojo, orderItemDataList);
     }
-
-
-
     public List<OrderData> getAll(OrderFiltersForm orderFiltersForm) throws ApiException{
         List<OrderPojo> orderPojoList = orderFlow.getAllOrders(orderFiltersForm);
         List<OrderData> orderDataList = new ArrayList<>();
         for(OrderPojo orderPojo: orderPojoList){
             List<OrderItemPojo> orderItemPojoList = orderFlow.getOrderItemsByOrderId(orderPojo.getId());
             List<OrderItemData> orderItemDataList = DtoHelper.convertOrderItemPojoListToOrderItemDataList(orderItemPojoList);
-            orderDataList.add(DtoHelper.convertToOrderData(orderPojo, orderItemDataList));
+            orderDataList.add(convertToOrderData(orderPojo, orderItemDataList));
         }
         return orderDataList;
     }
-
     public Long getTotalCount(OrderFiltersForm orderFiltersForm) {
         return orderApi.getTotalCount(orderFiltersForm);
     }
-
     public ErrorData<OrderError> resync(Integer id) throws ApiException{
         return orderFlow.resyncOrders(id);
     }

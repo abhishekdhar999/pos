@@ -33,6 +33,13 @@ private apiURLGetClients = "http://localhost:8080/pos/api/clients"
     );
   }
 
+  searchClientsByName(page: number, size: number, name: string): Observable<string[]> {
+    return this.http.get<string[]>(
+      `${this.apiURLGetClients}/search?page=${page}&size=${size}&name=${encodeURIComponent(name)}`,
+      { withCredentials: true }
+    );
+  }
+
 updateClient(id: number, client: Client): Observable<Client> {
   return this.http.put<Client>(`${this.apiURLUpdateClient}/${id}`, client,
     {withCredentials:true}

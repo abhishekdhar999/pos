@@ -5,8 +5,12 @@ import org.example.api.OrderApi;
 import org.example.api.OrderItemApi;
 import org.example.api.SalesReportApi;
 import org.example.dto.ApiException;
+import org.example.models.data.DaySalesReportData;
 import org.example.models.data.InvoiceData;
+import org.example.models.data.SalesReportData;
 import org.example.models.form.DaySalesReportsForm;
+import org.example.models.form.ExportFilterDailyReports;
+import org.example.models.form.SalesReportFilterForm;
 import org.example.pojo.DaySalesReportPojo;
 import org.example.pojo.OrderItemPojo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,8 +49,6 @@ daySalesReportsForm.setStartDate(startDate.format(DateTimeFormatter.ISO_DATE_TIM
 daySalesReportsForm.setEndDate(endDate.format(DateTimeFormatter.ISO_DATE_TIME));
 daySalesReportsForm.setPage(0);
 daySalesReportsForm.setSize(1);
-
-//List<DaySalesReportPojo>  daySalesReportPojoList = new ArrayList<>();
 
         List<DaySalesReportPojo> dailySalesReportPojoList = salesReportApi.getDaySalesReports(daySalesReportsForm);
         if(!Objects.isNull(dailySalesReportPojoList) && !dailySalesReportPojoList.isEmpty()){
@@ -88,4 +90,25 @@ System.out.println(endDate.format(DateTimeFormatter.ISO_DATE_TIME));
         salesReportApi.addDaySalesReport(daySalesReportPojo);
 
     }
+public List<DaySalesReportPojo> getDaysSalesReport(DaySalesReportsForm form) throws ApiException {
+        return  salesReportApi.getDaySalesReports(form);
+}
+
+public Long getTotalDayReports(){
+        return salesReportApi.getTotalDayReports();
+}
+
+public List<DaySalesReportPojo> getDaySalesReportsBetweenDates(ExportFilterDailyReports form) throws ApiException {
+        ZonedDateTime startDate = ZonedDateTime.parse(form.getStartDate());
+        ZonedDateTime endDate = ZonedDateTime.parse(form.getEndDate());
+return salesReportApi.getDaySalesReportsBetweenDates(startDate,endDate);
+}
+//public List<SalesReportData> getSalesReport(SalesReportFilterForm formFilter) throws ApiException {
+//        List<SalesReportData> salesReportDataList = new ArrayList<>();
+//
+//}
+
+
+
+
 }

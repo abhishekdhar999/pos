@@ -29,7 +29,7 @@ export class OrderList implements OnInit{
 
   orders: any[] = [];
   loading = true;
-  totalPages =100;
+  totalPages = 0;
 
   // Modal and cart properties
   showCreateOrderModal = false;
@@ -54,6 +54,9 @@ export class OrderList implements OnInit{
   orderDetails: any = null;
   orderItems: any[] = [];
   loadingOrderItems = false;
+
+  // Expandable orders
+  expandedOrders = new Set<number>();
 
   constructor(
     private orderService: OrderService,
@@ -80,14 +83,29 @@ export class OrderList implements OnInit{
   fetchOrders(): void {
     this.loading = true;
     this.orderService.getOrders(this.filter).subscribe({
-      next: (data: any) => {
-        console.log("Order data received:", data);
+      next: (response: any) => {
+        console.log("Order data received:", response);
+
+        // Handle both array response and paginated response
+        if (Array.isArray(response)) {
+          this.orders = response;
+          this.totalPages = Math.ceil(response.length / this.filter.size);
+          console.log('Array response - totalPages calculated:', this.totalPages);
+        } else if (response.data) {
+          this.orders = response.data;
+          this.totalPages = response.totalPages || Math.ceil(response.totalElements / this.filter.size);
+          console.log('Paginated response - totalPages:', this.totalPages, 'totalElements:', response.totalElements);
+        } else {
+          this.orders = [];
+          this.totalPages = 0;
+          console.log('Empty response - totalPages set to 0');
+        }
+
         // Log each order's isInvoiced status
-        data.forEach((order: any, index: number) => {
+        this.orders.forEach((order: any, index: number) => {
           console.log(`Order ${index + 1} (ID: ${order.id}): isInvoiced = ${order.isInvoiced}, status = ${order.status}`);
         });
-        this.orders = data;
-        this.totalPages =100;
+
         this.loading = false;
       },
       error: (err) => {
@@ -99,16 +117,22 @@ export class OrderList implements OnInit{
   }
 
   nextPage(): void {
+    console.log('Next page clicked. Current page:', this.filter.page, 'Total pages:', this.totalPages);
     if (this.filter.page < this.totalPages - 1) {
       this.filter.page++;
       this.fetchOrders();
+    } else {
+      console.log('Cannot go to next page - already on last page');
     }
   }
 
   prevPage(): void {
+    console.log('Prev page clicked. Current page:', this.filter.page, 'Total pages:', this.totalPages);
     if (this.filter.page > 0) {
       this.filter.page--;
       this.fetchOrders();
+    } else {
+      console.log('Cannot go to prev page - already on first page');
     }
   }
 
@@ -264,17 +288,29 @@ export class OrderList implements OnInit{
 
   generateInvoice(orderId: number): void {
     this.generatingInvoice = orderId;
+    console.log(`Generating invoice for order ${orderId}`);
 
     this.orderService.generateInvoice(orderId).subscribe({
       next: (response: any) => {
         // Store the invoice ID for this order
-        console.log("response",response)
+        console.log("Invoice generation response:", response);
         if (response.invoiceId) {
           this.orderInvoiceIds.set(orderId, response.invoiceId);
         }
 
         this.toastService.success('Invoice generated successfully');
         this.generatingInvoice = null;
+        
+        // Immediately update the local order data
+        const orderIndex = this.orders.findIndex(order => order.id === orderId);
+        if (orderIndex !== -1) {
+          console.log(`Before update - Order ${orderId}: isInvoiced=${this.orders[orderIndex].isInvoiced}, status=${this.orders[orderIndex].status}`);
+          this.orders[orderIndex].isInvoiced = true;
+          this.orders[orderIndex].status = 'INVOICED';
+          console.log(`After update - Order ${orderId}: isInvoiced=${this.orders[orderIndex].isInvoiced}, status=${this.orders[orderIndex].status}`);
+        }
+        
+        // Also refresh from backend
         this.fetchOrders(); // Refresh the order list to update isInvoiced status
       },
       error: (err) => {
@@ -305,27 +341,6 @@ export class OrderList implements OnInit{
         this.downloadingInvoice = null;
       }
     });
-    // this.orderService.downloadInvoice(orderId).subscribe({
-    //   next: (blob: Blob) => {
-    //     // Create a blob URL and trigger download
-    //     const url = window.URL.createObjectURL(blob);
-    //     const link = document.createElement('a');
-    //     link.href = url;
-    //     link.download = `invoice-${orderId}.pdf`;
-    //     document.body.appendChild(link);
-    //     link.click();
-    //     document.body.removeChild(link);
-    //     window.URL.revokeObjectURL(url);
-    //
-    //     this.toastService.success('Invoice downloaded successfully');
-    //     this.downloadingInvoice = null;
-    //   },
-    //   error: (err) => {
-    //     console.error('Error downloading invoice', err);
-    //     this.toastService.error('Failed to download invoice');
-    //     this.downloadingInvoice = null;
-    //   }
-    // });
   }
 
   resyncOrder(orderId: number): void {
@@ -345,29 +360,29 @@ export class OrderList implements OnInit{
     });
   }
 
-  resyncAllOrders(): void {
-    this.resyncingAll = true;
-
-    // Resync all orders one by one
-    const resyncPromises = this.orders.map(order =>
-      this.orderService.resyncOrder(order.id).toPromise()
-    );
-
-    Promise.allSettled(resyncPromises).then(results => {
-      const successful = results.filter(result => result.status === 'fulfilled').length;
-      const failed = results.filter(result => result.status === 'rejected').length;
-
-      if (successful > 0) {
-        this.toastService.success(`${successful} orders resynced successfully`);
-      }
-      if (failed > 0) {
-        this.toastService.error(`${failed} orders failed to resync`);
-      }
-
-      this.resyncingAll = false;
-      this.fetchOrders(); // Refresh the order list
-    });
-  }
+  // resyncAllOrders(): void {
+  //   this.resyncingAll = true;
+  //
+  //   // Resync all orders one by one
+  //   const resyncPromises = this.orders.map(order =>
+  //     this.orderService.resyncOrder(order.id).toPromise()
+  //   );
+  //
+  //   Promise.allSettled(resyncPromises).then(results => {
+  //     const successful = results.filter(result => result.status === 'fulfilled').length;
+  //     const failed = results.filter(result => result.status === 'rejected').length;
+  //
+  //     if (successful > 0) {
+  //       this.toastService.success(`${successful} orders resynced successfully`);
+  //     }
+  //     if (failed > 0) {
+  //       this.toastService.error(`${failed} orders failed to resync`);
+  //     }
+  //
+  //     this.resyncingAll = false;
+  //     this.fetchOrders(); // Refresh the order list
+  //   });
+  // }
 
   // Order details modal methods
   viewOrderDetails(orderId: number): void {
@@ -398,10 +413,45 @@ export class OrderList implements OnInit{
       }
     });
   }
+  //
+  // getOrderTotal(): number {
+  //   return this.orderItems.reduce((total, item) =>
+  //     total + (item.sellingPrice * item.quantity), 0);
+  // }
 
-  getOrderTotal(): number {
-    return this.orderItems.reduce((total, item) =>
-      total + (item.sellingPrice * item.quantity), 0);
+  toggleOrderExpansion(orderId: number): void {
+    if (this.expandedOrders.has(orderId)) {
+      this.expandedOrders.delete(orderId);
+    } else {
+      this.expandedOrders.add(orderId);
+      // Load order details if not already loaded
+      if (!this.orders.find(order => order.id === orderId)?.orderItems) {
+        this.loadOrderDetailsForExpansion(orderId);
+      }
+    }
+  }
+
+  loadOrderDetailsForExpansion(orderId: number): void {
+    this.orderService.getOrderDetails(orderId).subscribe({
+      next: (orderData: any) => {
+        const order = this.orders.find(o => o.id === orderId);
+        if (order) {
+          order.orderItems = orderData.orderItems || [];
+        }
+      },
+      error: (err) => {
+        console.error('Error loading order details for expansion', err);
+        this.toastService.error('Failed to load order details');
+      }
+    });
+  }
+
+  getOrderTotal(order: any): number {
+    if (order.orderItems && order.orderItems.length > 0) {
+      return order.orderItems.reduce((total: number, item: any) =>
+        total + (item.sellingPrice * item.quantity), 0);
+    }
+    return 0;
   }
 
 }

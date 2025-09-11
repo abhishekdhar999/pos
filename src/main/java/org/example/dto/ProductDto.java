@@ -2,10 +2,9 @@ package org.example.dto;
 
 import org.example.api.ProductApi;
 import org.example.flow.ProductFlow;
-import org.example.models.data.OperationResponse;
+import org.example.models.data.Response;
 import org.example.models.data.ProductData;
 import org.example.models.form.ProductForm;
-import org.example.pojo.InventoryPojo;
 import org.example.pojo.ProductPojo;
 import org.example.utils.UtilMethods;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import static org.example.utils.UtilMethods.convertFileInToProductFormList;
 
 @Component
 @Service
-@Transactional
 public class ProductDto {
     @Autowired
     private ProductApi productApi;
@@ -55,50 +53,23 @@ public class ProductDto {
         productFlow.update(id, productPojo);
     }
 
-    public List<OperationResponse<ProductForm>> batchAdd(MultipartFile file) throws ApiException {
-        List<ProductForm> productFormListt = convertFileInToProductFormList(file);
+    public List<Response<ProductForm>> bulkUpload(List<ProductForm> productFormList) throws ApiException {
 
-        for (ProductForm productForm : productFormListt) {
-            System.out.println("Barcode: " + productForm.getBarcode());
-            System.out.println("Name: " + productForm.getName());
-            System.out.println("Price: " + productForm.getPrice());
-            System.out.println("Client: " + productForm.getClientName());
-        }
-
-
-        List<ProductPojo> productPojoList = new ArrayList<>();
-        List<OperationResponse<ProductForm>> operationResponseList = new ArrayList<>();
-
-        boolean errorOccured = false;
-        for(ProductForm productForm: productFormListt){
-            OperationResponse<ProductForm> operationResponse = new OperationResponse<>();
-            operationResponse.setData(productForm);
-            operationResponse.setMessage("No error");
+        List<Response<ProductForm>> responseList = new ArrayList<>();
+        for(ProductForm productForm: productFormList){
+            Response<ProductForm> response = new Response<>();
+            response.setData(productForm);
+            response.setMessage("success");
             try{
-                UtilMethods.normalizeProductForm(productForm);
-                UtilMethods.validateProductForm(productForm);
-                ProductPojo productPojo = convert(productForm);
-                productPojoList.add(productPojo);
+                add(productForm);
             } catch (ApiException e){
-                errorOccured = true;
-                operationResponse.setMessage(e.getMessage());
+                response.setMessage(e.getMessage());
+            } catch (Exception e){
+                response.setMessage("Error: " + e.getMessage());
             }
-
-            operationResponseList.add(operationResponse);
+            responseList.add(response);
         }
-        if(errorOccured){
-            return operationResponseList;
-        }
-
-        List<OperationResponse<ProductPojo>> operationResponses = productFlow.batchAdd(productPojoList);
-        int i=0;
-        for(OperationResponse<ProductPojo> operationResponse: operationResponses){
-            if(!operationResponse.getMessage().equals("No error")){
-                operationResponseList.get(i).setMessage(operationResponse.getMessage());
-            }
-            i++;
-        }
-        return operationResponseList;
+        return responseList;
     }
 
     public ProductData getById(Integer id) throws ApiException{

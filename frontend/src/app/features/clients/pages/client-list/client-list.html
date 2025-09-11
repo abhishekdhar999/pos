@@ -17,7 +17,46 @@
         }
   </div>
 
+  <!-- Search Bar -->
+  <div class="search-section">
+    <div class="search-container">
+      <div class="search-input-group">
+        <input
+          type="text"
+          [(ngModel)]="searchKeyword"
+          (input)="onSearchChange()"
+          placeholder="Search clients by name..."
+          class="search-input"
+        />
+        <button class="search-btn" (click)="onSearchChange()">
+          <span class="search-icon">🔍</span>
+        </button>
+        @if (searchKeyword) {
+          <button class="clear-btn" (click)="clearSearch()">
+            <span class="clear-icon">✕</span>
+          </button>
+        }
+      </div>
 
+      <!-- Search Results Dropdown -->
+      @if (showSearchResults && searchResults.length > 0) {
+        <div class="search-results-dropdown">
+          @for (result of searchResults; track result) {
+            <div class="search-result-item" (click)="selectSearchResult(result)">
+              <span class="result-icon">👤</span>
+              <span class="result-text">{{ result }}</span>
+            </div>
+          }
+        </div>
+      }
+
+      @if (searchKeyword && !showSearchResults) {
+        <div class="search-info">
+          <span class="search-results">Searching for: "{{ searchKeyword }}"</span>
+        </div>
+      }
+    </div>
+  </div>
 
   <!-- Add Client Modal -->
   @if (showAddModal) {

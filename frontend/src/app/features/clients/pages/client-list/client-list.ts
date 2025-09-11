@@ -23,6 +23,11 @@ export class ClientList implements OnInit {
   size = 10;
   totalPages = 0;
 
+  // search state
+  searchKeyword: string = '';
+  searchResults: string[] = [];
+  showSearchResults = false;
+
   selectedClient: Client | null = null;
   clientForm: FormGroup;
   showAddModal = false;
@@ -84,6 +89,58 @@ export class ClientList implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  // Search functionality
+  onSearchChange(): void {
+    if (this.searchKeyword.trim().length >= 2) {
+      this.clientService.searchClientsByName(0, 10, this.searchKeyword).subscribe({
+        next: (results: string[]) => {
+          this.searchResults = results;
+          this.showSearchResults = true;
+        },
+        error: (err) => {
+          console.error('Error searching clients', err);
+          this.toastService.error('Search failed');
+        }
+      });
+    } else {
+      this.showSearchResults = false;
+      this.searchResults = [];
+    }
+  }
+
+  selectSearchResult(clientName: string): void {
+    this.searchKeyword = clientName;
+    this.showSearchResults = false;
+    // Filter clients by the selected name
+    this.filterClientsByName(clientName);
+  }
+
+  filterClientsByName(name: string): void {
+    this.loading = true;
+    // For now, we'll filter the existing clients array
+    // In a real implementation, you might want to call the backend with the filter
+    this.clientService.getClientsPaginated(0, 1000).subscribe({
+      next: (data: any) => {
+        this.clients = data.data.filter((client: Client) =>
+          client.name.toLowerCase().includes(name.toLowerCase())
+        );
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error filtering clients', err);
+        this.loading = false;
+      }
+    });
+  }
+
+  clearSearch(): void {
+    this.searchKeyword = '';
+    this.showSearchResults = false;
+    this.searchResults = [];
+    this.page = 0;
+    this.fetchClients();
   }
 
   nextPage(): void {

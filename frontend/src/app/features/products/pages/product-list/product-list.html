@@ -60,6 +60,46 @@
     }
   </div>
 
+  <!-- Search Bar -->
+  <div class="search-section">
+    <div class="search-container">
+      <div class="search-input-group">
+        <input
+          type="text"
+          [(ngModel)]="searchKeyword"
+          (input)="onSearchChange()"
+          placeholder="Search products by name, barcode, or client..."
+          class="search-input"
+        />
+        <button class="search-btn" (click)="onSearchChange()">
+          <span class="search-icon">🔍</span>
+        </button>
+        @if (searchKeyword) {
+          <button class="clear-btn" (click)="clearSearch()">
+            <span class="clear-icon">✕</span>
+          </button>
+        }
+      </div>
+
+      <!-- Search Results Dropdown -->
+      @if (showSearchResults && searchResults.length > 0) {
+        <div class="search-results-dropdown">
+          @for (result of searchResults; track result) {
+            <div class="search-result-item" (click)="selectSearchResult(result)">
+              <span class="result-text">{{ result }}</span>
+            </div>
+          }
+        </div>
+      }
+
+      @if (searchKeyword && !showSearchResults) {
+        <div class="search-info">
+          <span class="search-results">Searching for: "{{ searchKeyword }}"</span>
+        </div>
+      }
+    </div>
+  </div>
+
 <!--  all modals-->
 
   <!-- Single Inventory Modal -->
@@ -216,16 +256,17 @@
         <div class="upload-instructions">
           <h3>Instructions:</h3>
           <ul>
-            <li>Upload a CSV file with product data</li>
-            <li>Columns: Name, Price, Barcode, ImageURL, ClientName, Quantity</li>
+            <li>Upload a TSV (Tab-Separated Values) file with product data</li>
+            <li>Required columns: <strong>Name</strong>, <strong>Barcode</strong>, <strong>Price</strong>, <strong>ImageUrl</strong>, <strong>ClientName</strong></li>
             <li>First row should contain headers</li>
+            <li>Example format: <code>name	barcode	price	imageUrl	clientName</code></li>
           </ul>
         </div>
 
         <div class="file-upload-area">
           <input
             type="file"
-            accept=".csv,.xlsx,.xls,.tsv"
+            accept=".tsv,.csv,.xlsx,.xls"
             (change)="onFileSelected($event)"
             class="file-input"
             id="productFile"
@@ -243,15 +284,15 @@
           </div>
         }
 
-        <!-- Error Download Section -->
-        @if(uploadErrors.length > 0){
+        <!-- Results Download Section -->
+        @if(allUploadResults.length > 0){
           <div class="error-section">
             <div class="error-actions">
               <button (click)="downloadErrors()" class="btn-secondary">
-                ⬇ Download Error Report ({{ uploadErrors.length }} errors)
+                ⬇ Download Upload Report ({{ uploadSuccesses.length }} success, {{ uploadErrors.length }} errors)
               </button>
               <button (click)="clearErrors()" class="btn-secondary">
-                🗑️ Clear Errors
+                🗑️ Clear Results
               </button>
             </div>
           </div>
@@ -291,16 +332,17 @@
         <div class="upload-instructions">
           <h3>Instructions:</h3>
           <ul>
-            <li>Upload a CSV file with inventory data</li>
-            <li>Columns: ProductID, Quantity, Location, Notes</li>
+            <li>Upload a TSV (Tab-Separated Values) file with inventory data</li>
+            <li>Required columns: <strong>Barcode</strong>, <strong>Quantity</strong></li>
             <li>First row should contain headers</li>
+            <li>Example format: <code>barcode	quantity</code></li>
           </ul>
         </div>
 
         <div class="file-upload-area">
           <input
             type="file"
-            accept=".csv,.xlsx,.xls,.tsv"
+            accept=".tsv,.csv,.xlsx,.xls"
             (change)="onInventoryFileSelected($event)"
             class="file-input"
             id="inventoryFile"
@@ -318,15 +360,15 @@
           </div>
         }
 
-        <!-- Error Download Section -->
-        @if(uploadErrors.length > 0){
+        <!-- Results Download Section -->
+        @if(allUploadResults.length > 0){
           <div class="error-section">
             <div class="error-actions">
               <button (click)="downloadErrors()" class="btn-secondary">
-                ⬇ Download Error Report ({{ uploadErrors.length }} errors)
+                ⬇ Download Upload Report ({{ uploadSuccesses.length }} success, {{ uploadErrors.length }} errors)
               </button>
               <button (click)="clearErrors()" class="btn-secondary">
-                🗑️ Clear Errors
+                🗑️ Clear Results
               </button>
             </div>
           </div>
@@ -535,6 +577,7 @@
       <div class="pagination-info">
         <span class="page-info">Page {{ page + 1 }} of {{ totalPages }}</span>
         <span class="total-info">Showing {{ products.length }} products</span>
+        <span class="debug-info" style="font-size: 0.8em; color: #666;">Debug: page={{ page }}, totalPages={{ totalPages }}, disabled={{ page >= totalPages - 1 }}</span>
       </div>
       <div class="pagination-controls">
         <button

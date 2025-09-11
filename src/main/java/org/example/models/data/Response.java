@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class OperationResponse<T> {
+public class Response<T> {
     private T data;
     private String message;
 }

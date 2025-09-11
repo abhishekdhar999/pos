@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Product } from '../../models/product.model';
+import { Product, ProductForm } from '../../models/product.model';
 import { ProductService } from '../../services/product';
 import { ToastService } from '../../../../components/errormodel/toast.service';
 import {ClientService} from '../../../clients/services/client';
 import {SafeStorageService} from '../../../auth/Services/SafeStorageService';
-import {Inventory} from '../../models/inventory.model';
+import {Inventory, InventoryForm} from '../../models/inventory.model';
 
 @Component({
   selector: 'app-product-list',
@@ -19,6 +19,8 @@ export class ProductList implements OnInit {
 
 
   uploadErrors: any[]  = [];
+  uploadSuccesses: any[] = [];
+  allUploadResults: any[] = []; // Combined results for download
 
   products: Product[] = [];
   loading = true;
@@ -27,6 +29,11 @@ export class ProductList implements OnInit {
   page = 0;
   size = 10;
   totalPages = 0;
+
+  // search state
+  searchKeyword: string = '';
+  searchResults: string[] = [];
+  showSearchResults = false;
 
   // Modal states
   showAddProductDropdown = false;
@@ -79,13 +86,15 @@ export class ProductList implements OnInit {
   // Product fetching
   fetchProducts(): void {
     this.loading = true;
-    this.productService.getProductsPaginated(this.page, this.size).subscribe({
+    console.log('Products - Fetching products for page:', this.page, 'size:', this.size, 'keyword:', this.searchKeyword);
+    this.productService.getProductsPaginated(this.page, this.size, this.searchKeyword).subscribe({
       next: (data: any) => {
-        console.log("data",data.data);
+        console.log("Products - API response:", data);
         this.products = data.data;
         this.page = data.page;
         this.size = data.size;
         this.totalPages = data.totalPages;
+        console.log('Products - Updated pagination - page:', this.page, 'totalPages:', this.totalPages, 'products count:', this.products.length);
         this.loading = false;
       },
       error: (err: any) => {
@@ -98,17 +107,77 @@ export class ProductList implements OnInit {
 
   // Pagination
   nextPage(): void {
+    console.log('Products - Next page clicked. Current page:', this.page, 'Total pages:', this.totalPages);
     if (this.page < this.totalPages - 1) {
       this.page++;
       this.fetchProducts();
+    } else {
+      console.log('Products - Cannot go to next page - already on last page');
     }
   }
 
   prevPage(): void {
+    console.log('Products - Prev page clicked. Current page:', this.page, 'Total pages:', this.totalPages);
     if (this.page > 0) {
       this.page--;
       this.fetchProducts();
+    } else {
+      console.log('Products - Cannot go to prev page - already on first page');
     }
+  }
+
+  // Search functionality
+  onSearchChange(): void {
+    this.page = 0; // Reset to first page when searching
+    this.fetchProducts();
+    if(this.searchKeyword.trim().length > 2){
+      this.productService.searchProductsByBarcode(0,10,this.searchKeyword).subscribe({
+        next: (result:string[]) => {
+          console.log("result products",result )
+          this.searchResults = result;
+          this.showSearchResults = true;
+        },
+        error: (err:any) => {
+          console.error('Error searching products', err);
+          this.toastService.error('Search failed');
+        }
+      })
+    }else{
+      this.showSearchResults = false;
+      this.searchResults = [];
+    }
+  }
+
+  selectSearchResult(barcode : string){
+    this.searchKeyword  = barcode;
+    this.showSearchResults = false;
+
+    this.filterProductsByBarcode(barcode);
+  }
+
+  filterProductsByBarcode(barcode:string){
+    this.loading = true;
+
+    this.productService.getProductsPaginated(0,100,barcode).subscribe({
+      next:(data : any)=>{
+        this.products = data.data.filter((product: Product) =>
+          product.barcode.toLowerCase().includes(barcode.toLowerCase())
+        );
+        this.loading = false;
+    },
+      error: (err) => {
+        console.error('Error filtering products', err);
+        this.loading = false;
+      }
+    })
+  }
+
+  clearSearch(): void {
+    this.searchKeyword = '';
+    this.showSearchResults = false;
+    this.searchResults = [];
+    this.page = 0;
+    this.fetchProducts();
   }
 
   // Dropdown toggles
@@ -218,47 +287,58 @@ this.fetchProducts();
       this.toastService.error('Please select a file');
       return;
     }
-    const productData = new FormData();
-    productData.append('file', this.selectedFile);
 
-    this.productService.bulkUpload(productData).subscribe({
-      next: (response: any[]) => {
-        console.log("Upload response:", response);
+    // Parse TSV file and convert to ProductForm list
+    this.parseTSVToProductList(this.selectedFile).then(productList => {
+      console.log('Parsed product list:', productList);
+      
+      // Upload the list of ProductForm objects
+      this.productService.bulkUploadProductList(productList).subscribe({
+        next: (response: any[]) => {
+          console.log("Product upload response:", response);
 
-        // Check if response is an array of OperationResponse objects
-        if (Array.isArray(response)) {
-          const successfulItems = response.filter(item => item.message === "No error");
-          const failedItems = response.filter(item => item.message !== "No error");
+          // Check if response is an array of OperationResponse objects
+          if (Array.isArray(response)) {
+            const successfulItems = response.filter(item => item.message === "success");
+            const failedItems = response.filter(item => item.message !== "No error");
 
-          // Show success message for successful items
-          if (successfulItems.length > 0) {
-            this.toastService.success(`${successfulItems.length} products uploaded successfully`);
+            // Store results for download
+            this.uploadSuccesses = successfulItems;
+            this.uploadErrors = failedItems;
+            this.allUploadResults = response; // Combined for comprehensive download
+
+            // Show success message for successful items
+            if (successfulItems.length > 0) {
+              this.toastService.info(`${successfulItems.length} products uploaded successfully`);
+            }
+
+            // Show error messages for failed items
+            if (failedItems.length > 0) {
+              this.toastService.error(`${failedItems.length} products failed to upload`);
+            }
+
+            // If all items failed, show general error
+            if (successfulItems.length === 0 && failedItems.length > 0) {
+              this.toastService.error('Upload failed - all products had errors');
+            }
+
+            // If all items succeeded, close modal
+            if (failedItems.length === 0) {
+              this.closeBulkProductModal();
+            }
           }
-
-          // Show error messages for failed items
-          if (failedItems.length > 0) {
-            this.toastService.error(`${failedItems.length} products failed to upload`);
-            this.uploadErrors = failedItems; // Store failed items for display
-          }
-
-          // If all items failed, show general error
-          if (successfulItems.length === 0 && failedItems.length > 0) {
-            this.toastService.error('Upload failed - all products had errors');
-          }
-
-          // If all items succeeded, close modal
-          if (failedItems.length === 0) {
-            this.closeBulkProductModal();
-          }
-        }
 
         this.selectedFile = null;
         this.fetchProducts();
       },
       error: (err: any) => {
-        console.error('Error uploading products:', err);
-        this.toastService.error('Upload failed: ' + (err.error?.error || err.message || 'Unknown error'));
+          console.error('Error uploading products', err);
+          this.toastService.error('Upload failed: ' + (err.error?.error || err.message || 'Unknown error'));
       }
+      });
+    }).catch(error => {
+      console.error('Error parsing TSV file:', error);
+      this.toastService.error('Error parsing file: ' + error.message);
     });
   }
 
@@ -267,47 +347,224 @@ this.fetchProducts();
       this.toastService.error('Please select a file');
       return;
     }
-    const inventoryData = new FormData();
-    inventoryData.append('file', this.inventoryFile);
 
-    this.productService.bulkUploadInventory(inventoryData).subscribe({
-      next: (response: any[]) => {
-        console.log("Inventory upload response:", response);
-        
-        // Check if response is an array of OperationResponse objects
-        if (Array.isArray(response)) {
-          const successfulItems = response.filter(item => item.message === "No error");
-          const failedItems = response.filter(item => item.message !== "No error");
-          
-          // Show success message for successful items
-          if (successfulItems.length > 0) {
-            this.toastService.success(`${successfulItems.length} inventory items uploaded successfully`);
+    // Parse TSV file and convert to InventoryForm list
+    this.parseTSVToInventoryList(this.inventoryFile).then(inventoryList => {
+      console.log('Parsed inventory list:', inventoryList);
+
+      // Upload the list of InventoryForm objects
+      this.productService.bulkUploadInventoryList(inventoryList).subscribe({
+        next: (response: any[]) => {
+          console.log("Inventory upload response:", response);
+
+          // Check if response is an array of OperationResponse objects
+          if (Array.isArray(response)) {
+            const successfulItems = response.filter(item => item.message === "success");
+            const failedItems = response.filter(item => item.message !== "success");
+
+            // Store results for download
+            this.uploadSuccesses = successfulItems;
+            this.uploadErrors = failedItems;
+            this.allUploadResults = response; // Combined for comprehensive download
+
+            // Show success message for successful items
+            if (successfulItems.length > 0) {
+              this.toastService.info(`${successfulItems.length} inventory items uploaded successfully`);
+            }
+
+            // Show error messages for failed items
+            if (failedItems.length > 0) {
+              this.toastService.error(`${failedItems.length} inventory items failed to upload`);
+            }
+
+            // If all items failed, show general error
+            if (successfulItems.length === 0 && failedItems.length > 0) {
+              this.toastService.error('Upload failed - all inventory items had errors');
+            }
+
+            // If all items succeeded, close modal
+            if (failedItems.length === 0) {
+    this.closeBulkInventoryModal();
+            }
           }
-          
-          // Show error messages for failed items
-          if (failedItems.length > 0) {
-            this.toastService.error(`${failedItems.length} inventory items failed to upload`);
-            this.uploadErrors = failedItems; // Store failed items for display
-          }
-          
-          // If all items failed, show general error
-          if (successfulItems.length === 0 && failedItems.length > 0) {
-            this.toastService.error('Upload failed - all inventory items had errors');
-          }
-          
-          // If all items succeeded, close modal
-          if (failedItems.length === 0) {
-            this.closeBulkInventoryModal();
-          }
+
+          this.inventoryFile = null;
+    this.fetchProducts();
+        },
+        error: (err: any) => {
+          console.error('Error uploading inventory:', err);
+          this.toastService.error('Upload failed: ' + (err.error?.error || err.message || 'Unknown error'));
         }
-        
-        this.inventoryFile = null;
-        this.fetchProducts();
-      },
-      error: (err: any) => {
-        console.error('Error uploading inventory:', err);
-        this.toastService.error('Upload failed: ' + (err.error?.error || err.message || 'Unknown error'));
-      }
+      });
+    }).catch(error => {
+      console.error('Error parsing TSV file:', error);
+      this.toastService.error('Error parsing file: ' + error.message);
+    });
+  }
+
+  private parseTSVToProductList(file: File): Promise<ProductForm[]> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      
+      reader.onload = (e) => {
+        try {
+          const text = e.target?.result as string;
+          const lines = text.split('\n').filter(line => line.trim() !== '');
+          
+          if (lines.length < 2) {
+            reject(new Error('File must contain at least a header row and one data row'));
+            return;
+          }
+
+          // Parse header row
+          const headers = lines[0].split('\t').map(h => h.trim().toLowerCase());
+          console.log('Headers found:', headers);
+
+          // Find column indices
+          const nameIndex = headers.findIndex(h => h.includes('name'));
+          const barcodeIndex = headers.findIndex(h => h.includes('barcode'));
+          const priceIndex = headers.findIndex(h => h.includes('price'));
+          const imageUrlIndex = headers.findIndex(h => h.includes('image') || h.includes('url'));
+          const clientNameIndex = headers.findIndex(h => h.includes('client'));
+
+          if (nameIndex === -1 || barcodeIndex === -1 || priceIndex === -1 || 
+              imageUrlIndex === -1 || clientNameIndex === -1) {
+            reject(new Error('File must contain "name", "barcode", "price", "imageUrl", and "clientName" columns'));
+            return;
+          }
+
+          // Parse data rows
+          const productList: ProductForm[] = [];
+          
+          for (let i = 1; i < lines.length; i++) {
+            const columns = lines[i].split('\t');
+            
+            if (columns.length < Math.max(nameIndex, barcodeIndex, priceIndex, imageUrlIndex, clientNameIndex) + 1) {
+              console.warn(`Skipping row ${i + 1}: insufficient columns`);
+              continue;
+            }
+
+            const name = columns[nameIndex]?.trim();
+            const barcode = columns[barcodeIndex]?.trim();
+            const priceStr = columns[priceIndex]?.trim();
+            const imageUrl = columns[imageUrlIndex]?.trim();
+            const clientName = columns[clientNameIndex]?.trim();
+
+            if (!name || !barcode || !priceStr || !imageUrl || !clientName) {
+              console.warn(`Skipping row ${i + 1}: missing required fields`);
+              continue;
+            }
+
+            const price = parseFloat(priceStr);
+            if (isNaN(price)) {
+              console.warn(`Skipping row ${i + 1}: invalid price "${priceStr}"`);
+              continue;
+            }
+
+            productList.push({
+              name: name,
+              barcode: barcode,
+              price: price,
+              imageUrl: imageUrl,
+              clientName: clientName
+            });
+          }
+
+          if (productList.length === 0) {
+            reject(new Error('No valid product data found in file'));
+            return;
+          }
+
+          console.log(`Successfully parsed ${productList.length} products`);
+          resolve(productList);
+        } catch (error) {
+          reject(new Error('Error parsing file: ' + (error as Error).message));
+        }
+      };
+
+      reader.onerror = () => {
+        reject(new Error('Error reading file'));
+      };
+
+      reader.readAsText(file);
+    });
+  }
+
+  private parseTSVToInventoryList(file: File): Promise<InventoryForm[]> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = (e) => {
+        try {
+          const text = e.target?.result as string;
+          const lines = text.split('\n').filter(line => line.trim() !== '');
+
+          if (lines.length < 2) {
+            reject(new Error('File must contain at least a header row and one data row'));
+            return;
+          }
+
+          // Parse header row
+          const headers = lines[0].split('\t').map(h => h.trim().toLowerCase());
+          console.log('Headers found:', headers);
+
+          // Find column indices
+          const barcodeIndex = headers.findIndex(h => h.includes('barcode'));
+          const quantityIndex = headers.findIndex(h => h.includes('quantity'));
+
+          if (barcodeIndex === -1 || quantityIndex === -1) {
+            reject(new Error('File must contain "barcode" and "quantity" columns'));
+            return;
+          }
+
+          // Parse data rows
+          const inventoryList: InventoryForm[] = [];
+
+          for (let i = 1; i < lines.length; i++) {
+            const columns = lines[i].split('\t');
+
+            if (columns.length < Math.max(barcodeIndex, quantityIndex) + 1) {
+              console.warn(`Skipping row ${i + 1}: insufficient columns`);
+              continue;
+            }
+
+            const barcode = columns[barcodeIndex]?.trim();
+            const quantityStr = columns[quantityIndex]?.trim();
+
+            if (!barcode || !quantityStr) {
+              console.warn(`Skipping row ${i + 1}: missing barcode or quantity`);
+              continue;
+            }
+
+            const quantity = parseInt(quantityStr, 10);
+            if (isNaN(quantity)) {
+              console.warn(`Skipping row ${i + 1}: invalid quantity "${quantityStr}"`);
+              continue;
+            }
+
+            inventoryList.push({
+              barcode: barcode,
+              quantity: quantity
+            });
+          }
+
+          if (inventoryList.length === 0) {
+            reject(new Error('No valid inventory data found in file'));
+            return;
+          }
+
+          console.log(`Successfully parsed ${inventoryList.length} inventory items`);
+          resolve(inventoryList);
+        } catch (error) {
+          reject(new Error('Error parsing file: ' + (error as Error).message));
+        }
+      };
+
+      reader.onerror = () => {
+        reject(new Error('Error reading file'));
+      };
+
+      reader.readAsText(file);
     });
   }
 
@@ -356,24 +613,47 @@ this.fetchProducts();
     this.toastService.error("Barcode cannot be changed once set!");
   }
 
-//   download errors
+//   download errors and successes
   downloadErrors(): void {
-    if (!this.uploadErrors || this.uploadErrors.length === 0) {
-      this.toastService.error('No errors to download');
+    if (!this.allUploadResults || this.allUploadResults.length === 0) {
+      this.toastService.error('No upload results to download');
       return;
     }
 
-    // Convert errors to CSV string
-    const header = ['Row', 'Message', 'Barcode', 'Client Name'];
-    const rows = this.uploadErrors.map(err  => [
-      err.row,
-      `"${err.message}"`,         // wrap in quotes to avoid commas breaking
-      err.form?.barcode ?? '',
-      err.form?.clientName ?? ''
-    ]);
+    // Check if this is inventory results (has barcode and quantity) or product results
+    const isInventoryResult = this.allUploadResults.some(result =>
+      result.data && (result.data.barcode !== undefined || result.data.quantity !== undefined)
+    );
 
-    const csvContent =
-      [header, ...rows].map(e => e.join(',')).join('\n');
+    let header: string[];
+    let rows: any[][];
+
+    if (isInventoryResult) {
+      // Inventory result format
+      header = ['Row', 'Status', 'Message', 'Barcode', 'Quantity'];
+      rows = this.allUploadResults.map((result, index) => [
+        index + 1,
+        result.message === "success" ? 'SUCCESS' : 'ERROR',
+        `"${result.message || ''}"`,
+        result.data?.barcode || '',
+        result.data?.quantity || ''
+      ]);
+    } else {
+      // Product result format
+      header = ['Row', 'Status', 'Message', 'Name', 'Barcode', 'Price', 'ImageUrl', 'ClientName'];
+      rows = this.allUploadResults.map((result, index) => [
+        index + 1,
+        result.message === "success" ? 'SUCCESS' : 'ERROR',
+        `"${result.message || ''}"`,
+        result.data?.name || '',
+        result.data?.barcode || '',
+        result.data?.price || '',
+        result.data?.imageUrl || '',
+        result.data?.clientName || ''
+      ]);
+    }
+
+    const csvContent = [header, ...rows].map(e => e.join(',')).join('\n');
 
     // Create Blob and trigger download
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -381,7 +661,7 @@ this.fetchProducts();
 
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'bulk-upload-errors.csv';
+    a.download = isInventoryResult ? 'inventory-upload-results.csv' : 'product-upload-results.csv';
     a.click();
 
     window.URL.revokeObjectURL(url);
@@ -389,6 +669,8 @@ this.fetchProducts();
 
   clearErrors(): void {
     this.uploadErrors = [];
+    this.uploadSuccesses = [];
+    this.allUploadResults = [];
   }
 
 }

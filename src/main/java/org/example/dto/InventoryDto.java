@@ -5,26 +5,18 @@ import org.example.api.ProductApi;
 import org.example.flow.InventoryFlow;
 import org.example.flow.ProductFlow;
 import org.example.models.data.InventoryData;
-import org.example.models.data.OperationResponse;
+import org.example.models.data.Response;
 import org.example.models.form.InventoryForm;
-import org.example.models.form.ProductForm;
 import org.example.pojo.InventoryPojo;
-import org.example.pojo.ProductPojo;
 import org.example.utils.BulkResponse;
 import org.example.utils.BulkUploadResult;
-import org.example.utils.InventoryUploadResult;
 import org.example.utils.UtilMethods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static org.example.utils.UtilMethods.convertFileToInventoryFormList;
 
 
 @Component
@@ -48,96 +40,24 @@ public class InventoryDto {
         inventoryApi.add(inventoryPojo);
     }
 
-    public BulkUploadResult<InventoryForm> bulk(MultipartFile file) throws ApiException {
-        InventoryUploadResult result = convertFileToInventoryFormList(file);
 
-        BulkUploadResult<InventoryForm> finalResult = new BulkUploadResult<>();
-        List<BulkResponse<InventoryForm>> failures = new ArrayList<>();
-        int successCount = 0;
-        int idx = 0;
+    public List<Response<InventoryForm>> bulkUpload(List<InventoryForm> listOfInventoryForm) throws ApiException {
 
-        // Handle parsing-level errors
-        for (String error : result.getErrors()) {
-            BulkResponse<InventoryForm> failure = new BulkResponse<>();
-            failure.setIndex(idx++);
-            failure.setSuccess(false);
-            failure.setMessage(error);
-            failure.setData(null);
-            failures.add(failure);
-        }
-
-        // Row-level processing
-        for (InventoryForm inventoryForm : result.getInventories()) {
-            try {
-                add(inventoryForm);
-                successCount++;
-            } catch (Exception e) {
-                BulkResponse<InventoryForm> failure = new BulkResponse<>();
-                failure.setIndex(idx++);
-                failure.setSuccess(false);
-                failure.setMessage("Error processing " + inventoryForm.getBarcode() + ": " + e.getMessage());
-                failure.setData(inventoryForm);
-                failures.add(failure);
-            }
-        }
-
-        finalResult.setSuccessCount(successCount);
-        finalResult.setFailureCount(failures.size());
-        finalResult.setFailures(failures);
-
-        return finalResult;
-    }
+        List<Response<InventoryForm>> responseList = new ArrayList<>();
 
 
-    public List<OperationResponse<InventoryForm>> bulkUpload(MultipartFile file) throws ApiException {
-
-        List<OperationResponse<InventoryForm>> operationResponseListt = new ArrayList<>();
-       InventoryUploadResult inventoryUploadResult   = convertFileToInventoryFormList(file);
-       if(inventoryUploadResult.getErrors() != null){
-           for(String error : inventoryUploadResult.getErrors()){
-               int idx = inventoryUploadResult.getErrors().indexOf(error);
-               OperationResponse<InventoryForm> operationResponse = new OperationResponse<>();
-               operationResponse.setData(inventoryUploadResult.getInventories().get(idx));
-               operationResponse.setMessage(error);
-               operationResponseListt.add(operationResponse);
-           }
-          return  operationResponseListt;
-       }
-            List<InventoryForm> inventoryFormList = inventoryUploadResult.getInventories();
-       for(InventoryForm inventoryForm : inventoryFormList){
-           System.out.println(inventoryForm.getBarcode());
-           System.out.println(inventoryForm.getQuantity());
-       }
-        for (InventoryForm inventoryForm : inventoryFormList) {
-            System.out.println("Barcode: " + inventoryForm.getBarcode());
-
-            System.out.println("Price: " + inventoryForm.getQuantity());
-
-        }
-
-        List<InventoryPojo> inventoryPojoList = new ArrayList<>();
-        List<OperationResponse<InventoryForm>> operationResponseList = new ArrayList<>();
-
-        boolean errorOccured = false;
-        for(InventoryForm inventoryForm: inventoryFormList){
-            OperationResponse<InventoryForm> operationResponse = new OperationResponse<>();
-            operationResponse.setData(inventoryForm);
-            operationResponse.setMessage("No error");
+        for(InventoryForm inventoryForm: listOfInventoryForm){
+            Response<InventoryForm> response = new Response<>();
+            response.setData(inventoryForm);
+            response.setMessage("success");
             try{
-                UtilMethods.normalizeInventoryForm(inventoryForm);
-                UtilMethods.validateInventoryForm(inventoryForm);
-                InventoryPojo inventoryPojo = convert(inventoryForm);
-                inventoryPojoList.add(inventoryPojo);
+                add(inventoryForm);
             }catch (ApiException e){
-                operationResponse.setMessage(e.getMessage());
-                errorOccured = true;
+                response.setMessage(e.getMessage());
             }
-            operationResponseList.add(operationResponse);
+            responseList.add(response);
         }
-        if(!errorOccured){
-            inventoryApi.bulkUpload(inventoryPojoList);
-        }
-        return operationResponseList;
+        return responseList;
     }
 
     public List<InventoryData> getAll() throws ApiException{

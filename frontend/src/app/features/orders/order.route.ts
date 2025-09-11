@@ -2,12 +2,11 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import {OrderList} from './pages/order-list/order-list';
+import {SalesReportComponent} from './pages/sales-report/sales-report';
 
 export const routes: Routes = [
-  // { path: '', component: ClientsDashboard },      // /clients (landing page)
-  { path: '', component: OrderList },   // /clients/list
-  // { path: 'new', component: ClientForm },    // /clients/new
-  // { path: ':id/edit', component: ClientForm }
+  { path: '', component: OrderList },   // /orders
+  { path: 'sales-report', component: SalesReportComponent },   // /orders/sales-report
 ];
 
 @NgModule({

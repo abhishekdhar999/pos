@@ -4,19 +4,18 @@ import org.example.api.ClientApi;
 import org.example.api.InventoryApi;
 import org.example.api.ProductApi;
 import org.example.dto.ApiException;
-import org.example.dto.ProductDto;
-import org.example.models.data.OperationResponse;
+import org.example.models.data.Response;
 import org.example.pojo.ClientPojo;
 import org.example.pojo.InventoryPojo;
 import org.example.pojo.ProductPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Propagation;
 import java.util.*;
 
 @Service
-@Transactional
 public class ProductFlow {
 
     @Autowired
@@ -27,6 +26,7 @@ public class ProductFlow {
     private InventoryApi inventoryApi;
 
     public void add(ProductPojo productPojo) throws ApiException {
+        checkIfBarcodeAlreadyExist(productPojo.getBarcode());
         doesClientExists(productPojo.getClientId());
         productApi.add(productPojo);
     }
@@ -36,34 +36,8 @@ public class ProductFlow {
         productApi.update(id, productPojo);
     }
 
-    public List<OperationResponse<ProductPojo>> batchAdd(List<ProductPojo> productPojoList) {
-        List<OperationResponse<ProductPojo>> operationResponseList = new ArrayList<>();
 
-        Set<String> barcodes = new HashSet<>();
-        boolean errorOccured = false;
-        for(ProductPojo productPojo: productPojoList){
-            OperationResponse<ProductPojo> operationResponse = new OperationResponse<>();
-            operationResponse.setData(productPojo);
-            operationResponse.setMessage("No error");
-            try{
-                if(barcodes.contains(productPojo.getBarcode())){
-                    throw new ApiException("File contain duplicate barcodes");
-                } else {
-                    barcodes.add(productPojo.getBarcode());
-                }
-                doesClientExists(productPojo.getClientId());
-            } catch (ApiException e){
-                errorOccured = true;
-                operationResponse.setMessage(e.getMessage());
-            }
-            operationResponseList.add(operationResponse);
-        }
 
-        if(errorOccured){
-            return operationResponseList;
-        }
-        return productApi.batchAdd(productPojoList);
-    }
 
     public ClientPojo getClientById(Integer clientId) throws ApiException {
         return clientApi.getById(clientId);
@@ -87,6 +61,13 @@ public class ProductFlow {
             clientApi.getById(clientId);
         }catch (ApiException e){
             throw new ApiException("Client doesn't exists");
+        }
+    }
+    public void checkIfBarcodeAlreadyExist(String barcode) throws ApiException{
+        try{
+            productApi.getByBarcode(barcode);
+        }catch (ApiException e){
+            throw new ApiException("Barcode doesn't exists");
         }
     }
 

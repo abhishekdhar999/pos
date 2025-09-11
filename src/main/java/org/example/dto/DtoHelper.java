@@ -14,6 +14,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DtoHelper {
+
+    public static List<DaySalesReportData> convertDaySalesReportPojoToDaySalesReportData(List<DaySalesReportPojo> list)throws ApiException{
+        List<DaySalesReportData> daySalesReportDataList = new ArrayList<>();
+        for(DaySalesReportPojo daySalesReportPojo : list){
+            DaySalesReportData daySalesReportData = new DaySalesReportData();
+
+            daySalesReportData.setDate(daySalesReportPojo.getDateTime().toString());
+            daySalesReportData.setTotalRevenue(daySalesReportPojo.getTotalRevenue());
+            daySalesReportData.setInvoicedItemsCount(daySalesReportPojo.getInvoicedItemsCount());
+            daySalesReportData.setInvoicedOrdersCount(daySalesReportPojo.getInvoicedOrdersCount());
+            daySalesReportDataList.add(daySalesReportData);
+        }
+        return daySalesReportDataList;
+    }
     public static ClientPojo convertClientFormToClientPojo(ClientForm client){
         ClientPojo c = new ClientPojo();
         c.setName(client.getName());
@@ -142,14 +156,5 @@ public class DtoHelper {
         orderData.setOrderItems(orderItemDataList);
         return orderData;
     }
-
-//    public static List<DailySalesReportData> convertDailySalesReportPojoListToDataList(List<DailySalesReportPojo> dailySalesReportPojoList) {
-//        List<DailySalesReportData> dailySalesReportDataList = new ArrayList<>();
-//        for(DailySalesReportPojo dailySalesReportPojo: dailySalesReportPojoList){
-//            DailySalesReportData dailySalesReportData = DtoHelper.convertDailySalesReportPojoToData(dailySalesReportPojo);
-//            dailySalesReportDataList.add(dailySalesReportData);
-//        }
-//        return dailySalesReportDataList;
-//    }
 
 }

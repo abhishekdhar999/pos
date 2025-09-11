@@ -2,7 +2,7 @@ package org.example.api;
 
 import org.example.dao.ProductDao;
 import org.example.dto.ApiException;
-import org.example.models.data.OperationResponse;
+import org.example.models.data.Response;
 import org.example.pojo.ProductPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-@Transactional(rollbackOn = ApiException.class)
+@Transactional()
 public class ProductApi {
 
     @Autowired
@@ -46,29 +46,29 @@ public class ProductApi {
         productDao.update(id, productPojo);
     }
 
-    public List<OperationResponse<ProductPojo>> batchAdd(List<ProductPojo> productPojoList){
-        List<OperationResponse<ProductPojo>> operationResponseList = new ArrayList<>();
+    public List<Response<ProductPojo>> batchAdd(List<ProductPojo> productPojoList){
+        List<Response<ProductPojo>> responseList = new ArrayList<>();
 
         boolean errorOccured = false;
         for(ProductPojo productPojo: productPojoList){
-            OperationResponse<ProductPojo> operationResponse = new OperationResponse<>();
-            operationResponse.setData(productPojo);
-            operationResponse.setMessage("No error");
+            Response<ProductPojo> response = new Response<>();
+            response.setData(productPojo);
+            response.setMessage("No error");
             try{
                 checkDuplicateBarcode(productPojo.getBarcode());
             }catch (ApiException e){
-                operationResponse.setMessage(e.getMessage());
+                response.setMessage(e.getMessage());
                 errorOccured = true;
             }
-            operationResponseList.add(operationResponse);
+            responseList.add(response);
         }
         if(!errorOccured){
             productDao.batchAdd(productPojoList);
         }
-        return operationResponseList;
+        return responseList;
     }
 
-    public ProductPojo getByBarcode(String barcode){
+    public ProductPojo getByBarcode(String barcode)throws ApiException{
         return productDao.getByBarcode(barcode);
     }
 

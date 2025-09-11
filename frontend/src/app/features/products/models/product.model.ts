@@ -9,3 +9,11 @@ export interface Product {
   quantity:number;
 }
 
+export interface ProductForm {
+  barcode: string;
+  clientName: string;
+  name: string;
+  price: number;
+  imageUrl: string;
+}
+

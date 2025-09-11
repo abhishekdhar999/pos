@@ -3,6 +3,7 @@ package org.example.dto;
 
 import org.example.InvoiceClient.InvoiceClient;
 import org.example.api.OrderApi;
+import org.example.enums.OrderStatus;
 import org.example.flow.InvoiceFlow;
 import org.example.flow.OrderFlow;
 import org.example.models.data.InvoiceData;
@@ -45,6 +46,9 @@ public class InvoiceDto {
         InvoiceResponse res = invoiceFlow.generateInvoice(orderId);
            OrderPojo orderPojo =  orderFlow.getOrderById(orderId);
            orderPojo.setIsInvoiced(Boolean.TRUE);
+           if(orderPojo.getIsInvoiced() == Boolean.TRUE){
+               orderPojo.setStatus(OrderStatus.INVOICED);
+           }
             orderApi.updateOrder(orderPojo);
         InvoiceResponse invoiceResponse = new InvoiceResponse();
         invoiceResponse.setInvoiceId(res.getInvoiceId());
