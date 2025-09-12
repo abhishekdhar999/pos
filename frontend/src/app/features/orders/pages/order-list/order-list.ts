@@ -288,29 +288,17 @@ export class OrderList implements OnInit{
 
   generateInvoice(orderId: number): void {
     this.generatingInvoice = orderId;
-    console.log(`Generating invoice for order ${orderId}`);
 
     this.orderService.generateInvoice(orderId).subscribe({
       next: (response: any) => {
         // Store the invoice ID for this order
-        console.log("Invoice generation response:", response);
+        console.log("response",response)
         if (response.invoiceId) {
           this.orderInvoiceIds.set(orderId, response.invoiceId);
         }
 
         this.toastService.success('Invoice generated successfully');
         this.generatingInvoice = null;
-        
-        // Immediately update the local order data
-        const orderIndex = this.orders.findIndex(order => order.id === orderId);
-        if (orderIndex !== -1) {
-          console.log(`Before update - Order ${orderId}: isInvoiced=${this.orders[orderIndex].isInvoiced}, status=${this.orders[orderIndex].status}`);
-          this.orders[orderIndex].isInvoiced = true;
-          this.orders[orderIndex].status = 'INVOICED';
-          console.log(`After update - Order ${orderId}: isInvoiced=${this.orders[orderIndex].isInvoiced}, status=${this.orders[orderIndex].status}`);
-        }
-        
-        // Also refresh from backend
         this.fetchOrders(); // Refresh the order list to update isInvoiced status
       },
       error: (err) => {

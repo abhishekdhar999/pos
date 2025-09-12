@@ -1,10 +1,7 @@
 package org.example.dto;
 
 import org.example.models.data.*;
-import org.example.models.form.ClientForm;
-import org.example.models.form.InventoryForm;
-import org.example.models.form.OrderItemForm;
-import org.example.models.form.ProductForm;
+import org.example.models.form.*;
 import org.example.pojo.*;
 import org.example.utils.UtilMethods;
 
@@ -155,6 +152,11 @@ public class DtoHelper {
         orderData.setDateTime(dateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
         orderData.setOrderItems(orderItemDataList);
         return orderData;
+    }
+
+    public static void normalizeSalesReportFilterForm(SalesReportFilterForm salesReportFilterForm) {
+        salesReportFilterForm.setClient(salesReportFilterForm.getClient().toLowerCase());
+        salesReportFilterForm.setProductBarcode(salesReportFilterForm.getProductBarcode().toLowerCase());
     }
 
 }

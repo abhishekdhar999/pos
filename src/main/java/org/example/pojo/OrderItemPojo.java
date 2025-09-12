@@ -23,7 +23,6 @@ public class OrderItemPojo {
     @Column(nullable = false)
     private Integer quantity;
 
-
     @Column(nullable = false)
     private Double sellingPrice;
 

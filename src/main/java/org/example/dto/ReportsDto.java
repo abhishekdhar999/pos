@@ -6,6 +6,7 @@ import org.example.models.data.DaySalesReportData;
 import org.example.models.data.SalesReportData;
 import org.example.models.form.DaySalesReportsForm;
 import org.example.models.form.ExportFilterDailyReports;
+import org.example.models.form.SalesReportFilterForm;
 import org.example.pojo.DaySalesReportPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static org.example.dto.DtoHelper.convertDaySalesReportPojoToDaySalesReportData;
+import static org.example.dto.DtoHelper.normalizeSalesReportFilterForm;
 
 @Component
 public class ReportsDto {
@@ -55,10 +57,12 @@ public class ReportsDto {
        for(DaySalesReportData daySalesReportData : daySalesReportDataList){
            writer.println(daySalesReportData.getDate() + "\t" + daySalesReportData.getInvoicedOrdersCount() + "\t" + daySalesReportData.getInvoicedItemsCount() + "\t" + daySalesReportData.getTotalRevenue());
        }
+       writer.flush();
 
    }
+   public List<SalesReportData> getSalesReport(SalesReportFilterForm salesReportFilterForm) throws ApiException {
+        normalizeSalesReportFilterForm(salesReportFilterForm);
+        return reportsFlow.getSalesReport(salesReportFilterForm);
+   }
 
-//   public List<SalesReportData> getSalesReport(DaySalesReportsForm formFilter) throws ApiException{
-//        return reportsFlow.getSalesReport(formFilter);
-//   }
 }

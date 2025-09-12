@@ -1,9 +1,7 @@
 package org.example.flow;
 
 import org.example.InvoiceClient.InvoiceClient;
-import org.example.api.OrderApi;
-import org.example.api.OrderItemApi;
-import org.example.api.SalesReportApi;
+import org.example.api.*;
 import org.example.dto.ApiException;
 import org.example.models.data.DaySalesReportData;
 import org.example.models.data.InvoiceData;
@@ -11,17 +9,14 @@ import org.example.models.data.SalesReportData;
 import org.example.models.form.DaySalesReportsForm;
 import org.example.models.form.ExportFilterDailyReports;
 import org.example.models.form.SalesReportFilterForm;
-import org.example.pojo.DaySalesReportPojo;
-import org.example.pojo.OrderItemPojo;
+import org.example.pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class ReportsFlow {
@@ -34,6 +29,11 @@ public class ReportsFlow {
 
     @Autowired
     private SalesReportApi salesReportApi;
+    @Autowired
+    private ProductApi productApi;
+    @Autowired
+    private ClientApi clientApi;
+
     public ReportsFlow(InvoiceClient invoiceClient) {
         this.invoiceClient = invoiceClient;
     }
@@ -103,10 +103,72 @@ public List<DaySalesReportPojo> getDaySalesReportsBetweenDates(ExportFilterDaily
         ZonedDateTime endDate = ZonedDateTime.parse(form.getEndDate());
 return salesReportApi.getDaySalesReportsBetweenDates(startDate,endDate);
 }
-//public List<SalesReportData> getSalesReport(SalesReportFilterForm formFilter) throws ApiException {
-//        List<SalesReportData> salesReportDataList = new ArrayList<>();
-//
-//}
+
+public List<SalesReportData> getSalesReport(SalesReportFilterForm salesReportFilterForm) throws ApiException {
+        ZonedDateTime startDate = ZonedDateTime.parse(salesReportFilterForm.getStartDate());
+        ZonedDateTime endDate = ZonedDateTime.parse(salesReportFilterForm.getEndDate());
+        List<OrderPojo> listOfOrderPojo = orderApi.getBetweenDates(startDate,endDate);
+
+         HashMap<Integer,Integer> itemCountMap = new HashMap<>();
+         HashMap<Integer,Double> revenueMap = new HashMap<>();
+
+
+       for(OrderPojo order : listOfOrderPojo){
+           List<OrderItemPojo> listOfOrderItem = orderItemApi.getByOrderId(order.getId());
+           for(OrderItemPojo orderItem : listOfOrderItem){
+
+               itemCountMap.put(orderItem.getProductId(),itemCountMap.getOrDefault(orderItem.getProductId(),0)+orderItem.getQuantity());
+
+               revenueMap.put(orderItem.getProductId(),revenueMap.getOrDefault(orderItem.getProductId(),0.0) + (orderItem.getQuantity() * orderItem.getSellingPrice()));
+           }
+       }
+
+       List<SalesReportData> listSalesReportData = new ArrayList<>();
+       for(Map.Entry<Integer, Integer> entry : itemCountMap.entrySet()){
+           SalesReportData salesReportData = new SalesReportData();
+
+//           product
+           ProductPojo productPojo = productApi.getById(entry.getKey());
+//           client
+           ClientPojo clientPojo = clientApi.getById(productPojo.getClientId());
+
+//           putting value
+           salesReportData.setProductBarcode(productPojo.getBarcode());
+           salesReportData.setClient(clientPojo.getName());
+           salesReportData.setQuantity(entry.getValue());
+            salesReportData.setRevenue(revenueMap.get(entry.getKey()));
+
+            listSalesReportData.add(salesReportData);
+       }
+
+       List<SalesReportData> listSalesReportDataFilters = new ArrayList<>();
+
+    if(salesReportFilterForm.getClient().isEmpty() && !salesReportFilterForm.getProductBarcode().isEmpty()){
+//           only check for barcode
+        for(SalesReportData salesReportData : listSalesReportData ){
+if(salesReportData.getProductBarcode().contains(salesReportFilterForm.getProductBarcode())){
+listSalesReportDataFilters.add(salesReportData);
+}
+        }
+    }else if(salesReportFilterForm.getProductBarcode().isEmpty() &&  !salesReportFilterForm.getClient().isEmpty()){
+//        only check for client
+        for(SalesReportData salesReportData : listSalesReportData ){
+            if(salesReportData.getClient().contains(salesReportFilterForm.getClient())){
+                listSalesReportDataFilters.add(salesReportData);
+            }
+        }
+    }else{
+//        check for both client and barcode
+        for(SalesReportData salesReportData : listSalesReportData ){
+            if(salesReportData.getProductBarcode().contains(salesReportFilterForm.getProductBarcode()) && salesReportData.getClient().contains(salesReportFilterForm.getClient())){
+                listSalesReportDataFilters.add(salesReportData);
+            }
+        }
+    }
+
+    return listSalesReportDataFilters;
+
+}
 
 
 

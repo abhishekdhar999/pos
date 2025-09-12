@@ -92,39 +92,39 @@
             </div>
 
             <div class="order-actions" (click)="$event.stopPropagation()">
-              @if (order.status === 'FULFILLABLE' && !order.isInvoiced) {
-                <button
-                  type="button"
-                  class="action-btn invoice-btn"
-                  (click)="generateInvoice(order.id)"
-                  [disabled]="generatingInvoice === order.id"
-                  title="Generate Invoice">
-                  @if (generatingInvoice === order.id) {
-                    <span class="btn-icon">⏳</span>
-                    Generating...
-                  } @else {
-                    <span class="btn-icon">📄</span>
-                    Generate Invoice
-                  }
-                </button>
-              }
+              @if (order.status === 'FULFILLABLE') {
+                @if (!order.isInvoiced) {
+                  <button
+                    type="button"
+                    class="action-btn invoice-btn"
+                    (click)="generateInvoice(order.id)"
+                    [disabled]="generatingInvoice === order.id"
+                    title="Generate Invoice">
+                    @if (generatingInvoice === order.id) {
+                      <span class="btn-icon">⏳</span>
+                      Generating...
+                    } @else {
+                      <span class="btn-icon">📄</span>
+                      Generate Invoice
+                    }
+                  </button>
+                } @else {
+                  <button
+                    type="button"
+                    class="action-btn download-invoice-btn"
+                    (click)="downloadInvoice(order.id)"
+                    [disabled]="downloadingInvoice === order.id"
+                    title="Download Invoice">
 
-              @if (order.isInvoiced || order.status === 'INVOICED') {
-                <button
-                  type="button"
-                  class="action-btn download-invoice-btn"
-                  (click)="downloadInvoice(order.id)"
-                  [disabled]="downloadingInvoice === order.id"
-                  title="Download Invoice">
-
-                  @if (downloadingInvoice === order.id) {
-                    <span class="btn-icon">⏳</span>
-                    Downloading...
-                  } @else {
-                    <span class="btn-icon">📥</span>
-                    Download Invoice
-                  }
-                </button>
+                    @if (downloadingInvoice === order.id) {
+                      <span class="btn-icon">⏳</span>
+                      Downloading...
+                    } @else {
+                      <span class="btn-icon">📥</span>
+                      Download Invoice
+                    }
+                  </button>
+                }
               }
 
               @if (order.status !== 'FULFILLABLE' && order.status !== 'INVOICED') {
@@ -231,183 +231,83 @@
 <!-- Create Order Modal -->
 @if (showCreateOrderModal) {
   <div class="modal-overlay" (click)="closeCreateOrderModal()">
-    <div class="modal-container" (click)="$event.stopPropagation()">
-      <!-- Modal Header -->
+    <div class="modal-content" (click)="$event.stopPropagation()">
       <div class="modal-header">
-        <div class="header-left">
-          <div class="header-icon">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M7 4V2C7 1.45 7.45 1 8 1H16C16.55 1 17 1.45 17 2V4H20C20.55 4 21 4.45 21 5S20.55 6 20 6H19V19C19 20.1 18.1 21 17 21H7C5.9 21 5 20.1 5 19V6H4C3.45 6 3 5.55 3 5S3.45 4 4 4H7ZM9 3V4H15V3H9ZM7 6V19H17V6H7Z" fill="currentColor"/>
-              <path d="M9 8V17H11V8H9ZM13 8V17H15V8H13Z" fill="currentColor"/>
-            </svg>
-          </div>
-          <div class="header-text">
-            <h2>Create New Order</h2>
-            <p>Select products and build your order</p>
-          </div>
-        </div>
-        <button type="button" class="close-btn" (click)="closeCreateOrderModal()">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </button>
+        <h2>Create New Order</h2>
+        <button type="button" class="close-btn" (click)="closeCreateOrderModal()">×</button>
       </div>
 
-      <!-- Modal Content -->
-      <div class="modal-content">
-        <!-- Product Selection Section -->
-        <div class="product-selection">
-          <div class="section-header">
-            <h3>Select Product</h3>
-            <div class="section-icon">🔍</div>
-          </div>
-          
-          <div class="product-search">
-            <div class="search-input-wrapper">
-              <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M19 19L13 13M15 8C15 11.866 11.866 15 8 15C4.134 15 1 11.866 1 8C1 4.134 4.134 1 8 1C11.866 1 15 4.134 15 8Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              <select [(ngModel)]="selectedBarcode" (change)="onBarcodeChange()" class="product-select">
-                <option value="">Search and select a product...</option>
-                @for (product of availableProducts; track product.barcode) {
-                  <option [value]="product.barcode">
-                    {{ product.barcode }} - {{ product.name }} (₹{{ product.price }})
-                  </option>
-                }
-              </select>
-            </div>
-          </div>
-
-          @if (selectedProduct) {
-            <div class="selected-product">
-              <div class="product-card">
-                <div class="product-image">
-                  <div class="image-placeholder">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M21 16V8C21 6.9 20.1 6 19 6H5C3.9 6 3 6.9 3 8V16C3 17.1 3.9 18 5 18H19C20.1 18 21 17.1 21 16Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                      <path d="M3 10L12 15L21 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </div>
-                </div>
-                <div class="product-details">
-                  <h4 class="product-name">{{ selectedProduct.name }}</h4>
-                  <p class="product-barcode">{{ selectedProduct.barcode }}</p>
-                  <div class="product-meta">
-                    <div class="price-tag">
-                      <span class="currency">₹</span>
-                      <span class="amount">{{ selectedProduct.price }}</span>
-                    </div>
-                    <div class="stock-info">
-                      <span class="stock-label">Stock:</span>
-                      <span class="stock-count">{{ selectedProduct.quantity }}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="quantity-selector">
-                <label class="quantity-label">Quantity</label>
-                <div class="quantity-controls">
-                  <button type="button" class="qty-btn minus" (click)="decreaseQuantity()" [disabled]="orderQuantity <= 1">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M4 8H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </button>
-                  <input type="number" [(ngModel)]="orderQuantity" min="1" [max]="selectedProduct.quantity" class="qty-input" />
-                  <button type="button" class="qty-btn plus" (click)="increaseQuantity()" [disabled]="orderQuantity >= selectedProduct.quantity">
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M8 4V12M4 8H12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-
-              <button type="button" class="add-to-cart-btn" (click)="addToCart()">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M3 3H5L5.4 5M7 13H17L21 5H5.4M7 13L5.4 5M7 13L4.7 15.3C4.3 15.7 4.6 16.5 5.1 16.5H17M17 13V17C17 18.1 16.1 19 15 19H9C7.9 19 7 18.1 7 17V13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-                Add to Cart
-              </button>
-            </div>
-          }
+      <div class="modal-body">
+        <!-- Product Selection -->
+        <div class="form-group">
+          <label>Select Product by Barcode:</label>
+          <select [(ngModel)]="selectedBarcode" (change)="onBarcodeChange()" class="barcode-select">
+            <option value="">-- Select Product --</option>
+            @for (product of availableProducts; track product.barcode) {
+              <option [value]="product.barcode">
+                {{ product.barcode }} - {{ product.name }} (₹{{ product.price }})
+              </option>
+            }
+          </select>
         </div>
 
-        <!-- Shopping Cart Section -->
-        @if (cartItems.length > 0) {
-          <div class="shopping-cart">
-            <div class="section-header">
-              <h3>Shopping Cart</h3>
-              <div class="cart-badge">{{ cartItems.length }}</div>
+        @if (selectedProduct) {
+          <div class="selected-product">
+            <h3>Selected Product:</h3>
+            <div class="product-info">
+              <span class="product-name">{{ selectedProduct.name }}</span>
+              <span class="product-barcode">Barcode: {{ selectedProduct.barcode }}</span>
+              <span class="product-price">Price: ₹{{ selectedProduct.price }}</span>
+              <span class="product-quantity">Available: {{ selectedProduct.quantity }}</span>
             </div>
 
+            <div class="quantity-controls">
+              <label>Quantity:</label>
+              <div class="quantity-input">
+                <button type="button" (click)="decreaseQuantity()" [disabled]="orderQuantity <= 1">-</button>
+                <input type="number" [(ngModel)]="orderQuantity" min="1" [max]="selectedProduct.quantity" />
+                <button type="button" (click)="increaseQuantity()" [disabled]="orderQuantity >= selectedProduct.quantity">+</button>
+              </div>
+            </div>
+
+            <button type="button" class="add-to-cart-btn" (click)="addToCart()" >
+              Add to Cart
+            </button>
+          </div>
+        }
+
+        <!-- Cart Items -->
+        @if (cartItems.length > 0) {
+          <div class="cart-section">
+            <h3>Shopping Cart ({{ cartItems.length }} items)</h3>
             <div class="cart-items">
               @for (item of cartItems; track item.barcode) {
                 <div class="cart-item">
-                  <div class="item-image">
-                    <div class="image-placeholder">
-                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M21 16V8C21 6.9 20.1 6 19 6H5C3.9 6 3 6.9 3 8V16C3 17.1 3.9 18 5 18H19C20.1 18 21 17.1 21 16Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                      </svg>
-                    </div>
+                  <div class="item-info">
+                    <span class="item-name">{{ item.name }}</span>
+                    <span class="item-barcode">{{ item.barcode }}</span>
                   </div>
-                  <div class="item-details">
-                    <h4 class="item-name">{{ item.name }}</h4>
-                    <p class="item-barcode">{{ item.barcode }}</p>
-                    <div class="item-pricing">
-                      <span class="unit-price">₹{{ item.price }} each</span>
-                      <span class="total-price">₹{{ item.price * item.quantity }}</span>
-                    </div>
-                  </div>
-                  <div class="item-actions">
-                    <div class="quantity-badge">
-                      <span class="qty-label">Qty</span>
-                      <span class="qty-value">{{ item.quantity }}</span>
-                    </div>
-                    <button type="button" class="remove-btn" (click)="removeFromCart(item.barcode)">
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 4L4 12M4 4L12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                      </svg>
-                    </button>
+                  <div class="item-controls">
+                    <span class="item-quantity">Qty: {{ item.quantity }}</span>
+                    <span class="item-price">₹{{ item.price * item.quantity }}</span>
+                    <button type="button" class="remove-btn" (click)="removeFromCart(item.barcode)">Remove</button>
                   </div>
                 </div>
               }
             </div>
 
-            <div class="cart-summary">
-              <div class="summary-row">
-                <span class="summary-label">Total Items</span>
-                <span class="summary-value">{{ cartItems.length }}</span>
-              </div>
-              <div class="summary-row total">
-                <span class="summary-label">Order Total</span>
-                <span class="summary-value">₹{{ getCartTotal() }}</span>
-              </div>
+            <div class="cart-total">
+              <strong>Total: ₹{{ getCartTotal() }}</strong>
             </div>
           </div>
         }
       </div>
 
-      <!-- Modal Footer -->
       <div class="modal-footer">
-        <div class="footer-left">
-          @if (cartItems.length > 0) {
-            <div class="order-summary">
-              <span class="item-count">{{ cartItems.length }} items</span>
-              <span class="total-amount">₹{{ getCartTotal() }}</span>
-            </div>
-          }
-        </div>
-        <div class="footer-actions">
-          <button type="button" class="btn-secondary" (click)="closeCreateOrderModal()">
-            Cancel
-          </button>
-          <button type="button" class="btn-primary" (click)="createOrder()" [disabled]="cartItems.length === 0">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M13.5 2L3 12.5L6.5 16L17 5.5L13.5 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Create Order
-          </button>
-        </div>
+        <button type="button" class="cancel-btn" (click)="closeCreateOrderModal()">Cancel</button>
+        <button type="button" class="create-order-btn" (click)="createOrder()" >
+          Create Order ({{ cartItems.length }} items)
+        </button>
       </div>
     </div>
   </div>

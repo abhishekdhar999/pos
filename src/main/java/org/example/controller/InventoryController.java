@@ -8,7 +8,6 @@ import org.example.dto.InventoryDto;
 import org.example.models.data.InventoryData;
 import org.example.models.data.Response;
 import org.example.models.form.InventoryForm;
-import org.example.utils.BulkUploadResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,7 +59,7 @@ public class InventoryController {
         return inventoryDto.getByBarcode(barcode);
     }
     @ApiOperation("download the current inventory")
-    @RequestMapping(path = "/download",method = RequestMethod.GET)
+    @RequestMapping(path = "/export",method = RequestMethod.GET)
     public void downloadInventory(HttpServletResponse response) throws ApiException, IOException {
         List<InventoryData> listOfInventoryData = inventoryDto.getAll();
 if(Objects.isNull(listOfInventoryData)){

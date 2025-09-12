@@ -8,6 +8,7 @@ import org.example.models.data.DaySalesReportData;
 import org.example.models.data.SalesReportData;
 import org.example.models.form.DaySalesReportsForm;
 import org.example.models.form.ExportFilterDailyReports;
+import org.example.models.form.SalesReportFilterForm;
 import org.example.utils.FinalValues;
 import org.example.utils.PaginatedResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,25 +55,28 @@ return response;
     @RequestMapping(path = "/export",method = RequestMethod.GET)
     public void exportDailyReports(@ModelAttribute ExportFilterDailyReports form, HttpServletResponse response) throws ApiException, IOException {
 
-//      ZonedDateTime endDate = ZonedDateTime.now();
-//
-//      if(form.getStartDate() != null && !form.getStartDate().isEmpty()) {
-//         ZonedDateTime startDate = ZonedDateTime.parse(form.getStartDate());
-//         if(startDate.isBefore(endDate.minusDays(30))) {
-//             throw  new ApiException("start date should be between the 30 days till now");
-//         }
-//      }
+      ZonedDateTime endDate = ZonedDateTime.now();
+
+      if(form.getStartDate() != null && !form.getStartDate().isEmpty()) {
+         ZonedDateTime startDate = ZonedDateTime.parse(form.getStartDate());
+         if(startDate.isBefore(endDate.minusDays(31))) {
+             throw  new ApiException("start date should be between the 30 days till now");
+         }
+      }
+        if(form.getStartDate() != null && !form.getStartDate().isEmpty()) {
+            ZonedDateTime startDate = ZonedDateTime.parse(form.getStartDate());
+            if (startDate.isAfter(endDate)) {
+                throw new ApiException("start date cannot be in the future");
+            }
+        }
         reportsDto.getDaySalesReportsBetweenDates(form, response);
 
     }
-
-
-
-//    @ApiOperation("get sales report")
-//    @RequestMapping(value = "/get",method = RequestMethod.GET)
-//    public PaginatedResponse<SalesReportData> getSalesReports(@ModelAttribute DaySalesReportsForm formFilter) throws ApiException {
-//        return reportsDto.getSalesReport(formFilter);
-//    }
+    @ApiOperation("get sales report bases on date range, client, product")
+    @RequestMapping(path = "/sales", method = RequestMethod.GET)
+    public List<SalesReportData> getSalesReport(@ModelAttribute SalesReportFilterForm salesReportFilterForm) throws ApiException {
+        return reportsDto.getSalesReport(salesReportFilterForm);
+    }
 
 
 
