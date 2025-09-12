@@ -67,5 +67,9 @@ public class ReportsDto {
    public Long getTotalOrdersCount(){
         return reportsFlow.getTotalOrdersCount();
    }
+   
+   public Long getTotalSalesReportCount(SalesReportFilterForm salesReportFilterForm) throws ApiException {
+        return reportsFlow.getTotalSalesReportCount(salesReportFilterForm);
+   }
 
 }

@@ -30,6 +30,7 @@ export class SignupComponent {
   }
 
   onSignup() {
+
     if (this.authForm.valid) {
       this.isLoading = true;
 

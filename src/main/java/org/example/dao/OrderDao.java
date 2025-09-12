@@ -12,6 +12,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.transaction.Transactional;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -48,44 +49,56 @@ private static final String getCount="select count(p) from OrderPojo p";
 
 
     public List<OrderPojo> getAllOrders(OrderFiltersForm orderFiltersForm) {
-        String editedQuery = new String(getBetweenDatesQuery);
-        if(!Objects.isNull(orderFiltersForm.getOrderId())){
-            editedQuery+=" and p.id=:orderId";
-        }
-        if(!orderFiltersForm.getStatus().isEmpty()){
-            editedQuery+=" and p.status=:status";
-        }
-        editedQuery+=" order by p.id desc";
-
-        Query query = em.createQuery(editedQuery);
-        query.setMaxResults(orderFiltersForm.getSize());
-        query.setFirstResult(orderFiltersForm.getPage()* orderFiltersForm.getSize());
-        
         try {
-            if(orderFiltersForm.getStartDate() == null || orderFiltersForm.getStartDate().isEmpty()){
+            String editedQuery = new String(getBetweenDatesQuery);
+            if(!Objects.isNull(orderFiltersForm.getOrderId())){
+                editedQuery+=" and p.id=:orderId";
+            }
+            if(!orderFiltersForm.getStatus().isEmpty()){
+                editedQuery+=" and p.status=:status";
+            }
+            editedQuery+=" order by p.id desc";
+
+            Query query = em.createQuery(editedQuery);
+            query.setMaxResults(orderFiltersForm.getSize());
+            query.setFirstResult(orderFiltersForm.getPage()* orderFiltersForm.getSize());
+            
+            // Handle start date with better error handling
+            if(orderFiltersForm.getStartDate().isEmpty()){
                 query.setParameter("startDate", ZonedDateTime.parse(FinalValues.START_DATE));
             } else {
-                query.setParameter("startDate", ZonedDateTime.parse(orderFiltersForm.getStartDate()));
+                try {
+                    query.setParameter("startDate", ZonedDateTime.parse(orderFiltersForm.getStartDate()));
+                } catch (Exception e) {
+                    System.err.println("Error parsing startDate: " + orderFiltersForm.getStartDate() + " - " + e.getMessage());
+                    query.setParameter("startDate", ZonedDateTime.parse(FinalValues.START_DATE));
+                }
             }
-            if(orderFiltersForm.getEndDate() == null || orderFiltersForm.getEndDate().isEmpty()){
+            
+            // Handle end date with better error handling
+            if(orderFiltersForm.getEndDate().isEmpty()){
                 query.setParameter("endDate", ZonedDateTime.now());
             } else {
-                query.setParameter("endDate", ZonedDateTime.parse(orderFiltersForm.getEndDate()));
+                try {
+                    query.setParameter("endDate", ZonedDateTime.parse(orderFiltersForm.getEndDate()));
+                } catch (Exception e) {
+                    System.err.println("Error parsing endDate: " + orderFiltersForm.getEndDate() + " - " + e.getMessage());
+                    query.setParameter("endDate", ZonedDateTime.now());
+                }
             }
+            
+            if(!Objects.isNull(orderFiltersForm.getOrderId())){
+                query.setParameter("orderId", orderFiltersForm.getOrderId());
+            }
+            if(!orderFiltersForm.getStatus().isEmpty()){
+                query.setParameter("status", OrderStatus.valueOf(orderFiltersForm.getStatus()));
+            }
+            return query.getResultList();
         } catch (Exception e) {
-            System.err.println("Error parsing dates: " + e.getMessage());
-            System.err.println("StartDate: " + orderFiltersForm.getStartDate());
-            System.err.println("EndDate: " + orderFiltersForm.getEndDate());
-            throw new RuntimeException("Error parsing dates: " + e.getMessage(), e);
+            System.err.println("Error in getAllOrders: " + e.getMessage());
+            e.printStackTrace();
+            return new ArrayList<>();
         }
-        
-        if(!Objects.isNull(orderFiltersForm.getOrderId())){
-            query.setParameter("orderId", orderFiltersForm.getOrderId());
-        }
-        if(!orderFiltersForm.getStatus().isEmpty()){
-            query.setParameter("status", OrderStatus.valueOf(orderFiltersForm.getStatus()));
-        }
-        return query.getResultList();
     }
 
 
@@ -110,41 +123,53 @@ private static final String getCount="select count(p) from OrderPojo p";
     }
 
     public Long getTotalCount(OrderFiltersForm orderFiltersForm) {
-        String editedQuery = new String(getTotalCountQuery);
-        if(!Objects.isNull(orderFiltersForm.getOrderId())){
-            editedQuery+=" and p.id=:orderId";
-        }
-        if(!orderFiltersForm.getStatus().isEmpty()){
-            editedQuery+=" and p.status=:status";
-        }
-
-        Query query = em.createQuery(editedQuery);
-        
         try {
-            if(orderFiltersForm.getStartDate() == null || orderFiltersForm.getStartDate().isEmpty()){
+            String editedQuery = new String(getTotalCountQuery);
+            if(!Objects.isNull(orderFiltersForm.getOrderId())){
+                editedQuery+=" and p.id=:orderId";
+            }
+            if(!orderFiltersForm.getStatus().isEmpty()){
+                editedQuery+=" and p.status=:status";
+            }
+
+            Query query = em.createQuery(editedQuery);
+            
+            // Handle start date with better error handling
+            if(orderFiltersForm.getStartDate().isEmpty()){
                 query.setParameter("startDate", ZonedDateTime.parse(FinalValues.START_DATE));
             } else {
-                query.setParameter("startDate", ZonedDateTime.parse(orderFiltersForm.getStartDate()));
+                try {
+                    query.setParameter("startDate", ZonedDateTime.parse(orderFiltersForm.getStartDate()));
+                } catch (Exception e) {
+                    System.err.println("Error parsing startDate in getTotalCount: " + orderFiltersForm.getStartDate() + " - " + e.getMessage());
+                    query.setParameter("startDate", ZonedDateTime.parse(FinalValues.START_DATE));
+                }
             }
-            if(orderFiltersForm.getEndDate() == null || orderFiltersForm.getEndDate().isEmpty()){
+            
+            // Handle end date with better error handling
+            if(orderFiltersForm.getEndDate().isEmpty()){
                 query.setParameter("endDate", ZonedDateTime.now());
             } else {
-                query.setParameter("endDate", ZonedDateTime.parse(orderFiltersForm.getEndDate()));
+                try {
+                    query.setParameter("endDate", ZonedDateTime.parse(orderFiltersForm.getEndDate()));
+                } catch (Exception e) {
+                    System.err.println("Error parsing endDate in getTotalCount: " + orderFiltersForm.getEndDate() + " - " + e.getMessage());
+                    query.setParameter("endDate", ZonedDateTime.now());
+                }
             }
+            
+            if(!Objects.isNull(orderFiltersForm.getOrderId())){
+                query.setParameter("orderId", orderFiltersForm.getOrderId());
+            }
+            if(!orderFiltersForm.getStatus().isEmpty()){
+                query.setParameter("status", OrderStatus.valueOf(orderFiltersForm.getStatus()));
+            }
+            return (Long) query.getSingleResult();
         } catch (Exception e) {
-            System.err.println("Error parsing dates in getTotalCount: " + e.getMessage());
-            System.err.println("StartDate: " + orderFiltersForm.getStartDate());
-            System.err.println("EndDate: " + orderFiltersForm.getEndDate());
-            throw new RuntimeException("Error parsing dates: " + e.getMessage(), e);
+            System.err.println("Error in getTotalCount: " + e.getMessage());
+            e.printStackTrace();
+            return 0L;
         }
-        
-        if(!Objects.isNull(orderFiltersForm.getOrderId())){
-            query.setParameter("orderId", orderFiltersForm.getOrderId());
-        }
-        if(!orderFiltersForm.getStatus().isEmpty()){
-            query.setParameter("status", OrderStatus.valueOf(orderFiltersForm.getStatus()));
-        }
-        return (Long) query.getSingleResult();
     }
 
     public Long getCount(){

@@ -18,19 +18,7 @@ export class Home {
   constructor(private toastService: ToastService){
 
   }
-  showErrorToast() {
-    this.toastService.error('Failed to Go To Clients');
-  }
-
-  showSuccessToast() {
-    this.toastService.success('Failed to Go To Clients');
-  }
-
-  showWarningToast() {
-
-  }
-
   showInfoToast() {
-    this.toastService.info('Welcome to the POS Management System! Navigate through the different sections using the cards above.');
+    this.toastService.info('Welcome to POS Management System! Navigate through the cards to access different features.');
   }
 }

@@ -1,0 +1,171 @@
+<div class="sales-report-container">
+  <!-- Header Section -->
+  <div class="page-header">
+    <div class="header-left">
+      <h1 class="page-title">
+        <i class="icon-chart"></i>
+        Sales Report
+      </h1>
+      <p class="page-subtitle">Track your sales performance and revenue trends</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-primary" (click)="exportReport()">
+        <i class="icon-download"></i>
+        Export Report
+      </button>
+    </div>
+  </div>
+
+  <!-- Filters Card -->
+  <div class="card filters-card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <i class="icon-filter"></i>
+        Filter Options
+      </h3>
+    </div>
+    <div class="card-body">
+      <div class="filters-grid">
+        <div class="form-group">
+          <label class="form-label">Start Date</label>
+          <input
+            type="date"
+            [(ngModel)]="filter.startDate"
+            class="form-control"
+            placeholder="Select start date"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">End Date</label>
+          <input
+            type="date"
+            [(ngModel)]="filter.endDate"
+            class="form-control"
+            placeholder="Select end date"
+          />
+        </div>
+
+        <div class="form-group">
+          <button class="btn btn-primary btn-filter" (click)="applyFilters()">
+            <i class="icon-search"></i>
+            Apply Filters
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  @if (loading) {
+    <div class="loading-container">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading sales data...</p>
+    </div>
+  }
+
+
+
+    <!-- Sales Data Table -->
+    <div class="card data-card">
+      <div class="card-header">
+        <h3 class="card-title">
+          <i class="icon-table"></i>
+          Daily Sales Data
+        </h3>
+        <div class="card-actions">
+          <span class="data-count">{{ salesData.length }} records</span>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Orders</th>
+                <th>Items</th>
+                <th>Revenue</th>
+<!--                <th>Avg Order Value</th>-->
+              </tr>
+            </thead>
+            <tbody>
+              @for (data of salesData; track data.date) {
+                <tr>
+                  <td class="date-cell">
+                    <div class="date-info">
+                      <span class="date">{{ data.date.split('T')[0] }}</span>
+                      <span class="day">{{ getDayOfWeek(data.date) }}</span>
+                    </div>
+                  </td>
+                  <td class="number-cell">
+                    <span class="badge badge-orders">{{ data.invoicedOrdersCount }}</span>
+                  </td>
+                  <td class="number-cell">
+                    <span class="badge badge-items">{{ data.invoicedItemsCount }}</span>
+                  </td>
+                  <td class="revenue-cell">
+                    <span class="revenue-amount">₹{{ data.totalRevenue | number:'1.2-2' }}</span>
+                  </td>
+<!--                  <td class="avg-cell">-->
+<!--                    <span class="avg-amount">-->
+<!--                      ₹{{ (data.totalRevenue / data.invoicedOrdersCount) | number:'1.2-2' }}-->
+<!--                    </span>-->
+<!--                  </td>-->
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  <!-- Pagination - Show when not loading and has data -->
+  @if (  salesData.length > 0) {
+    <div class="pagination-container">
+      <div class="pagination-info">
+        <span class="page-info">Page {{ filter.page + 1 }} of {{ totalPages }}</span>
+        <span class="total-info">Showing {{ salesData.length }} daily reports</span>
+      </div>
+      <div class="pagination-controls">
+        <button
+          class="pagination-btn"
+          (click)="prevPage()"
+          [disabled]="filter.page === 0"
+          [class.disabled]="filter.page === 0">
+          <span class="btn-icon">←</span>
+          Previous
+        </button>
+        <button
+          class="pagination-btn"
+          (click)="nextPage()"
+          [disabled]="filter.page >= totalPages - 1"
+          [class.disabled]="filter.page >= totalPages - 1">
+          Next
+          <span class="btn-icon">→</span>
+        </button>
+      </div>
+    </div>
+  }
+
+  <!-- Empty State -->
+  @if (!loading && salesData.length === 0) {
+    <div class="empty-state">
+      <div class="empty-icon">
+        <i class="icon-chart"></i>
+      </div>
+      <h3 class="empty-title">No Sales Data Found</h3>
+      <p class="empty-description">
+        No sales data available for the selected date range. Try adjusting your filters to see more data.
+      </p>
+      <button class="btn btn-primary" (click)="applyFilters()">
+        <i class="icon-refresh"></i>
+        Refresh Data
+      </button>
+    </div>
+  }
+
+
+
+
+</div>

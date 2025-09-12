@@ -56,7 +56,7 @@ public class ClientApi {
 
     private void checkId(Integer id) throws ApiException{
         ClientPojo clientPojo = clientDao.getById(id);
-        if(clientPojo==null) {
+        if(Objects.isNull(clientPojo)) {
             throw new ApiException("Id doesn't exist");
         }
     }

@@ -102,6 +102,7 @@ public class ProductDto {
 
     private ProductPojo convert(ProductForm productForm) throws ApiException{
         Integer clientId = productFlow.getClientByName(productForm.getClientName()).getId();
+
         return DtoHelper.convertProductFormToProductPojo(productForm, clientId);
     }
 }

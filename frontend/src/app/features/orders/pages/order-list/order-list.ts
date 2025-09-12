@@ -85,18 +85,18 @@ export class OrderList implements OnInit{
 
   fetchOrders(): void {
     this.loading = true;
-    
+
     // Validate and set default dates if invalid
     if (!this.filter.startDate || isNaN(new Date(this.filter.startDate).getTime())) {
       this.filter.startDate = new Date(new Date().setDate(new Date().getDate() - 30))
         .toISOString()
         .split('T')[0];
     }
-    
+
     if (!this.filter.endDate || isNaN(new Date(this.filter.endDate).getTime())) {
       this.filter.endDate = new Date().toISOString().split('T')[0];
     }
-    
+
     const startDate = new Date(this.filter.startDate + 'T00:00:00.000+05:30').toISOString();
     const endDate = new Date(this.filter.endDate + 'T23:59:59.999+05:30').toISOString();
 

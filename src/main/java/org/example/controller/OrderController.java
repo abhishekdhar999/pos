@@ -20,8 +20,6 @@ import java.util.List;
 public class OrderController {
     @Autowired
     private OrderDto orderDto;
-//    @Autowired
-//    private InvoiceDto invoiceDto;
 
     @ApiOperation("create  order")
     @RequestMapping(path = "/create", method = RequestMethod.POST)

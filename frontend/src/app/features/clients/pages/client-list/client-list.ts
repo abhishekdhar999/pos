@@ -58,7 +58,7 @@ export class ClientList implements OnInit {
         },
         error: (err: any) => {
           console.error('Error saving client:', err);
-          const errorMessage = err.error?.message || 'Error saving client. Please try again.';
+          const errorMessage = err.error?.error || err.error?.message || err.message || 'Error saving client. Please try again.';
           this.toastService.error(errorMessage);
         }
       });
@@ -189,8 +189,8 @@ export class ClientList implements OnInit {
         this.fetchClients();
       },
       error: (err) => {
-        console.error('Error updating client', err);
-        this.toastService.error(err.error.message);
+        const errorMessage = err.error?.error || err.error?.message || err.message || 'Failed to update client';
+          this.toastService.error(errorMessage);
       }
     });
   }

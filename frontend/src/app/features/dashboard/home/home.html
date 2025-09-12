@@ -3,101 +3,96 @@
   <div class="dashboard-header">
     <div class="header-content">
       <h1 class="dashboard-title">
-        <i class="icon-dashboard">📊</i>
-        POS Dashboard
+        <i class="icon-dashboard">🏠</i>
+        POS Management System
       </h1>
-<!--      <p class="dashboard-subtitle">Manage your Point of Sale system efficiently</p>-->
+      <!-- <p class="dashboard-subtitle">Welcome to your Point of Sale management dashboard</p> -->
     </div>
   </div>
 
-<!--  -->
+  <!-- Quick Stats Section (commented out as per user request) -->
+  <!-- <div class="stats-section">
+    <div class="stat-card">
+      <div class="stat-icon">👥</div>
+      <div class="stat-content">
+        <h3>Total Clients</h3>
+        <p class="stat-number">0</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">📦</div>
+      <div class="stat-content">
+        <h3>Total Products</h3>
+        <p class="stat-number">0</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">📋</div>
+      <div class="stat-content">
+        <h3>Total Orders</h3>
+        <p class="stat-number">0</p>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">💰</div>
+      <div class="stat-content">
+        <h3>Total Revenue</h3>
+        <p class="stat-number">₹0</p>
+      </div>
+    </div>
+  </div> -->
 
   <!-- Main Navigation Section -->
-  <div class="navigation-section">
-<!--    <h2 class="section-title">Quick Access</h2>-->
+  <div class="nav-section">
+    <!-- <h2 class="section-title">Quick Access</h2> -->
     <div class="nav-grid">
       <!-- Clients Card -->
       <div class="nav-card">
-        <div class="nav-card-header">
-          <div class="nav-icon clients-icon">👥</div>
-          <h3>Clients</h3>
-        </div>
         <div class="nav-card-body">
-<!--          <p>Manage customer information, view client lists, and handle customer relationships.</p>-->
-          <div class="nav-actions">
-            <a routerLink="/clients" class="nav-btn primary">
-              <i class="btn-icon">→</i>
-              Go to Clients
-            </a>
-          </div>
+          <div class="nav-icon">👥</div>
+          <h3 class="nav-title">Clients</h3>
+          <!-- <p class="nav-description">Manage your client database</p> -->
+          <a routerLink="/clients" class="nav-link">Go to Clients</a>
         </div>
       </div>
 
       <!-- Products Card -->
       <div class="nav-card">
-        <div class="nav-card-header">
-          <div class="nav-icon products-icon">📦</div>
-          <h3>Products</h3>
-        </div>
         <div class="nav-card-body">
-<!--          <p>Manage your product catalog, inventory levels, and bulk upload products.</p>-->
-          <div class="nav-actions">
-            <a routerLink="/products/list" class="nav-btn primary">
-              <i class="btn-icon">→</i>
-              Go to Products
-            </a>
-          </div>
+          <div class="nav-icon">📦</div>
+          <h3 class="nav-title">Products</h3>
+          <!-- <p class="nav-description">Manage your product inventory</p> -->
+          <a routerLink="/products/list" class="nav-link">Go to Products</a>
         </div>
       </div>
 
       <!-- Orders Card -->
       <div class="nav-card">
-        <div class="nav-card-header">
-          <div class="nav-icon orders-icon">🛒</div>
-          <h3>Orders</h3>
-        </div>
         <div class="nav-card-body">
-<!--          <p>Process orders, manage order status, and generate invoices for customers.</p>-->
-          <div class="nav-actions">
-            <a routerLink="/orders" class="nav-btn primary">
-              <i class="btn-icon">→</i>
-              Go to Orders
-            </a>
-          </div>
+          <div class="nav-icon">📋</div>
+          <h3 class="nav-title">Orders</h3>
+          <!-- <p class="nav-description">View and manage orders</p> -->
+          <a routerLink="/orders" class="nav-link">Go to Orders</a>
         </div>
       </div>
 
       <!-- Sales Report Card -->
       <div class="nav-card">
-        <div class="nav-card-header">
-          <div class="nav-icon sales-icon">📊</div>
-          <h3>Sales Report</h3>
-        </div>
         <div class="nav-card-body">
-<!--          <p>View daily sales reports and export sales data for analysis.</p>-->
-          <div class="nav-actions">
-            <a routerLink="/orders/sales-report" class="nav-btn primary">
-              <i class="btn-icon">→</i>
-              Go to Sales Report
-            </a>
-          </div>
+          <div class="nav-icon">📊</div>
+          <h3 class="nav-title">Sales Report</h3>
+          <!-- <p class="nav-description">View daily sales reports</p> -->
+          <a routerLink="/orders/sales-report" class="nav-link">Go to Sales Report</a>
         </div>
       </div>
 
       <!-- Reports Card -->
       <div class="nav-card">
-        <div class="nav-card-header">
-          <div class="nav-icon reports-icon">📈</div>
-          <h3>Reports</h3>
-        </div>
         <div class="nav-card-body">
-<!--          <p>Access detailed reports, export inventory data, and analyze business metrics.</p>-->
-          <div class="nav-actions">
-            <a routerLink="/orders/reports" class="nav-btn primary">
-              <i class="btn-icon">→</i>
-              Go to Reports
-            </a>
-          </div>
+          <div class="nav-icon">📈</div>
+          <h3 class="nav-title">Reports</h3>
+          <!-- <p class="nav-description">Detailed analytics and reports</p> -->
+          <a routerLink="/orders/reports" class="nav-link">Go to Reports</a>
         </div>
       </div>
     </div>
@@ -105,10 +100,10 @@
 
   <!-- Footer Section -->
   <div class="dashboard-footer">
-    <p class="footer-text">Welcome to your POS Management System</p>
-    <div class="footer-actions">
-      <button class="footer-btn" (click)="showInfoToast()">
-        <i class="btn-icon">ℹ️</i>
+    <div class="footer-content">
+      <p class="footer-text">© 2025 POS Management System</p>
+      <button class="info-btn" (click)="showInfoToast()">
+        <i class="icon-info">ℹ️</i>
         System Info
       </button>
     </div>

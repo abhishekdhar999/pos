@@ -46,7 +46,7 @@ public class ProductController {
     public void update(@PathVariable Integer id, @RequestBody ProductForm productForm) throws ApiException{
         productDto.update(id, productForm);
     }
-    @ApiOperation("Add multiple products using tsv.")
+    @ApiOperation("Adding bulk products using tsv")
     @RequestMapping(path = "/upload", method = RequestMethod.POST)
     public List<Response<ProductForm>> Upload (@RequestBody List<ProductForm> productFormsList) throws ApiException{
         return productDto.bulkUpload(productFormsList);

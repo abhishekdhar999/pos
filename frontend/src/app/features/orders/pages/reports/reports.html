@@ -1,0 +1,190 @@
+<div class="reports-container">
+  <!-- Header Section -->
+  <div class="page-header">
+    <div class="header-left">
+      <h1 class="page-title">
+        <i class="icon-chart"></i>
+        Reports
+      </h1>
+      <p class="page-subtitle">Sales analysis and inventory reports</p>
+    </div>
+    <div class="header-actions">
+      <div class="export-dropdown">
+        <button
+          class="btn btn-primary"
+          (click)="exportInventory()"
+          [disabled]="isExporting">
+          @if (isExporting) {
+            <i class="icon-loading">⏳</i>
+            Exporting...
+          } @else {
+            <i class="icon-download"></i>
+            Export Inventory
+          }
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filters Card -->
+  <div class="card filters-card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <i class="icon-filter"></i>
+        Filters
+      </h3>
+    </div>
+    <div class="card-body">
+      <div class="filters-grid">
+        <div class="filter-group">
+          <label class="filter-label">Start Date</label>
+          <input
+            type="date"
+            [(ngModel)]="filter.startDate"
+            class="filter-input"
+          />
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">End Date</label>
+          <input
+            type="date"
+            [(ngModel)]="filter.endDate"
+            class="filter-input"
+          />
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Product Barcode</label>
+          <input
+            type="text"
+            [(ngModel)]="filter.productBarcode"
+            placeholder="Enter product barcode..."
+            class="filter-input"
+          />
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Client Name</label>
+          <input
+            type="text"
+            [(ngModel)]="filter.client"
+            placeholder="Enter client name..."
+            class="filter-input"
+          />
+        </div>
+      </div>
+
+      <div class="filter-actions">
+        <button class="btn btn-secondary" (click)="clearFilters()">
+          <i class="icon-clear"></i>
+          Clear Filters
+        </button>
+        <button class="btn btn-primary" (click)="applyFilters()">
+          <i class="icon-search"></i>
+          Apply Filters
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Data Table -->
+  <div class="card data-card">
+    <div class="card-header">
+      <h3 class="card-title">
+        <i class="icon-table"></i>
+        Sales Data
+      </h3>
+      <div class="card-actions">
+        <span class="results-count">{{ salesData.length }} products</span>
+      </div>
+    </div>
+
+    <div class="card-body">
+      @if (loading) {
+        <div class="loading-state">
+          <div class="loading-spinner"></div>
+          <p>Loading sales data...</p>
+        </div>
+      } @else if (salesData.length > 0) {
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Product Barcode</th>
+                <th>Client Name</th>
+                <th>Quantity Sold</th>
+                <th>Total Revenue</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of salesData; track item.productBarcode) {
+                <tr class="data-row">
+                  <td class="barcode-cell">
+                    <span class="barcode-text">{{ item.productBarcode }}</span>
+                  </td>
+                  <td class="client-cell">
+                    <span class="client-name">{{ item.client }}</span>
+                  </td>
+                  <td class="quantity-cell">
+                    <span class="quantity-badge">{{ item.quantity | number }}</span>
+                  </td>
+                  <td class="revenue-cell">
+                    <span class="revenue-amount">₹{{ item.revenue | number:'1.2-2' }}</span>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <div class="empty-state">
+          <div class="empty-icon">📊</div>
+          <h3 class="empty-title">No Sales Data Found</h3>
+          <p class="empty-description">Try adjusting your filters or date range</p>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Pagination -->
+  @if (salesData.length > 0 ) {
+    <div class="pagination-container">
+      <div class="pagination-info">
+        <span>Page {{ currentPage + 1 }} of {{ totalPages }}</span>
+        <span>Showing {{ salesData.length }} products</span>
+      </div>
+
+      <div class="pagination-controls">
+        <button
+          class="pagination-btn"
+          (click)="prevPage()"
+          [disabled]="currentPage === 0"
+          [class.disabled]="currentPage === 0">
+          <span class="btn-icon">←</span>
+          Previous
+        </button>
+
+        <div class="page-numbers">
+          @for (page of [].constructor(totalPages); track $index) {
+            <button
+              class="page-number"
+              [class.active]="currentPage === $index"
+              (click)="filter.page = $index; loadReports()">
+              {{ $index + 1 }}
+            </button>
+          }
+        </div>
+
+        <button
+          class="pagination-btn"
+          (click)="nextPage()"
+          [disabled]="currentPage >= totalPages - 1"
+          [class.disabled]="currentPage >= totalPages - 1">
+          Next
+          <span class="btn-icon">→</span>
+        </button>
+      </div>
+    </div>
+  }
+</div>

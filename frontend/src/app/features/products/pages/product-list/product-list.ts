@@ -27,7 +27,7 @@ export class ProductList implements OnInit {
 
   // pagination state
   page = 0;
-  size = 9;
+  size = 10;
   totalPages = 0;
 
   // search state
@@ -255,7 +255,8 @@ export class ProductList implements OnInit {
         },
         error: (err: any) => {
           console.error('Error saving product:', err);
-          this.toastService.error(err.error.message);
+          const errorMessage = err.error?.error || err.error?.message || err.message || 'Failed to save product';
+          this.toastService.error(errorMessage);
         }
       });
     // }
@@ -298,7 +299,7 @@ this.fetchProducts();
     // Parse TSV file and convert to ProductForm list
     this.parseTSVToProductList(this.selectedFile).then(productList => {
       console.log('Parsed product list:', productList);
-
+      
       // Upload the list of ProductForm objects
       this.productService.bulkUploadProductList(productList).subscribe({
         next: (response: any[]) => {
@@ -367,7 +368,7 @@ this.fetchProducts();
 
             // If all items succeeded, close modal
             if (failedItems.length === 0) {
-              this.closeBulkInventoryModal();
+    this.closeBulkInventoryModal();
             }
           }
 
@@ -388,12 +389,12 @@ this.fetchProducts();
   private parseTSVToProductList(file: File): Promise<ProductForm[]> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-
+      
       reader.onload = (e) => {
         try {
           const text = e.target?.result as string;
           const lines = text.split('\n').filter(line => line.trim() !== '');
-
+          
           if (lines.length < 2) {
             reject(new Error('File must contain at least a header row and one data row'));
             return;
@@ -410,7 +411,7 @@ this.fetchProducts();
           const imageUrlIndex = headers.findIndex(h => h.includes('image') || h.includes('url'));
           const clientNameIndex = headers.findIndex(h => h.includes('client'));
 
-          if (nameIndex === -1 || barcodeIndex === -1 || priceIndex === -1 ||
+          if (nameIndex === -1 || barcodeIndex === -1 || priceIndex === -1 || 
               imageUrlIndex === -1 || clientNameIndex === -1) {
             reject(new Error('File must contain "name", "barcode", "price", "imageUrl", and "clientName" columns'));
             return;
@@ -418,10 +419,10 @@ this.fetchProducts();
 
           // Parse data rows
           const productList: ProductForm[] = [];
-
+          
           for (let i = 1; i < lines.length; i++) {
             const columns = lines[i].split('\t');
-
+            
             if (columns.length < Math.max(nameIndex, barcodeIndex, priceIndex, imageUrlIndex, clientNameIndex) + 1) {
               console.warn(`Skipping row ${i + 1}: insufficient columns`);
               continue;
@@ -573,7 +574,8 @@ this.fetchProducts();
       },
       error: (err: any) => {
         console.error('Error updating product:', err);
-        this.toastService.error(err.error.message);
+        const errorMessage = err.error?.error || err.error?.message || err.message || 'Failed to update product';
+        this.toastService.error(errorMessage);
       }
     });
   }

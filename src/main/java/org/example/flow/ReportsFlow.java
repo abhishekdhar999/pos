@@ -183,6 +183,23 @@ public Long getTotalOrdersCount(){
         return orderApi.getCount();
 }
 
+public Long getTotalSalesReportCount(SalesReportFilterForm salesReportFilterForm) throws ApiException {
+        ZonedDateTime startDate = ZonedDateTime.parse(salesReportFilterForm.getStartDate());
+        ZonedDateTime endDate = ZonedDateTime.parse(salesReportFilterForm.getEndDate());
+        List<OrderPojo> listOfOrderPojo = orderApi.getBetweenDates(startDate,endDate);
+
+        Set<Integer> uniqueProductIds = new HashSet<>();
+        
+        for(OrderPojo order : listOfOrderPojo){
+            List<OrderItemPojo> listOfOrderItem = orderItemApi.getByOrderId(order.getId());
+            for(OrderItemPojo orderItem : listOfOrderItem){
+                uniqueProductIds.add(orderItem.getProductId());
+            }
+        }
+        
+        return (long) uniqueProductIds.size();
+}
+
 
 
 }

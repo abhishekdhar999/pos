@@ -194,7 +194,7 @@ public List<OrderItemData> getOrderItemsByOrderIdWithProductName(List<OrderItemD
                throw new ApiException("Product not found");
            }
            orderItemData.setProductName(productPojo.getName());
-           // Removed the duplicate add operation that was causing the issue
+           // Removed duplicate add - the item is already in the list
        }
        return orderItemDataList;
 }

@@ -20,137 +20,6 @@ import java.util.*;
 @Getter
 @Setter
 public class UtilMethods {
-
-public static InventoryUploadResult converFileToInventoryFormListForBulk(MultipartFile file) throws ApiException{
-    InventoryUploadResult result = new InventoryUploadResult();
-    try (BufferedReader reader = new BufferedReader(
-            new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
-
-        String line;
-        boolean firstLine = true; // skip header if any
-        int rowNum = 1;
-
-        while ((line = reader.readLine()) != null) {
-            rowNum++;
-            if (firstLine) {
-                firstLine = false;
-                continue; // skip header
-            }
-
-            String[] columns = line.split("\t");
-            if (columns.length != 2) {
-                result.getErrors().add("Row " + rowNum + " is invalid: " + line);
-                continue;
-            }
-
-            String barcode = columns[0].trim();
-            String qtyStr = columns[1].trim();
-
-            if (barcode.isEmpty()) {
-                result.getErrors().add("Row " + rowNum + " missing barcode");
-                continue;
-            }
-
-            try {
-                int qty = Integer.parseInt(qtyStr);
-
-                InventoryForm inventoryForm = new InventoryForm();
-                inventoryForm.setBarcode(barcode);
-                inventoryForm.setQuantity(qty);
-
-                result.getInventories().add(inventoryForm);
-            } catch (NumberFormatException e) {
-                result.getErrors().add("Row " + rowNum + " invalid quantity: " + qtyStr);
-            }
-        }
-
-    } catch (Exception e) {
-        throw new ApiException("Failed to process TSV file: " + e.getMessage());
-    }
-
-    return result;
-}
-
-    public static InventoryUploadResult convertFileToInventoryFormList(MultipartFile file) throws ApiException {
-        InventoryUploadResult result = new InventoryUploadResult();
-
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
-
-            String line;
-            boolean firstLine = true; // skip header if any
-            int rowNum = 1;
-
-            while ((line = reader.readLine()) != null) {
-                rowNum++;
-                if (firstLine) {
-                    firstLine = false;
-                    continue; // skip header
-                }
-
-                String[] columns = line.split("\t");
-                if (columns.length != 2) {
-                    result.getErrors().add("Row " + rowNum + " is invalid: " + line);
-                    continue;
-                }
-
-                String barcode = columns[0].trim();
-                String qtyStr = columns[1].trim();
-
-                if (barcode.isEmpty()) {
-                    result.getErrors().add("Row " + rowNum + " missing barcode");
-                    continue;
-                }
-
-                try {
-                    int qty = Integer.parseInt(qtyStr);
-
-                    InventoryForm inventoryForm = new InventoryForm();
-                    inventoryForm.setBarcode(barcode);
-                    inventoryForm.setQuantity(qty);
-
-                    System.out.println("barcode: " + barcode);
-                    System.out.println("qty: " + qty);
-                    result.getInventories().add(inventoryForm);
-                } catch (NumberFormatException e) {
-                    result.getErrors().add("Row " + rowNum + " invalid quantity: " + qtyStr);
-                }
-            }
-
-        } catch (Exception e) {
-            throw new ApiException("Failed to process TSV file: " + e.getMessage());
-        }
-
-        return result;
-    }
-
-//   public static List<InventoryForm>    convertFileToInventoryFormList(MultipartFile file) throws ApiException{
-//       List<InventoryForm> inventories = new ArrayList<>();
-//
-//       try (BufferedReader reader = new BufferedReader(
-//               new InputStreamReader(file.getInputStream(), StandardCharsets.UTF_8))) {
-//
-//           String line;
-//           boolean firstLine = true; // skip header if any
-//           while ((line = reader.readLine()) != null) {
-//               if (firstLine) {
-//                   firstLine = false;
-//                   continue; // skip header
-//               }
-//               String[] columns = line.split("\t"); // split by tab
-//               if (columns.length < 2) continue; // adjust based on required fields
-//
-//               InventoryForm inventoryForm = new InventoryForm();
-//               inventoryForm.setBarcode(columns[0]);
-//               inventoryForm.setQuantity(Integer.parseInt(columns[1]));
-//               inventories.add(inventoryForm);
-//           }
-//
-//       } catch (Exception e) {
-//           throw new ApiException("Failed to process TSV file: " + e.getMessage());
-//       }
-//       return inventories;
-//   }
     public static List<ProductForm> convertFileInToProductFormList(MultipartFile file) throws ApiException {
         List<ProductForm> products = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(
@@ -209,7 +78,7 @@ return products;
         } else if (productForm.getImageUrl().length() > FinalValues.URL_LENGTH) {
             throw new ApiException("Barcode should not exceed "+ FinalValues.URL_LENGTH +" letters");
         } else if (productForm.getPrice() <= 0.0) {
-            throw new ApiException("Mrp should be greater then 0");
+        throw new ApiException("Product price should be greater than 0");
         } else if (productForm.getPrice() > FinalValues.FINAL_PRICE) {
             throw new ApiException("Mrp should not exceed ₹");
         }
@@ -242,8 +111,6 @@ return products;
             throw new ApiException("Quantity should be greater than 0.");
         } else if (orderItemForm.getQuantity() > FinalValues.FINAL_INVENTORY) {
             throw new ApiException("Quantity should not exceed "+ FinalValues.FINAL_INVENTORY);
-        } else if (orderItemForm.getSellingPrice() <= 0) {
-            throw new ApiException("Selling Price should be greater than 0.");
         } else if (orderItemForm.getBarcode().length() > FinalValues.MAXIMUM_LENGTH) {
             throw new ApiException("Barcode should not exceed "+ FinalValues.MAXIMUM_LENGTH +" letters");
         }

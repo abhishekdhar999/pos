@@ -36,7 +36,10 @@ export class LoginComponent {
 
 
   onSubmit() {
+    console.log("submit")
     console.log('Submit clicked', this.authForm.value);
+
+
     if (this.authForm.valid) {
       this.isLoading = true;
 
@@ -69,6 +72,9 @@ export class LoginComponent {
           }
         }
       });
+    }
+  else{
+    this.toastService.error("invalid credentials");
     }
   }
 }

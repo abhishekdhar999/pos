@@ -80,7 +80,11 @@ return response;
         response.setData(reportsDto.getSalesReport(salesReportFilterForm));
         response.setPage(salesReportFilterForm.getPage());
         response.setSize(salesReportFilterForm.getSize());
-        response.setTotalPages(reportsDto.getTotalOrdersCount()/salesReportFilterForm.getSize()+1);
+        
+        // Use the correct filtered count for sales report
+        Long totalCount = reportsDto.getTotalSalesReportCount(salesReportFilterForm);
+        response.setTotalPages((long) Math.ceil((double) totalCount / salesReportFilterForm.getSize()));
+        
         return response;
     }
 
