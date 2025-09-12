@@ -10,6 +10,7 @@ import org.example.models.form.OrderFiltersForm;
 import org.example.models.form.OrderItemForm;
 import org.example.pojo.OrderItemPojo;
 import org.example.pojo.OrderPojo;
+import org.example.pojo.ProductPojo;
 import org.example.utils.UtilMethods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -49,13 +50,16 @@ public class OrderDto {
         List<OrderItemData> orderItemDataList = DtoHelper.convertOrderItemPojoListToOrderItemDataList(orderItemPojoList);
         return convertToOrderData(orderPojo, orderItemDataList);
     }
+
     public List<OrderData> getAll(OrderFiltersForm orderFiltersForm) throws ApiException{
         List<OrderPojo> orderPojoList = orderFlow.getAllOrders(orderFiltersForm);
         List<OrderData> orderDataList = new ArrayList<>();
         for(OrderPojo orderPojo: orderPojoList){
             List<OrderItemPojo> orderItemPojoList = orderFlow.getOrderItemsByOrderId(orderPojo.getId());
+
             List<OrderItemData> orderItemDataList = DtoHelper.convertOrderItemPojoListToOrderItemDataList(orderItemPojoList);
-            orderDataList.add(convertToOrderData(orderPojo, orderItemDataList));
+            List<OrderItemData> orderItemDataListWithProductName = orderFlow.getOrderItemsByOrderIdWithProductName(orderItemDataList);
+            orderDataList.add(convertToOrderData(orderPojo, orderItemDataListWithProductName));
         }
         return orderDataList;
     }

@@ -35,12 +35,6 @@ public class OrderController {
         return orderDto.getOrderDetails(orderId);
     }
 
-
-//    @ApiOperation("getting all order's detail.")
-//    @RequestMapping(method = RequestMethod.GET)
-//    public List<OrderData> getAll(@ModelAttribute OrderFiltersForm orderfilters) throws ApiException{
-//        return orderDto.getAll(orderfilters);
-//    }
     @ApiOperation("getting all order's detail.")
     @RequestMapping(method = RequestMethod.GET)
     public PaginatedResponse<OrderData> getAll(@ModelAttribute OrderFiltersForm orderfilters) throws ApiException {

@@ -88,6 +88,7 @@ public class DtoHelper {
         OrderItemData orderItemData = new OrderItemData();
 
         orderItemData.setId(orderItemPojo.getId());
+
         orderItemData.setQuantity(orderItemPojo.getQuantity());
         orderItemData.setProductId(orderItemPojo.getProductId());
         orderItemData.setSellingPrice(orderItemPojo.getSellingPrice());

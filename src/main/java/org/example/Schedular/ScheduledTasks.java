@@ -12,7 +12,7 @@ public class ScheduledTasks {
     @Autowired
     private ReportsDto reportsDto;
 
-//  @Scheduled(fixedDelay = 10000)
+  @Scheduled(fixedDelay =50000)
     public void generateDayReport() throws ApiException {
 reportsDto.generateDayReports();
     }

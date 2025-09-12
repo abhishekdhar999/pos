@@ -170,6 +170,9 @@ listSalesReportDataFilters.add(salesReportData);
 
 }
 
+public Long getTotalOrdersCount(){
+        return orderApi.getCount();
+}
 
 
 

@@ -20,9 +20,9 @@ export class ClientList implements OnInit {
 
   // pagination state
   page = 0;
-  size = 10;
+  size = 12;
   totalPages = 0;
-
+    total :number = 0;
   // search state
   searchKeyword: string = '';
   searchResults: string[] = [];
@@ -80,7 +80,8 @@ export class ClientList implements OnInit {
         this.clients = data.data;
         this.page = data.page;
         this.size = data.size;
-        this.totalPages = data.totalPages;
+        this.total = data.totalPages;
+        this.totalPages = Math.ceil((data.totalPages / this.size) );
         this.loading = false;
       },
       error: (err: any) => {

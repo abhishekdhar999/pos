@@ -37,7 +37,7 @@ public class ClientController {
     @ApiOperation("gets all the client")
     @RequestMapping(method = RequestMethod.GET)
     public PaginatedResponse<ClientData> getAll(@RequestParam(defaultValue = "0") Integer page,
-                                                @RequestParam(defaultValue = "10") Integer size){
+                                                @RequestParam(defaultValue = "12") Integer size){
         List<ClientData> clientDataList = clientDto.getAll(page, size);
 Long total = clientDto.getTotalCount();
         PaginatedResponse<ClientData> response = new PaginatedResponse<>();

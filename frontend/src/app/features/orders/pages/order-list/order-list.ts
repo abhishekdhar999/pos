@@ -66,6 +66,7 @@ export class OrderList implements OnInit{
   ) {}
 
   isSupervisor = false
+  
   ngOnInit(): void {
     this.fetchOrders();
     const role = this.safeStorage.getItem('role'); // 👈 get role from sessionStorage
@@ -248,6 +249,10 @@ export class OrderList implements OnInit{
       }
 
       this.toastService.success(`Added ${this.orderQuantity} ${this.selectedProduct.name} to cart`);
+
+      // Clear selected product and reset form
+      this.selectedProduct = null;
+      this.selectedBarcode = '';
       this.orderQuantity = 1;
     }
   }
@@ -292,14 +297,19 @@ export class OrderList implements OnInit{
     this.orderService.generateInvoice(orderId).subscribe({
       next: (response: any) => {
         // Store the invoice ID for this order
-        console.log("response",response)
+        console.log("Invoice generation response:", response)
         if (response.invoiceId) {
           this.orderInvoiceIds.set(orderId, response.invoiceId);
         }
 
         this.toastService.success('Invoice generated successfully');
         this.generatingInvoice = null;
-        this.fetchOrders(); // Refresh the order list to update isInvoiced status
+        
+        // Add a small delay to ensure backend transaction is committed
+        setTimeout(() => {
+          console.log('Refreshing orders after invoice generation...');
+          this.fetchOrders(); // Refresh the order list to update isInvoiced status
+        }, 500);
       },
       error: (err) => {
         console.error('Error generating invoice', err);

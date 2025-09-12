@@ -64,5 +64,8 @@ public class ReportsDto {
         normalizeSalesReportFilterForm(salesReportFilterForm);
         return reportsFlow.getSalesReport(salesReportFilterForm);
    }
+   public Long getTotalOrdersCount(){
+        return reportsFlow.getTotalOrdersCount();
+   }
 
 }

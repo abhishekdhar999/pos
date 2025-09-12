@@ -92,7 +92,7 @@
             </div>
 
             <div class="order-actions" (click)="$event.stopPropagation()">
-              @if (order.status === 'FULFILLABLE') {
+              @if (order.status === 'FULFILLABLE' || order.status === 'INVOICED') {
                 @if (!order.isInvoiced) {
                   <button
                     type="button"
@@ -161,7 +161,7 @@
                   @for (item of order.orderItems; track item.id) {
                     <div class="item-row">
                       <div class="item-info">
-                        <span class="item-name">Product ID: {{ item.productId }}</span>
+                        <span class="item-name">Product Name: {{ item.productName }}</span>
                         <span class="item-quantity">Qty: {{ item.quantity }}</span>
                       </div>
                       <div class="item-pricing">
@@ -262,17 +262,19 @@
             </div>
 
             <div class="quantity-controls">
-              <label>Quantity:</label>
-              <div class="quantity-input">
-                <button type="button" (click)="decreaseQuantity()" [disabled]="orderQuantity <= 1">-</button>
-                <input type="number" [(ngModel)]="orderQuantity" min="1" [max]="selectedProduct.quantity" />
-                <button type="button" (click)="increaseQuantity()" [disabled]="orderQuantity >= selectedProduct.quantity">+</button>
+              <div class="quantity-controls-left">
+                <label>Quantity:</label>
+                <div class="quantity-input">
+                  <button type="button" (click)="decreaseQuantity()" [disabled]="orderQuantity <= 1">-</button>
+                  <input type="number" [(ngModel)]="orderQuantity" min="1" [max]="selectedProduct.quantity" />
+                  <button type="button" (click)="increaseQuantity()" [disabled]="orderQuantity >= selectedProduct.quantity">+</button>
+                </div>
               </div>
-            </div>
 
-            <button type="button" class="add-to-cart-btn" (click)="addToCart()" >
-              Add to Cart
-            </button>
+              <button type="button" class="add-to-cart-btn" (click)="addToCart()" >
+                Add to Cart
+              </button>
+            </div>
           </div>
         }
 

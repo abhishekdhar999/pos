@@ -58,4 +58,7 @@ public class OrderApi {
     public Long getTotalCount(OrderFiltersForm orderFiltersForm) {
         return orderDao.getTotalCount(orderFiltersForm);
     }
+    public Long getCount(){
+        return orderDao.getCount();
+    }
 }

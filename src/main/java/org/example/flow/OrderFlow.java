@@ -8,6 +8,7 @@ import org.example.dto.ApiException;
 import org.example.enums.OrderStatus;
 import org.example.models.data.ErrorData;
 import org.example.models.data.OrderError;
+import org.example.models.data.OrderItemData;
 import org.example.models.form.OrderFiltersForm;
 import org.example.pojo.InventoryPojo;
 import org.example.pojo.OrderItemPojo;
@@ -186,7 +187,17 @@ public class OrderFlow {
         return orderApi.getById(orderId);
     }
 
-
+public List<OrderItemData> getOrderItemsByOrderIdWithProductName(List<OrderItemData> orderItemDataList) throws ApiException {
+       for (OrderItemData orderItemData : orderItemDataList) {
+           ProductPojo productPojo = productApi.getById(orderItemData.getProductId());
+           if(Objects.isNull(productPojo)){
+               throw new ApiException("Product not found");
+           }
+           orderItemData.setProductName(productPojo.getName());
+           // Removed the duplicate add operation that was causing the issue
+       }
+       return orderItemDataList;
+}
 
 
 }

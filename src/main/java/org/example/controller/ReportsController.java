@@ -74,8 +74,14 @@ return response;
     }
     @ApiOperation("get sales report bases on date range, client, product")
     @RequestMapping(path = "/sales", method = RequestMethod.GET)
-    public List<SalesReportData> getSalesReport(@ModelAttribute SalesReportFilterForm salesReportFilterForm) throws ApiException {
-        return reportsDto.getSalesReport(salesReportFilterForm);
+    public PaginatedResponse<SalesReportData> getSalesReport(@ModelAttribute SalesReportFilterForm salesReportFilterForm) throws ApiException {
+
+        PaginatedResponse<SalesReportData> response = new PaginatedResponse<>();
+        response.setData(reportsDto.getSalesReport(salesReportFilterForm));
+        response.setPage(salesReportFilterForm.getPage());
+        response.setSize(salesReportFilterForm.getSize());
+        response.setTotalPages(reportsDto.getTotalOrdersCount()/salesReportFilterForm.getSize()+1);
+        return response;
     }
 
 

@@ -9,6 +9,11 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
+@Table(
+        indexes = {
+                @Index(name = "idx_order_item_",columnList = "orderId")
+        }
+)
 public class OrderItemPojo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
