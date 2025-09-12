@@ -66,7 +66,7 @@ export class OrderList implements OnInit{
   ) {}
 
   isSupervisor = false
-  
+
   ngOnInit(): void {
     this.fetchOrders();
     const role = this.safeStorage.getItem('role'); // 👈 get role from sessionStorage
@@ -75,15 +75,38 @@ export class OrderList implements OnInit{
   filter: OrderFilter = {
     page: 0,
     size: 10,
-    startDate: '2025-07-15T10:47:38.803+05:30', // same as Constants.MIN_DATE
-    endDate: new Date().toISOString(),
+     startDate: new Date(new Date().setDate(new Date().getDate() - 30))
+         .toISOString()
+         .split('T')[0],   // e.g. "2025-08-13"
+       endDate: new Date().toISOString().split('T')[0],
     orderId: undefined,
     status: ''
   };
 
   fetchOrders(): void {
     this.loading = true;
-    this.orderService.getOrders(this.filter).subscribe({
+    
+    // Validate and set default dates if invalid
+    if (!this.filter.startDate || isNaN(new Date(this.filter.startDate).getTime())) {
+      this.filter.startDate = new Date(new Date().setDate(new Date().getDate() - 30))
+        .toISOString()
+        .split('T')[0];
+    }
+    
+    if (!this.filter.endDate || isNaN(new Date(this.filter.endDate).getTime())) {
+      this.filter.endDate = new Date().toISOString().split('T')[0];
+    }
+    
+    const startDate = new Date(this.filter.startDate + 'T00:00:00.000+05:30').toISOString();
+    const endDate = new Date(this.filter.endDate + 'T23:59:59.999+05:30').toISOString();
+
+    const OrderFilter = {
+      ...this.filter,
+      startDate,
+      endDate
+    };
+
+    this.orderService.getOrders(OrderFilter).subscribe({
       next: (response: any) => {
         console.log("Order data received:", response);
 
@@ -139,10 +162,10 @@ export class OrderList implements OnInit{
 
   applyFilters(): void {
     if (this.filter.startDate) {
-      this.filter.startDate = new Date(this.filter.startDate).toISOString();
+      this.filter.startDate = new Date(this.filter.startDate).toISOString().split('T')[0];
     }
     if (this.filter.endDate) {
-      this.filter.endDate = new Date(this.filter.endDate).toISOString();
+      this.filter.endDate = new Date(this.filter.endDate).toISOString().split('T')[0];
     }
 
     this.filter.page = 0; // reset pagination when applying new filters
@@ -304,7 +327,7 @@ export class OrderList implements OnInit{
 
         this.toastService.success('Invoice generated successfully');
         this.generatingInvoice = null;
-        
+
         // Add a small delay to ensure backend transaction is committed
         setTimeout(() => {
           console.log('Refreshing orders after invoice generation...');

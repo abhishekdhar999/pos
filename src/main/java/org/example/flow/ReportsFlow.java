@@ -144,6 +144,9 @@ public List<SalesReportData> getSalesReport(SalesReportFilterForm salesReportFil
        List<SalesReportData> listSalesReportDataFilters = new ArrayList<>();
 
     if(salesReportFilterForm.getClient().isEmpty() && !salesReportFilterForm.getProductBarcode().isEmpty()){
+        System.out.println("in if");
+        System.out.println("client name"+ salesReportFilterForm.getClient());
+        System.out.println("product barcode"+ salesReportFilterForm.getProductBarcode());
 //           only check for barcode
         for(SalesReportData salesReportData : listSalesReportData ){
 if(salesReportData.getProductBarcode().contains(salesReportFilterForm.getProductBarcode())){
@@ -152,6 +155,9 @@ listSalesReportDataFilters.add(salesReportData);
         }
     }else if(salesReportFilterForm.getProductBarcode().isEmpty() &&  !salesReportFilterForm.getClient().isEmpty()){
 //        only check for client
+        System.out.println("in else if");
+        System.out.println("client name"+ salesReportFilterForm.getClient());
+        System.out.println("product barcode"+ salesReportFilterForm.getProductBarcode());
         for(SalesReportData salesReportData : listSalesReportData ){
             if(salesReportData.getClient().contains(salesReportFilterForm.getClient())){
                 listSalesReportDataFilters.add(salesReportData);
@@ -159,6 +165,9 @@ listSalesReportDataFilters.add(salesReportData);
         }
     }else{
 //        check for both client and barcode
+        System.out.println("in else");
+        System.out.println("client name"+ salesReportFilterForm.getClient());
+        System.out.println("product barcode"+ salesReportFilterForm.getProductBarcode());
         for(SalesReportData salesReportData : listSalesReportData ){
             if(salesReportData.getProductBarcode().contains(salesReportFilterForm.getProductBarcode()) && salesReportData.getClient().contains(salesReportFilterForm.getClient())){
                 listSalesReportDataFilters.add(salesReportData);

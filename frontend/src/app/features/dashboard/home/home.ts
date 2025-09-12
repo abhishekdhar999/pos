@@ -31,6 +31,6 @@ export class Home {
   }
 
   showInfoToast() {
-
+    this.toastService.info('Welcome to the POS Management System! Navigate through the different sections using the cards above.');
   }
 }

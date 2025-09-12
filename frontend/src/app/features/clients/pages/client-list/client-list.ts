@@ -20,7 +20,7 @@ export class ClientList implements OnInit {
 
   // pagination state
   page = 0;
-  size = 12;
+  size = 9;
   totalPages = 0;
     total :number = 0;
   // search state

@@ -36,9 +36,7 @@ public class ProductApi {
 
         //checking if product with given id exists or not, if exists then checking for duplicate barcode, only if it is getting updated.
         ProductPojo existingProduct = getById(id);
-        if(existingProduct.getName().equals(productPojo.getName())){
-            throw new ApiException("name already exists");
-        }else if (Objects.isNull(existingProduct)){
+     if (Objects.isNull(existingProduct)){
             throw new ApiException("Product with id '"+id+"' doesn't exists");
         } else if (!existingProduct.getBarcode().equals(productPojo.getBarcode())) {
             checkDuplicateBarcode(productPojo.getBarcode());
@@ -46,27 +44,27 @@ public class ProductApi {
         productDao.update(id, productPojo);
     }
 
-    public List<Response<ProductPojo>> batchAdd(List<ProductPojo> productPojoList){
-        List<Response<ProductPojo>> responseList = new ArrayList<>();
-
-        boolean errorOccured = false;
-        for(ProductPojo productPojo: productPojoList){
-            Response<ProductPojo> response = new Response<>();
-            response.setData(productPojo);
-            response.setMessage("No error");
-            try{
-                checkDuplicateBarcode(productPojo.getBarcode());
-            }catch (ApiException e){
-                response.setMessage(e.getMessage());
-                errorOccured = true;
-            }
-            responseList.add(response);
-        }
-        if(!errorOccured){
-            productDao.batchAdd(productPojoList);
-        }
-        return responseList;
-    }
+//    public List<Response<ProductPojo>> batchAdd(List<ProductPojo> productPojoList){
+//        List<Response<ProductPojo>> responseList = new ArrayList<>();
+//
+//        boolean errorOccured = false;
+//        for(ProductPojo productPojo: productPojoList){
+//            Response<ProductPojo> response = new Response<>();
+//            response.setData(productPojo);
+//            response.setMessage("No error");
+//            try{
+//                checkDuplicateBarcode(productPojo.getBarcode());
+//            }catch (ApiException e){
+//                response.setMessage(e.getMessage());
+//                errorOccured = true;
+//            }
+//            responseList.add(response);
+//        }
+//        if(!errorOccured){
+//            productDao.batchAdd(productPojoList);
+//        }
+//        return responseList;
+//    }
 
     public ProductPojo getByBarcode(String barcode)throws ApiException{
         return productDao.getByBarcode(barcode);

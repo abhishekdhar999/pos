@@ -43,11 +43,6 @@ public class LoginController {
         if (Objects.isNull(userPojo)) {
             throw new ApiException("Username or password is invalid.");
         }
-//        boolean authenticated = !Objects.isNull(userPojo) && bCryptPasswordEncoder.matches(loginForm.getPassword(), userPojo.getPassword());
-//        if(!authenticated){
-//            throw new ApiException("Username or password is invalid.");
-//        }
-
         // Create authentication object
         Authentication authentication = convert(userPojo, properties.getSupervisorEmail());
         // Create new session

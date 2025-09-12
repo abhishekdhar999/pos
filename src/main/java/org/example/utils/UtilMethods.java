@@ -194,6 +194,8 @@ return products;
             throw new ApiException("Client name should not be empty");
         } else if (clientForm.getName().length() > FinalValues.MAXIMUM_LENGTH) {
             throw new ApiException("Client name should not exceed "+ FinalValues.MAXIMUM_LENGTH +" letters");
+        }else if(clientForm.getName().length()< 5){
+            throw new ApiException("Client name should be more than 5 letters");
         }
     }
 

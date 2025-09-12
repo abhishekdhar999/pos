@@ -11,8 +11,6 @@ public class ApiException extends Exception {
         super(message, cause);
     }
 
-    public ApiException(String nameCannotBeEmpty, HttpStatus httpStatus, String s, String s1) {
-        super(s1);
-    }
+
 }
 

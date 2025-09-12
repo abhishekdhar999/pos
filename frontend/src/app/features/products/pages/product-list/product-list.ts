@@ -27,7 +27,7 @@ export class ProductList implements OnInit {
 
   // pagination state
   page = 0;
-  size = 10;
+  size = 9;
   totalPages = 0;
 
   // search state
@@ -210,7 +210,10 @@ export class ProductList implements OnInit {
   closeBulkProductModal(): void {
     this.showBulkProductModal = false;
     this.selectedFile = null;
+    // Clear upload results to hide download button
+    this.uploadSuccesses = [];
     this.uploadErrors = [];
+    this.allUploadResults = [];
   }
 
   // Inventory modals
@@ -232,6 +235,10 @@ export class ProductList implements OnInit {
   closeBulkInventoryModal(): void {
     this.showBulkInventoryModal = false;
     this.inventoryFile = null;
+    // Clear upload results to hide download button
+    this.uploadSuccesses = [];
+    this.uploadErrors = [];
+    this.allUploadResults = [];
   }
 
   // Product operations
@@ -291,7 +298,7 @@ this.fetchProducts();
     // Parse TSV file and convert to ProductForm list
     this.parseTSVToProductList(this.selectedFile).then(productList => {
       console.log('Parsed product list:', productList);
-      
+
       // Upload the list of ProductForm objects
       this.productService.bulkUploadProductList(productList).subscribe({
         next: (response: any[]) => {
@@ -307,20 +314,8 @@ this.fetchProducts();
             this.uploadErrors = failedItems;
             this.allUploadResults = response; // Combined for comprehensive download
 
-            // Show success message for successful items
-            if (successfulItems.length > 0) {
-              this.toastService.info(`${successfulItems.length} products uploaded successfully`);
-            }
-
-            // Show error messages for failed items
-            if (failedItems.length > 0) {
-              this.toastService.error(`${failedItems.length} products failed to upload`);
-            }
-
-            // If all items failed, show general error
-            if (successfulItems.length === 0 && failedItems.length > 0) {
-              this.toastService.error('Upload failed - all products had errors');
-            }
+            // Show single info toast with both success and error counts
+            this.toastService.info(`Upload completed: ${successfulItems.length} successful, ${failedItems.length} failed`);
 
             // If all items succeeded, close modal
             if (failedItems.length === 0) {
@@ -367,24 +362,12 @@ this.fetchProducts();
             this.uploadErrors = failedItems;
             this.allUploadResults = response; // Combined for comprehensive download
 
-            // Show success message for successful items
-            if (successfulItems.length > 0) {
-              this.toastService.info(`${successfulItems.length} inventory items uploaded successfully`);
-            }
-
-            // Show error messages for failed items
-            if (failedItems.length > 0) {
-              this.toastService.error(`${failedItems.length} inventory items failed to upload`);
-            }
-
-            // If all items failed, show general error
-            if (successfulItems.length === 0 && failedItems.length > 0) {
-              this.toastService.error('Upload failed - all inventory items had errors');
-            }
+            // Show single info toast with both success and error counts
+            this.toastService.info(`Upload completed: ${successfulItems.length} successful, ${failedItems.length} failed`);
 
             // If all items succeeded, close modal
             if (failedItems.length === 0) {
-    this.closeBulkInventoryModal();
+              this.closeBulkInventoryModal();
             }
           }
 
@@ -405,12 +388,12 @@ this.fetchProducts();
   private parseTSVToProductList(file: File): Promise<ProductForm[]> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      
+
       reader.onload = (e) => {
         try {
           const text = e.target?.result as string;
           const lines = text.split('\n').filter(line => line.trim() !== '');
-          
+
           if (lines.length < 2) {
             reject(new Error('File must contain at least a header row and one data row'));
             return;
@@ -427,7 +410,7 @@ this.fetchProducts();
           const imageUrlIndex = headers.findIndex(h => h.includes('image') || h.includes('url'));
           const clientNameIndex = headers.findIndex(h => h.includes('client'));
 
-          if (nameIndex === -1 || barcodeIndex === -1 || priceIndex === -1 || 
+          if (nameIndex === -1 || barcodeIndex === -1 || priceIndex === -1 ||
               imageUrlIndex === -1 || clientNameIndex === -1) {
             reject(new Error('File must contain "name", "barcode", "price", "imageUrl", and "clientName" columns'));
             return;
@@ -435,10 +418,10 @@ this.fetchProducts();
 
           // Parse data rows
           const productList: ProductForm[] = [];
-          
+
           for (let i = 1; i < lines.length; i++) {
             const columns = lines[i].split('\t');
-            
+
             if (columns.length < Math.max(nameIndex, barcodeIndex, priceIndex, imageUrlIndex, clientNameIndex) + 1) {
               console.warn(`Skipping row ${i + 1}: insufficient columns`);
               continue;

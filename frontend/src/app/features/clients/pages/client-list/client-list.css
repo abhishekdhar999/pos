@@ -268,7 +268,7 @@
 /* Client Grid */
 .client-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(420px, 1fr));
   gap: 24px;
   margin-bottom: 32px;
 }
@@ -276,7 +276,7 @@
 .client-card {
   background: white;
   border-radius: 16px;
-  padding: 24px;
+  padding: 44px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
   border: 1px solid #e2e8f0;
