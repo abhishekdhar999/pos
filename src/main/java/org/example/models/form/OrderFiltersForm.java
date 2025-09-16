@@ -11,6 +11,7 @@ import java.time.ZonedDateTime;
 public class OrderFiltersForm {
     private Integer page = 0;
     private Integer size = 10;
+
     private String startDate = FinalValues.START_DATE;
     private String endDate = ZonedDateTime.now().toString();
     private Integer orderId;

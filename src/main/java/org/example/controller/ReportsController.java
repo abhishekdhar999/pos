@@ -53,7 +53,7 @@ return response;
 
     @ApiOperation("export daily sales report")
     @RequestMapping(path = "/export",method = RequestMethod.GET)
-    public void exportDailyReports(@ModelAttribute ExportFilterDailyReports form, HttpServletResponse response) throws ApiException, IOException {
+    public String exportDailyReports(@ModelAttribute ExportFilterDailyReports form, HttpServletResponse response) throws ApiException, IOException {
 
       ZonedDateTime endDate = ZonedDateTime.now();
 
@@ -69,7 +69,7 @@ return response;
                 throw new ApiException("start date cannot be in the future");
             }
         }
-        reportsDto.getDaySalesReportsBetweenDates(form, response);
+      return  reportsDto.getDaySalesReportsBetweenDates(form, response);
 
     }
     @ApiOperation("get sales report bases on date range, client, product")
@@ -86,6 +86,12 @@ return response;
         response.setTotalPages((long) Math.ceil((double) totalCount / salesReportFilterForm.getSize()));
         
         return response;
+    }
+
+    @ApiOperation("get sales report ")
+    @RequestMapping(path = "/export-sales",method = RequestMethod.GET)
+    public String exportSalesReport(@ModelAttribute SalesReportFilterForm salesReportFilterForm) throws ApiException {
+        return reportsDto.exportSalesReport(salesReportFilterForm);
     }
 
 

@@ -23,10 +23,13 @@ public class ReportsFlow {
 
     @Autowired
     private OrderApi orderApi;
-    private final InvoiceClient invoiceClient;
+
+//    private final InvoiceClient invoiceClient;
     @Autowired
     private OrderItemApi orderItemApi;
 
+    @Autowired
+    private InvoiceClient invoiceClient;
     @Autowired
     private SalesReportApi salesReportApi;
     @Autowired
@@ -34,9 +37,10 @@ public class ReportsFlow {
     @Autowired
     private ClientApi clientApi;
 
-    public ReportsFlow(InvoiceClient invoiceClient) {
-        this.invoiceClient = invoiceClient;
-    }
+
+//    public ReportsFlow(InvoiceClient invoiceClient) {
+//        this.invoiceClient = invoiceClient;
+//    }
 
     public void generateDayReport() throws ApiException {
 //        get orders of the day

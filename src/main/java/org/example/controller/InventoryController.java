@@ -60,22 +60,7 @@ public class InventoryController {
     }
     @ApiOperation("download the current inventory")
     @RequestMapping(path = "/export",method = RequestMethod.GET)
-    public void downloadInventory(HttpServletResponse response) throws ApiException, IOException {
-        List<InventoryData> listOfInventoryData = inventoryDto.getAll();
-if(Objects.isNull(listOfInventoryData)){
-    throw new ApiException("error fetching the inventory data");
-}
-        response.setContentType("text/tab-separated-values");
-        response.setHeader("Content-Disposition", "attachment; filename=inventory.tsv");
-
-//        write tsv data
-        PrintWriter writer = response.getWriter();
-        writer.println("barcode\tquantity");
-
-        for(InventoryData inventoryData : listOfInventoryData){
-            writer.println(inventoryData.getBarcode()+"\t"+inventoryData.getQuantity());
-        }
-        writer.flush();
+    public String downloadInventory(HttpServletResponse response) throws ApiException, IOException {
+        return inventoryDto.exportInventory();
     }
-
 }

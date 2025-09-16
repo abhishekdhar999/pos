@@ -9,10 +9,32 @@
       <p class="page-subtitle">Track your sales performance and revenue trends</p>
     </div>
     <div class="header-actions">
-      <button class="btn btn-primary" (click)="exportReport()">
-        <i class="icon-download"></i>
-        Export Report
-      </button>
+      <div class="export-section">
+        <div class="export-dates">
+          <div class="form-group">
+            <label class="form-label">Export Start Date</label>
+            <input
+              type="date"
+              [(ngModel)]="filter.startDate"
+              class="form-control export-date-input"
+              placeholder="Select start date"
+            />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Export End Date</label>
+            <input
+              type="date"
+              [(ngModel)]="filter.endDate"
+              class="form-control export-date-input"
+              placeholder="Select end date"
+            />
+          </div>
+        </div>
+        <button class="btn btn-primary" (click)="exportReport()" [disabled]="!filter.startDate || !filter.endDate">
+          <i class="icon-download"></i>
+          Export Daily Sales Report (PDF)
+        </button>
+      </div>
     </div>
   </div>
 

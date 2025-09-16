@@ -36,6 +36,8 @@ public class OrderController {
     @ApiOperation("getting all order's detail.")
     @RequestMapping(method = RequestMethod.GET)
     public PaginatedResponse<OrderData> getAll(@ModelAttribute OrderFiltersForm orderfilters) throws ApiException {
+       System.out.println(orderfilters.getStartDate());
+       System.out.println(orderfilters.getEndDate());
         List<OrderData> data = orderDto.getAll(orderfilters);
         PaginatedResponse<OrderData> response = new PaginatedResponse<>();
         response.setData(data);

@@ -71,9 +71,13 @@ return products;
     public static void validateProductForm(ProductForm productForm) throws ApiException{
         if(Objects.isNull(productForm)){
             throw new ApiException("Product should not be null");
-        } else if (productForm.getBarcode().length() > FinalValues.MAXIMUM_LENGTH) {
+        }else if(productForm.getName().isEmpty()){
+            throw new ApiException("Product name should not be empty");
+        }else if(productForm.getBarcode().isEmpty()){
+            throw new ApiException("Barcode should not be empty");
+        }else if (productForm.getBarcode().length() > FinalValues.MAXIMUM_LENGTH) {
             throw new ApiException("Barcode should not exceed "+ FinalValues.MAXIMUM_LENGTH +" letters");
-        } else if (productForm.getName().length() > FinalValues.MAXIMUM_LENGTH) {
+        }else if (productForm.getName().length() > FinalValues.MAXIMUM_LENGTH) {
             throw new ApiException("Product name should not exceed "+ FinalValues.MAXIMUM_LENGTH +" letters");
         } else if (productForm.getImageUrl().length() > FinalValues.URL_LENGTH) {
             throw new ApiException("Barcode should not exceed "+ FinalValues.URL_LENGTH +" letters");
@@ -81,6 +85,10 @@ return products;
         throw new ApiException("Product price should be greater than 0");
         } else if (productForm.getPrice() > FinalValues.FINAL_PRICE) {
             throw new ApiException("Mrp should not exceed ₹");
+        }else if(productForm.getBarcode().length() < 5){
+            throw new ApiException("Barcode should be more than 5 letters");
+        }else if(productForm.getName().length() < 5){
+            throw new ApiException("Product name should be more than 5 letters");
         }
     }
 

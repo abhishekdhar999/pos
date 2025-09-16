@@ -122,6 +122,7 @@
             <version>${mysql.version}</version>
         </dependency>
 
+
         <!-- Apache commons -->
         <dependency>
             <groupId>commons-dbcp</groupId>
@@ -176,7 +177,12 @@
             <artifactId>slf4j-simple</artifactId>
             <version>1.7.36</version>
         </dependency>
-
+<!--fop-->
+        <dependency>
+            <groupId>org.apache.xmlgraphics</groupId>
+            <artifactId>fop</artifactId>
+            <version>2.9</version> <!-- latest stable -->
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>

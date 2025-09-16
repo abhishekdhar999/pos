@@ -114,7 +114,7 @@
         <button class="modal-close" (click)="closeSingleInventoryModal()">×</button>
       </div>
 
-      <form [formGroup]="inventoryForm" (ngSubmit)="uploadBulkInventory()" class="modal-form">
+      <form [formGroup]="inventoryForm" (ngSubmit)="onSubmitInventory()" class="modal-form">
         <div class="form-group">
           <label for="inventoryProduct" class="form-label">Barcode</label>
           <select id="inventoryProduct" formControlName="barcode" class="form-input">
@@ -261,6 +261,14 @@
             <li>First row should contain headers</li>
             <li>Example format: <code>name	barcode	price	imageUrl	clientName</code></li>
           </ul>
+          
+          <div class="sample-file-section">
+            <p><strong>Need a sample file?</strong></p>
+            <button type="button" class="btn-secondary" (click)="downloadSampleProductFile()">
+              <span class="btn-icon">📄</span>
+              Download Sample TSV File
+            </button>
+          </div>
         </div>
 
         <div class="file-upload-area">
@@ -337,6 +345,14 @@
             <li>First row should contain headers</li>
             <li>Example format: <code>barcode	quantity</code></li>
           </ul>
+          
+          <div class="sample-file-section">
+            <p><strong>Need a sample file?</strong></p>
+            <button type="button" class="btn-secondary" (click)="downloadSampleInventoryFile()">
+              <span class="btn-icon">📄</span>
+              Download Sample TSV File
+            </button>
+          </div>
         </div>
 
         <div class="file-upload-area">

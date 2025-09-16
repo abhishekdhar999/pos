@@ -98,21 +98,49 @@ export class SalesReportComponent implements OnInit {
     const endDate = new Date(this.filter.endDate + 'T23:59:59.999+05:30').toISOString();
 
     this.salesReportService.exportReport(startDate, endDate).subscribe({
-      next: (tsvContent: string) => {
-        // Backend returns TSV content, so use it directly
-        const blob = new Blob([tsvContent], { type: 'text/tab-separated-values' });
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `sales-report-${this.filter.startDate}-to-${this.filter.endDate}.tsv`;
-        link.click();
-        window.URL.revokeObjectURL(url);
+      next: (base64Content: string) => {
+        // Backend returns PDF base64 string, convert to PDF
+        try {
+          // Check if response is valid base64
+          if (!base64Content || base64Content.trim() === '') {
+            throw new Error('Empty response from server');
+          }
 
-        this.toastService.success('Sales report exported successfully!');
+          // Remove data URL prefix if present
+          const base64Data = base64Content.includes(',')
+            ? base64Content.split(',')[1]
+            : base64Content;
+
+          // Convert base64 to binary
+          const binaryString = atob(base64Data);
+          const bytes = new Uint8Array(binaryString.length);
+
+          for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+          }
+
+          // Create PDF blob
+          const blob = new Blob([bytes], { type: 'application/pdf' });
+          const url = window.URL.createObjectURL(blob);
+
+          // Create download link
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `daily-sales-report-${this.filter.startDate}-to-${this.filter.endDate}.pdf`;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+
+          this.toastService.success('Daily sales report exported as PDF successfully!');
+        } catch (error) {
+//           console.error('Error converting base64 to PDF:', error:any);
+          this.toastService.error('Failed to convert report to PDF:' );
+        }
       },
       error: (err) => {
         console.error('Error exporting sales report', err);
-        this.toastService.error('Failed to export sales report');
+        this.toastService.error('Failed to export sales report: ' + (err.error?.error || err.message || 'Unknown error'));
       }
     });
   }

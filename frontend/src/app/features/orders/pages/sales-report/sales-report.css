@@ -56,6 +56,53 @@
   transform: translateY(-2px);
 }
 
+/* Export Section */
+.export-section {
+  display: flex;
+  align-items: end;
+  gap: 16px;
+}
+
+.export-dates {
+  display: flex;
+  gap: 12px;
+  align-items: end;
+}
+
+.export-dates .form-group {
+  margin: 0;
+}
+
+.export-dates .form-label {
+  color: white;
+  font-size: 12px;
+  font-weight: 500;
+  margin-bottom: 4px;
+  opacity: 0.9;
+}
+
+.export-date-input {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #333;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  min-width: 140px;
+}
+
+.export-date-input:focus {
+  outline: none;
+  background: white;
+  border-color: #667eea;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+}
+
+.header-actions .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* Card Styles */
 .card {
   background: white;

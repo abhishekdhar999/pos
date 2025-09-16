@@ -46,6 +46,13 @@
   gap: 15px;
 }
 
+/* Export Buttons */
+.export-buttons {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
 /* Export Dropdown */
 .export-dropdown {
   position: relative;

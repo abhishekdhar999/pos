@@ -32,7 +32,7 @@ public class ProductPojo {
     @Column(nullable = false)
     private Double price;
 
-    @Column(nullable = false)
+
     private String imageUrl;
 
 }

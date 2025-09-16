@@ -780,6 +780,38 @@ textarea.form-input {
   margin-bottom: 4px;
 }
 
+.sample-file-section {
+  margin-top: 16px;
+  padding: 16px;
+  background: #e6f3ff;
+  border: 1px solid #b3d9ff;
+  border-radius: 8px;
+}
+
+.sample-file-section p {
+  margin: 0 0 12px 0;
+  color: #1a365d;
+  font-weight: 500;
+}
+
+.sample-file-section .btn-secondary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sample-file-section .btn-secondary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
 .file-upload-area {
   border: 2px dashed #cbd5e0;
   border-radius: 12px;

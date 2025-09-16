@@ -9,9 +9,21 @@
       <p class="page-subtitle">Sales analysis and inventory reports</p>
     </div>
     <div class="header-actions">
-      <div class="export-dropdown">
+      <div class="export-buttons">
         <button
           class="btn btn-primary"
+          (click)="exportSales()"
+          [disabled]="isExporting">
+          @if (isExporting) {
+            <i class="icon-loading">⏳</i>
+            Exporting...
+          } @else {
+            <i class="icon-download"></i>
+            Export Sales Report (PDF)
+          }
+        </button>
+        <button
+          class="btn btn-secondary"
           (click)="exportInventory()"
           [disabled]="isExporting">
           @if (isExporting) {
@@ -19,7 +31,7 @@
             Exporting...
           } @else {
             <i class="icon-download"></i>
-            Export Inventory
+            Export Inventory (PDF)
           }
         </button>
       </div>

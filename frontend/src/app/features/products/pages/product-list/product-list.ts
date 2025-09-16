@@ -27,7 +27,7 @@ export class ProductList implements OnInit {
 
   // pagination state
   page = 0;
-  size = 10;
+  size = 9;
   totalPages = 0;
 
   // search state
@@ -73,7 +73,7 @@ export class ProductList implements OnInit {
 
     this.inventoryForm = this.fb.group({
       barcode: ['', Validators.required],
-      quantity: [0, [Validators.required, Validators.min(0)]],
+      quantity: [],
     });
   }
 
@@ -263,7 +263,8 @@ export class ProductList implements OnInit {
   }
 
   onSubmitInventory(): void{
-    if(this.inventoryForm.valid){
+
+//     if(this.inventoryForm.valid){
       const inventoryData:Inventory =this.inventoryForm.value;
       console.log("inventory",inventoryData)
       this.productService.addInventory(inventoryData).subscribe({
@@ -275,11 +276,14 @@ this.fetchProducts();
         },
         error:(err:any) =>{
           console.log("err",err)
-          this.toastService.error("error creating inventor please check credentials");
+          this.toastService.error(err.error.error);
         }
       })
 
-    }
+//     }else{
+// //       console.log("errrrrr",err);
+//       this.toastService.error(" ")
+//       }
   }
 
   onFileSelected(event: any): void {
@@ -299,7 +303,7 @@ this.fetchProducts();
     // Parse TSV file and convert to ProductForm list
     this.parseTSVToProductList(this.selectedFile).then(productList => {
       console.log('Parsed product list:', productList);
-      
+
       // Upload the list of ProductForm objects
       this.productService.bulkUploadProductList(productList).subscribe({
         next: (response: any[]) => {
@@ -389,12 +393,12 @@ this.fetchProducts();
   private parseTSVToProductList(file: File): Promise<ProductForm[]> {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      
+
       reader.onload = (e) => {
         try {
           const text = e.target?.result as string;
           const lines = text.split('\n').filter(line => line.trim() !== '');
-          
+
           if (lines.length < 2) {
             reject(new Error('File must contain at least a header row and one data row'));
             return;
@@ -411,18 +415,18 @@ this.fetchProducts();
           const imageUrlIndex = headers.findIndex(h => h.includes('image') || h.includes('url'));
           const clientNameIndex = headers.findIndex(h => h.includes('client'));
 
-          if (nameIndex === -1 || barcodeIndex === -1 || priceIndex === -1 || 
-              imageUrlIndex === -1 || clientNameIndex === -1) {
-            reject(new Error('File must contain "name", "barcode", "price", "imageUrl", and "clientName" columns'));
-            return;
-          }
+//           if (nameIndex === -1 || barcodeIndex === -1 || priceIndex === -1 ||
+//               imageUrlIndex === -1 || clientNameIndex === -1) {
+//             reject(new Error('File must contain "name", "barcode", "price", "imageUrl", and "clientName" columns'));
+//             return;
+//           }
 
           // Parse data rows
           const productList: ProductForm[] = [];
-          
+
           for (let i = 1; i < lines.length; i++) {
             const columns = lines[i].split('\t');
-            
+
             if (columns.length < Math.max(nameIndex, barcodeIndex, priceIndex, imageUrlIndex, clientNameIndex) + 1) {
               console.warn(`Skipping row ${i + 1}: insufficient columns`);
               continue;
@@ -434,10 +438,10 @@ this.fetchProducts();
             const imageUrl = columns[imageUrlIndex]?.trim();
             const clientName = columns[clientNameIndex]?.trim();
 
-            if (!name || !barcode || !priceStr || !imageUrl || !clientName) {
-              console.warn(`Skipping row ${i + 1}: missing required fields`);
-              continue;
-            }
+//             if (!name || !barcode || !priceStr || !imageUrl || !clientName) {
+//               console.warn(`Skipping row ${i + 1}: missing required fields`);
+//               continue;
+//             }
 
             const price = parseFloat(priceStr);
             if (isNaN(price)) {
@@ -454,10 +458,10 @@ this.fetchProducts();
             });
           }
 
-          if (productList.length === 0) {
-            reject(new Error('No valid product data found in file'));
-            return;
-          }
+//           if (productList.length === 0) {
+//             reject(new Error('No valid product data found in file'));
+//             return;
+//           }
 
           console.log(`Successfully parsed ${productList.length} products`);
           resolve(productList);
@@ -656,6 +660,56 @@ this.fetchProducts();
     this.uploadErrors = [];
     this.uploadSuccesses = [];
     this.allUploadResults = [];
+  }
+
+  downloadSampleProductFile(): void {
+    const sampleData = [
+      ['name', 'barcode', 'price', 'imageUrl', 'clientName'],
+      ['Sample Product 1', 'BARCODE001', '99.99', 'https://example.com/image1.jpg', 'Client A'],
+      ['Sample Product 2', 'BARCODE002', '149.50', 'https://example.com/image2.jpg', 'Client B'],
+      ['Sample Product 3', 'BARCODE003', '79.00', 'https://example.com/image3.jpg', 'Client A']
+    ];
+
+    const tsvContent = sampleData.map(row => row.join('\t')).join('\n');
+
+    const blob = new Blob([tsvContent], { type: 'text/tab-separated-values' });
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'sample-products.tsv';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+
+    this.toastService.success('Sample TSV file downloaded successfully');
+  }
+
+  downloadSampleInventoryFile(): void {
+    const sampleData = [
+      ['barcode', 'quantity'],
+      ['BARCODE001', '50'],
+      ['BARCODE002', '25'],
+      ['BARCODE003', '100'],
+      ['BARCODE004', '75'],
+      ['BARCODE005', '30']
+    ];
+
+    const tsvContent = sampleData.map(row => row.join('\t')).join('\n');
+
+    const blob = new Blob([tsvContent], { type: 'text/tab-separated-values' });
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'sample-inventory.tsv';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+
+    this.toastService.success('Sample inventory TSV file downloaded successfully');
   }
 
 }
