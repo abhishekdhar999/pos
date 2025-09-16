@@ -4200,3 +4200,6 @@ Caused by: java.lang.Error: Unresolved compilation problem:
 2025-09-15 17:53:05 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
 2025-09-15 17:53:05 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
 2025-09-15 17:53:05 INFO  FOUserAgent:83 - Rendered page #1.
+2025-09-16 08:42:49 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2025-09-16 08:42:49 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2025-09-16 08:42:49 INFO  FOUserAgent:83 - Rendered page #1.

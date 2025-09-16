@@ -427,10 +427,10 @@ this.fetchProducts();
           for (let i = 1; i < lines.length; i++) {
             const columns = lines[i].split('\t');
 
-            if (columns.length < Math.max(nameIndex, barcodeIndex, priceIndex, imageUrlIndex, clientNameIndex) + 1) {
-              console.warn(`Skipping row ${i + 1}: insufficient columns`);
-              continue;
-            }
+//             if (columns.length < Math.max(nameIndex, barcodeIndex, priceIndex, imageUrlIndex, clientNameIndex) + 1) {
+//               console.warn(`Skipping row ${i + 1}: insufficient columns`);
+//               continue;
+//             }
 
             const name = columns[nameIndex]?.trim();
             const barcode = columns[barcodeIndex]?.trim();
@@ -443,11 +443,11 @@ this.fetchProducts();
 //               continue;
 //             }
 
-            const price = parseFloat(priceStr);
-            if (isNaN(price)) {
-              console.warn(`Skipping row ${i + 1}: invalid price "${priceStr}"`);
-              continue;
-            }
+             const price = parseFloat(priceStr);
+//             if (isNaN(price)) {
+//               console.warn(`Skipping row ${i + 1}: invalid price "${priceStr}"`);
+//               continue;
+//             }
 
             productList.push({
               name: name,
@@ -499,11 +499,11 @@ this.fetchProducts();
           // Find column indices
           const barcodeIndex = headers.findIndex(h => h.includes('barcode'));
           const quantityIndex = headers.findIndex(h => h.includes('quantity'));
-
-          if (barcodeIndex === -1 || quantityIndex === -1) {
-            reject(new Error('File must contain "barcode" and "quantity" columns'));
-            return;
-          }
+//
+//           if (barcodeIndex === -1 || quantityIndex === -1) {
+//             reject(new Error('File must contain "barcode" and "quantity" columns'));
+//             return;
+//           }
 
           // Parse data rows
           const inventoryList: InventoryForm[] = [];
@@ -511,24 +511,24 @@ this.fetchProducts();
           for (let i = 1; i < lines.length; i++) {
             const columns = lines[i].split('\t');
 
-            if (columns.length < Math.max(barcodeIndex, quantityIndex) + 1) {
-              console.warn(`Skipping row ${i + 1}: insufficient columns`);
-              continue;
-            }
+//             if (columns.length < Math.max(barcodeIndex, quantityIndex) + 1) {
+//               console.warn(`Skipping row ${i + 1}: insufficient columns`);
+//               continue;
+//             }
 
             const barcode = columns[barcodeIndex]?.trim();
             const quantityStr = columns[quantityIndex]?.trim();
 
-            if (!barcode || !quantityStr) {
-              console.warn(`Skipping row ${i + 1}: missing barcode or quantity`);
-              continue;
-            }
+//             if (!barcode || !quantityStr) {
+//               console.warn(`Skipping row ${i + 1}: missing barcode or quantity`);
+//               continue;
+//             }
 
             const quantity = parseInt(quantityStr, 10);
-            if (isNaN(quantity)) {
-              console.warn(`Skipping row ${i + 1}: invalid quantity "${quantityStr}"`);
-              continue;
-            }
+//             if (isNaN(quantity)) {
+//               console.warn(`Skipping row ${i + 1}: invalid quantity "${quantityStr}"`);
+//               continue;
+//             }
 
             inventoryList.push({
               barcode: barcode,
@@ -536,12 +536,12 @@ this.fetchProducts();
             });
           }
 
-          if (inventoryList.length === 0) {
-            reject(new Error('No valid inventory data found in file'));
-            return;
-          }
+//           if (inventoryList.length === 0) {
+//             reject(new Error('No valid inventory data found in file'));
+//             return;
+//           }
 
-          console.log(`Successfully parsed ${inventoryList.length} inventory items`);
+//           console.log(`Successfully parsed ${inventoryList.length} inventory items`);
           resolve(inventoryList);
         } catch (error) {
           reject(new Error('Error parsing file: ' + (error as Error).message));

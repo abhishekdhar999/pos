@@ -47,6 +47,7 @@
           type="date"
           [(ngModel)]="filter.startDate"
           class="filter-input"
+          [max]="today"
         />
       </div>
 
@@ -56,6 +57,7 @@
           type="date"
           [(ngModel)]="filter.endDate"
           class="filter-input"
+          [max]="today"
         />
       </div>
 

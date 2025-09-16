@@ -17,7 +17,7 @@ export class SalesReportComponent implements OnInit {
   // orders: any[] = [];
   totalPages = 0;
   currentPage = 0;
-
+today :string = "";
   filter: SalesReportFilter = {
       startDate: new Date(new Date().setDate(new Date().getDate() - 30))
           .toISOString()
@@ -34,6 +34,8 @@ export class SalesReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadSalesReport();
+       const now = new Date();
+              this.today = now.toISOString().split('T')[0];
   }
 
   loadSalesReport(): void {

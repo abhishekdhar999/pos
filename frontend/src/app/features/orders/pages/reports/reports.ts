@@ -36,7 +36,7 @@ export class ReportsComponent implements OnInit {
 
   // Export functionality
   isExporting = false;
-
+today:string = "";
   filter: ReportsFilter = {
     startDate: new Date(new Date().setDate(new Date().getDate() - 30))
         .toISOString()
@@ -53,6 +53,8 @@ export class ReportsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadReports();
+       const now = new Date();
+          this.today = now.toISOString().split('T')[0];
   }
 
   loadReports(): void {

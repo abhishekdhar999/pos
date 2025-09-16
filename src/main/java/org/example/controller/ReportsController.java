@@ -37,10 +37,11 @@ public class ReportsController {
         if(form.getStartDate() == null || form.getStartDate().isEmpty()) {
             form.setStartDate(FinalValues.START_DATE);
         }
-        if(form.getEndDate().isEmpty() ||  form.getEndDate() == null) {
+        if(form.getEndDate().isEmpty()) {
             form.setEndDate(ZonedDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
         }
-
+System.out.println( "startdate"+form.getStartDate() );
+        System.out.println( "enddate"+form.getEndDate() );
         List<DaySalesReportData> listOfDaySalesReportData = reportsDto.getDaysSalesReports(form);
         PaginatedResponse<DaySalesReportData> response = new PaginatedResponse<>();
         response.setPage(form.getPage());

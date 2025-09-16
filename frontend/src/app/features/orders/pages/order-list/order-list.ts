@@ -66,11 +66,15 @@ export class OrderList implements OnInit{
   ) {}
 
   isSupervisor = false
+      today:string = "";
+
 
   ngOnInit(): void {
     this.fetchOrders();
     const role = this.safeStorage.getItem('role'); // 👈 get role from sessionStorage
     this.isSupervisor = role === 'supervisor';
+    const now = new Date();
+      this.today = now.toISOString().split('T')[0];
   }
   filter: OrderFilter = {
     page: 0,

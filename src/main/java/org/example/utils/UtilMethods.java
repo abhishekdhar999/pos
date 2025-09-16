@@ -107,6 +107,10 @@ return products;
             throw new ApiException("Quantity should not exceed "+ FinalValues.FINAL_INVENTORY);
         } else if(inventoryForm.getBarcode().length() > FinalValues.MAXIMUM_LENGTH){
             throw new ApiException("Barcode should not be greater then "+ FinalValues.MAXIMUM_LENGTH +" letters");
+        }else if(inventoryForm.getBarcode().isEmpty()){
+            throw new ApiException("Barcode should not be empty");
+        }else if(inventoryForm.getQuantity().toString().isEmpty()){
+            throw new ApiException("Quantity should not be empty");
         }
     }
 
