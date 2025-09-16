@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Navbar } from './components/navbar/navbar';
 import { CommonModule } from '@angular/common';
 import { ToastContainerComponent } from './components/errormodel/toast-container.component';
-
+import { AuthService } from './features/auth/Services/auth.service';
 interface ngOnInit {
 }
 
@@ -25,9 +25,9 @@ export class App implements ngOnInit{
 
 
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router,private auth: AuthService) {}
 
   ngOnInit() {
-    // this.auth.fetchMe(); // 🔥 always check session on load/refresh
+     this.auth.checkSession(); // 🔥 always check session on load/refresh
   }
 }

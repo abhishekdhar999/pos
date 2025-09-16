@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -61,6 +62,21 @@ public class LoginController {
         request.getSession().invalidate();
     }
 
+    @ApiOperation("get current user info")
+    @RequestMapping(path = "/api/auth/me", method = RequestMethod.GET)
+    public LoginResponse getCurrentUser(HttpServletRequest request) throws ApiException {
+        // Get the current authentication from Spring Security context
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new ApiException("User not authenticated");
+        }
+        // Get the principal (user details)
+        UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
+        // Return user info
+        return new LoginResponse(principal.getEmail(), principal.getRole());
+    }
+
     private static Authentication convert(UserPojo p, String supervisor) {
         // Create principal
         System.out.println("email"+ p.getEmail());
@@ -82,4 +98,6 @@ public class LoginController {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal, null, authorities);
         return token;
     }
+
+
 }

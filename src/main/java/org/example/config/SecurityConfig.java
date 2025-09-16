@@ -30,15 +30,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/**", "/session/**")//  // ✅ Add session endpoints
                 .and().authorizeRequests()//
                 .antMatchers("/session/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/products/get-by**").hasAuthority("operator")
-                .antMatchers( "/api/clients").hasAuthority("supervisor")
-                .antMatchers("/api/products").hasAuthority("supervisor")
-//                .antMatchers("/api/order").hasAuthority("supervisor")
-                .antMatchers("/api/order").permitAll()
-                .antMatchers("/api/inventory/**").permitAll()
-                .antMatchers("/api/reports/**").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/products/**").hasAuthority("supervisor")
+                .antMatchers(HttpMethod.PUT, "/api/products/**").hasAuthority("supervisor")
+
+                // Clients - Create and Update (SUPERVISOR ONLY)
+                .antMatchers(HttpMethod.POST, "/api/clients/**").hasAuthority("supervisor")
+                .antMatchers(HttpMethod.PUT, "/api/clients/**").hasAuthority("supervisor")
+
+                // Inventory - Create and Update (SUPERVISOR ONLY)
+                .antMatchers(HttpMethod.POST, "/api/inventory/**").hasAuthority("supervisor")
+                .antMatchers(HttpMethod.PUT, "/api/inventory/**").hasAuthority("supervisor")
+
+                // Orders - Create (SUPERVISOR ONLY)
+                .antMatchers(HttpMethod.POST, "/api/order/create").hasAuthority("supervisor")
+
+                // Orders - View (BOTH supervisor and operator)
+                .antMatchers(HttpMethod.GET, "/api/order/**").hasAnyAuthority("supervisor", "operator")
+
+                // General Rules (for GET - both supervisor and operator can view)
+                .antMatchers("/api/clients/**").hasAnyAuthority("supervisor", "operator")
+                .antMatchers("/api/products/**").hasAnyAuthority("supervisor", "operator")
+                .antMatchers("/api/inventory/**").hasAnyAuthority("supervisor", "operator")
+                .antMatchers("/api/reports/**").hasAnyAuthority("supervisor", "operator")
                 .antMatchers("/api/invoice/**").hasAnyAuthority("supervisor", "operator")
-                .antMatchers("/api/**").hasAnyAuthority("supervisor", "operator")//
+                .antMatchers("/api/**").hasAnyAuthority("supervisor", "operator")
+
 
                 // Ignore CSRF and CORS
                 .and()
@@ -61,10 +77,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 }
 
-//http
-//        .csrf().disable()
-//                .cors() // enables CorsConfigurationSource
-//                .and()
-//                .authorizeRequests()
-//                .antMatchers("/session/**").permitAll()
-//                .antMatchers("/api/**").authenticated();
+//                .antMatchers(HttpMethod.GET, "/api/products/get-by**").hasAuthority("operator")
+//                .antMatchers( "/api/clients").hasAuthority("supervisor")
+//                .antMatchers("/api/products").hasAuthority("supervisor")
+////                .antMatchers("/api/order").hasAuthority("supervisor")
+//                .antMatchers("/api/order").permitAll()
+//                .antMatchers("/api/inventory/**").permitAll()
+//                .antMatchers("/api/reports/**").permitAll()
+//                .antMatchers("/api/invoice/**").hasAnyAuthority("supervisor", "operator")
+//                .antMatchers("/api/**").hasAnyAuthority("supervisor", "operator")//

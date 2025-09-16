@@ -37,11 +37,6 @@ public class ReportsFlow {
     @Autowired
     private ClientApi clientApi;
 
-
-//    public ReportsFlow(InvoiceClient invoiceClient) {
-//        this.invoiceClient = invoiceClient;
-//    }
-
     public void generateDayReport() throws ApiException {
 //        get orders of the day
         ZonedDateTime dateTime = ZonedDateTime.now();
@@ -76,15 +71,9 @@ System.out.println(endDate.format(DateTimeFormatter.ISO_DATE_TIME));
         int invoiceItemCount = 0;
         Double totalAmount = 0.0;
 
-        Set<Integer> uniqueOrderIds = new HashSet<>();
         for (InvoiceData invoice : invoiceData) {
-            uniqueOrderIds.add(invoice.getOrderId());
-        }
-        invoiceOrderCount = uniqueOrderIds.size();
-
-        for (InvoiceData invoice : invoiceData) {
-            List<OrderItemPojo> listOfOrderItem =  orderItemApi.getByOrderId(invoice.getOrderId());
-//            invoiceOrderCount++;
+            invoiceOrderCount++; // Count each invoice (which represents one order)
+            List<OrderItemPojo> listOfOrderItem = orderItemApi.getByOrderId(invoice.getOrderId());
             invoiceItemCount += listOfOrderItem.size();
 
             for(OrderItemPojo orderItem : listOfOrderItem){

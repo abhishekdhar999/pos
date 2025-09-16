@@ -29,7 +29,7 @@ public class ProductController {
         productDto.add(productForm);
     }
 
-    @ApiOperation("get all client's info")
+    @ApiOperation("get all products")
     @RequestMapping(method = RequestMethod.GET)
     public PaginatedResponse<ProductData> getAll(@RequestParam Integer page, @RequestParam Integer size, @RequestParam(defaultValue = "") String keyword) throws ApiException{
         List<ProductData> data =  productDto.getAll(page, size, keyword);

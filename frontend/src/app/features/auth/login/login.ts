@@ -39,7 +39,6 @@ export class LoginComponent {
     console.log("submit")
     console.log('Submit clicked', this.authForm.value);
 
-
     if (this.authForm.valid) {
       this.isLoading = true;
 

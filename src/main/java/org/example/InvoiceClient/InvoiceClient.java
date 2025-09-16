@@ -27,12 +27,10 @@ public class InvoiceClient {
         // POST request -> Base64 string as response
         InvoiceResponse resp = restTemplate.postForObject(url, request, InvoiceResponse.class);
         return resp;
-//        return restTemplate.postForObject(url, request, String.class);
     }
 
     public InvoiceResponse downloadInvoice(Integer orderId) {
         String url = "http://localhost:8000/pos/api/invoice/download/{orderId}";
-        // adjust port/context-path for invoice-app
 
         // GET request -> Raw PDF bytes as response
         byte[] pdfBytes = restTemplate.getForObject(url, byte[].class, orderId);
@@ -49,8 +47,8 @@ public class InvoiceClient {
     }
 
     public List<InvoiceData> getInvoice(ZonedDateTime startDate, ZonedDateTime endDate) {
+        String url = "http://localhost:8000/pos/api/invoice/get?startDate= "+startDate.toString()+"&endDate="+endDate.toString();
 
-        String url = "http://localhost:8000/pos/api/invoice/get";
         ResponseEntity<List<InvoiceData>> response = restTemplate.exchange(
                 url,
                 HttpMethod.GET,
