@@ -81,7 +81,7 @@ export class ClientList implements OnInit {
         this.page = data.page;
         this.size = data.size;
         this.total = data.totalPages;
-        this.totalPages = Math.ceil((data.totalPages / this.size) );
+        this.totalPages = Math.ceil((data.totalPages ));
         this.loading = false;
       },
       error: (err: any) => {

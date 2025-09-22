@@ -63,7 +63,6 @@ public class InventoryApi {
     public void edit(InventoryPojo inventoryPojo) {
         // checking if inventory already exists
         InventoryPojo inventory = inventoryDao.getByProductId(inventoryPojo.getProductId());
-
         //if it doesn't exist then we will create a new row, otherwise update the existing inventory
         if(Objects.isNull(inventory)){
             inventoryDao.add(inventoryPojo);

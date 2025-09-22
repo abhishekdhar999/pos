@@ -19,7 +19,10 @@ public class ClientApi {
     private ClientDao clientDao;
 
     public void add(ClientPojo clientPojo) throws ApiException{
-        checkName(clientPojo.getName());
+        ClientPojo clientPojoCheck = getByName(clientPojo.getName());
+        if (Objects.nonNull(clientPojoCheck)) {
+            throw new ApiException("Client already exists");
+        }
         clientDao.add(clientPojo);
     }
 
@@ -27,13 +30,16 @@ public class ClientApi {
         List<ClientPojo> clientPojoList = clientDao.getAll(page, size);
         return clientPojoList;
     }
-
+//todo dont need to use the update method
     public void update(Integer id, String name) throws ApiException{
-        checkName(name);
-        checkId(id);
-        clientDao.update(id, name);
+        ClientPojo clientPojo1 = getByName(name);
+        if (Objects.nonNull(clientPojo1)) {
+            throw new ApiException("client name already exists");
+        }
+        ClientPojo clientPojo = getById(id);
+        clientPojo.setName(name);
     }
-
+//todo check for getbyid method refine the code
     public ClientPojo getById(Integer id) throws ApiException{
         ClientPojo clientPojo = clientDao.getById(id);
         if(Objects.isNull(clientPojo)){
@@ -41,31 +47,12 @@ public class ClientApi {
         }
         return clientPojo;
     }
-
-    public ClientPojo getByName(String name){
-        return clientDao.getByName(name);
+    public ClientPojo getByName(String name) throws ApiException{
+       return clientDao.getByName(name);
     }
-
-
-    private void checkName(String name) throws ApiException{
-        ClientPojo clientPojo = clientDao.getByName(name);
-        if(Objects.nonNull(clientPojo)) {
-            throw new ApiException("Client '"+ name +"' already exists");
-        }
-    }
-
-    private void checkId(Integer id) throws ApiException{
-        ClientPojo clientPojo = clientDao.getById(id);
-        if(Objects.isNull(clientPojo)) {
-            throw new ApiException("Id doesn't exist");
-        }
-    }
-
-    public Long getTotalCount(){
-        return clientDao.getTotalCount();
-    }
-
     public List<String> searchByName(Integer page, Integer size, String name) {
         return clientDao.searchByName(page, size, name);
     }
+
+
 }

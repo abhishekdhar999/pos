@@ -113,7 +113,7 @@ today:string = "";
 
     // 1. End date cannot be in the future
       if (end > today) {
-        this.toastService.error('End date cannot be greater than today');
+        this.toastService.error('End date cannot be in the future');
         this.filter.endDate = today.toISOString().split('T')[0];
         return;
       }
@@ -130,7 +130,7 @@ today:string = "";
 
     //3 start date should not be greater than today
     if(start > end){
-      this.toastService.error("start date can not be greater than today");
+      this.toastService.error("start date cannot be in the future");
       return;
       }
     this.filter.page = 0; // Reset to first page when applying filters

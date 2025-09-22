@@ -1,19 +1,41 @@
 <div class="client-dashboard">
-  <h2>👥 Client Management</h2>
+  <!-- Header Section -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h1 class="dashboard-title">
+        <span class="icon">👥</span>
+        Client Management
+      </h1>
+      <p class="dashboard-subtitle">Manage your clients and customer information</p>
+    </div>
+    <div class="header-actions">
+      @if (isSupervisor) {
+        <a routerLink="/clients/new" class="action-btn primary">
+          <span class="btn-icon">➕</span>
+          Add New Client
+        </a>
+      }
+    </div>
+  </div>
 
+  <!-- Menu Section -->
   <div class="menu">
-    <button routerLink="/clients/list" class="menu-btn">
-      📋 View Clients
-    </button>
+    <a routerLink="/clients/list" class="menu-btn">
+      <span class="btn-icon">📋</span>
+      View Clients
+    </a>
 
-    <button
-      routerLink="/clients/new"
-      class="menu-btn">
-      ➕ Add New Client
-    </button>
+    @if (isSupervisor) {
+      <a routerLink="/clients/new" class="menu-btn">
+        <span class="btn-icon">➕</span>
+        Add New Client
+      </a>
+    }
   </div>
 
   @if (!isSupervisor) {
-    <p class="warning">⚠️ Only supervisors can add new clients.</p>
+    <div class="warning-message">
+      <p>⚠️ Only supervisors can add new clients.</p>
+    </div>
   }
 </div>

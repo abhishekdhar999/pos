@@ -131,7 +131,7 @@ public class InventoryDto {
                     .append("<fo:page-sequence master-reference=\"A4\">")
                     .append("<fo:flow flow-name=\"xsl-region-body\">")
                     .append("<fo:block font-size=\"12pt\" font-weight=\"bold\" text-align=\"center\">")
-                    .append("Day Sales Report")
+                    .append("Inventory")
                     .append("</fo:block>")
                     .append("<fo:block space-before=\"5pt\"/>")
                     .append("<fo:table table-layout=\"fixed\" width=\"100%\">")

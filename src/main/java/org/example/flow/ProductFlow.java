@@ -36,9 +36,6 @@ public class ProductFlow {
         productApi.update(id, productPojo);
     }
 
-
-
-
     public ClientPojo getClientById(Integer clientId) throws ApiException {
         return clientApi.getById(clientId);
     }
@@ -50,7 +47,6 @@ public class ProductFlow {
         }
         return clientPojo;
     }
-
     public InventoryPojo getInventoryByProductId(Integer productId) throws ApiException {
         ProductPojo productPojo = productApi.getById(productId);
         return inventoryApi.getByProductId(productId);

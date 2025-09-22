@@ -179,7 +179,7 @@ export class OrderList implements OnInit{
 
 // 1. End date cannot be in the future
   if (end > today) {
-    this.toastService.error('End date cannot be greater than today');
+    this.toastService.error('End date cannot be in the future');
     this.filter.endDate = today.toISOString().split('T')[0];
     return;
   }
@@ -196,7 +196,7 @@ export class OrderList implements OnInit{
 
 //3 start date should not be greater than today
 if(start > end){
-  this.toastService.error("start date can not be greater than today");
+  this.toastService.error("start date cannot be in the future");
   return;
   }
     if (this.filter.startDate) {
@@ -269,10 +269,12 @@ if(start > end){
   }
 
   onBarcodeChange(): void {
+    console.log('onBarcodeChange called with selectedBarcode:', this.selectedBarcode);
     if (this.selectedBarcode) {
       // Fetch detailed product information by barcode
       this.productService.getProductByBarcode(this.selectedBarcode).subscribe({
         next: (productData: any) => {
+          console.log('Product data received from API:', productData);
           // Convert backend ProductData to frontend Product format
           this.selectedProduct = {
             id: productData.id,
@@ -283,6 +285,7 @@ if(start > end){
             clientName: productData.clientName,
             quantity: productData.quantity // Backend uses 'quantity'
           };
+          console.log('selectedProduct set to:', this.selectedProduct);
 
           this.orderQuantity = 1;
         },
@@ -337,7 +340,30 @@ if(start > end){
     this.cartItems = this.cartItems.filter(item => item.barcode !== barcode);
     this.toastService.success('Item removed from cart');
   }
+increaseCartQuantity(barcode: string): void {
+  const item = this.cartItems.find(cartItem => cartItem.barcode === barcode);
+  if (item) {
+    // Check if we have enough stock
+    const product = this.availableProducts.find(p => p.barcode === barcode);
+    if (product && item.quantity < product.quantity) {
+      item.quantity++;
+      this.toastService.success(`Increased quantity for ${item.name}`);
+    } else {
+      this.toastService.error('Not enough stock available');
+    }
+  }
+}
 
+decreaseCartQuantity(barcode: string): void {
+  const item = this.cartItems.find(cartItem => cartItem.barcode === barcode);
+  if (item && item.quantity > 1) {
+    item.quantity--;
+    this.toastService.success(`Decreased quantity for ${item.name}`);
+  } else if (item && item.quantity === 1) {
+    // Remove item if quantity becomes 0
+    this.removeFromCart(barcode);
+  }
+}
   getCartTotal(): number {
     return this.cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
   }
@@ -434,30 +460,6 @@ if(start > end){
     });
   }
 
-  // resyncAllOrders(): void {
-  //   this.resyncingAll = true;
-  //
-  //   // Resync all orders one by one
-  //   const resyncPromises = this.orders.map(order =>
-  //     this.orderService.resyncOrder(order.id).toPromise()
-  //   );
-  //
-  //   Promise.allSettled(resyncPromises).then(results => {
-  //     const successful = results.filter(result => result.status === 'fulfilled').length;
-  //     const failed = results.filter(result => result.status === 'rejected').length;
-  //
-  //     if (successful > 0) {
-  //       this.toastService.success(`${successful} orders resynced successfully`);
-  //     }
-  //     if (failed > 0) {
-  //       this.toastService.error(`${failed} orders failed to resync`);
-  //     }
-  //
-  //     this.resyncingAll = false;
-  //     this.fetchOrders(); // Refresh the order list
-  //   });
-  // }
-
   // Order details modal methods
   viewOrderDetails(orderId: number): void {
     this.selectedOrderId = orderId;
@@ -487,11 +489,6 @@ if(start > end){
       }
     });
   }
-  //
-  // getOrderTotal(): number {
-  //   return this.orderItems.reduce((total, item) =>
-  //     total + (item.sellingPrice * item.quantity), 0);
-  // }
 
   toggleOrderExpansion(orderId: number): void {
     if (this.expandedOrders.has(orderId)) {

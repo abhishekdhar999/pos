@@ -155,14 +155,19 @@ public class OrderFlow {
         }
 
         if (allAvailable) {
-            // Mark order as fulfillable (DO NOT reduce inventory during resync)
             orderPojo.setStatus(OrderStatus.FULFILLABLE);
             orderApi.updateOrder(orderPojo);
+            for (OrderItemPojo item : orderItemPojoList) {
+                InventoryPojo inventory = inventoryApi.getByProductId(item.getProductId());
+                inventory.setQuantity(inventory.getQuantity() - item.getQuantity());
+            }
         } else {
             // Mark order as unfulfillable when inventory is insufficient
             orderPojo.setStatus(OrderStatus.UNFULFILLABLE);
             orderApi.updateOrder(orderPojo);
         }
+
+
 
         ErrorData<OrderError> result = new ErrorData<>();
         result.setId(orderPojo.getId());

@@ -55,7 +55,7 @@ return products;
     public static void normalizeClientForm(ClientForm clientForm){
         clientForm.setName(clientForm.getName().toLowerCase().trim());
     }
-
+//todo 5 should be in constants
     public static void validateClientForm(ClientForm clientForm) throws ApiException {
         if(Objects.isNull(clientForm) || Objects.isNull(clientForm.getName())) {
             throw new ApiException("Client should not be null");
@@ -64,7 +64,7 @@ return products;
         } else if (clientForm.getName().length() > FinalValues.MAXIMUM_LENGTH) {
             throw new ApiException("Client name should not exceed "+ FinalValues.MAXIMUM_LENGTH +" letters");
         }else if(clientForm.getName().length()< 5){
-            throw new ApiException("Client name should be more than 5 letters");
+            throw new ApiException("Client name should be less than 5 letters");
         }
     }
 

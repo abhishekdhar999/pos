@@ -35,19 +35,18 @@ public class ReportsController {
     @RequestMapping(value = "/daily",method = RequestMethod.GET)
     public PaginatedResponse<DaySalesReportData>  getDailyReports(@ModelAttribute DaySalesReportsForm form) throws ApiException {
         if(form.getStartDate() == null || form.getStartDate().isEmpty()) {
-            form.setStartDate(FinalValues.START_DATE);
+            form.setStartDate(ZonedDateTime.now().toString());
         }
         if(form.getEndDate().isEmpty()) {
-            form.setEndDate(ZonedDateTime.now().format(DateTimeFormatter.ISO_DATE_TIME));
+            form.setEndDate(ZonedDateTime.now().toString());
         }
-System.out.println( "startdate"+form.getStartDate() );
-        System.out.println( "enddate"+form.getEndDate() );
         List<DaySalesReportData> listOfDaySalesReportData = reportsDto.getDaysSalesReports(form);
+        Long total = (long)listOfDaySalesReportData.size();
         PaginatedResponse<DaySalesReportData> response = new PaginatedResponse<>();
         response.setPage(form.getPage());
         response.setSize(form.getSize());
         response.setData(listOfDaySalesReportData);
-        response.setTotalPages(reportsDto.getTotalDayReports() / form.getSize() + 1);
+        response.setTotalPages(total / form.getSize() + 1);
 
 return response;
     }
@@ -73,7 +72,7 @@ return response;
       return  reportsDto.getDaySalesReportsBetweenDates(form, response);
 
     }
-    @ApiOperation("get sales report bases on date range, client, product")
+    @ApiOperation("getting sales report on filters")
     @RequestMapping(path = "/sales", method = RequestMethod.GET)
     public PaginatedResponse<SalesReportData> getSalesReport(@ModelAttribute SalesReportFilterForm salesReportFilterForm) throws ApiException {
 
@@ -81,10 +80,9 @@ return response;
         response.setData(reportsDto.getSalesReport(salesReportFilterForm));
         response.setPage(salesReportFilterForm.getPage());
         response.setSize(salesReportFilterForm.getSize());
-        
-        // Use the correct filtered count for sales report
-        Long totalCount = reportsDto.getTotalSalesReportCount(salesReportFilterForm);
-        response.setTotalPages((long) Math.ceil((double) totalCount / salesReportFilterForm.getSize()));
+
+        Long total = (long) response.getData().size();
+        response.setTotalPages(total / salesReportFilterForm.getSize());
         
         return response;
     }

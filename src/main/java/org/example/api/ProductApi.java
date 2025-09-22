@@ -25,46 +25,21 @@ public class ProductApi {
     }
 
     public List<ProductPojo> getAll(Integer page, Integer size, String keyword) throws ApiException {
-        Long totalCount = productDao.getTotalCount();
-        if(totalCount!=0 && (long) page *size >= totalCount){
-            throw new ApiException("Invalid page number");
-        }
+
         return productDao.getAll(page, size, keyword);
     }
 
     public void update(Integer id, ProductPojo productPojo) throws ApiException {
-
-        //checking if product with given id exists or not, if exists then checking for duplicate barcode, only if it is getting updated.
         ProductPojo existingProduct = getById(id);
      if (Objects.isNull(existingProduct)){
             throw new ApiException("Product with id '"+id+"' doesn't exists");
         } else if (!existingProduct.getBarcode().equals(productPojo.getBarcode())) {
             checkDuplicateBarcode(productPojo.getBarcode());
         }
-        productDao.update(id, productPojo);
+     existingProduct.setPrice(productPojo.getPrice());
+     existingProduct.setName(productPojo.getName());
+     existingProduct.setImageUrl(productPojo.getImageUrl());
     }
-
-//    public List<Response<ProductPojo>> batchAdd(List<ProductPojo> productPojoList){
-//        List<Response<ProductPojo>> responseList = new ArrayList<>();
-//
-//        boolean errorOccured = false;
-//        for(ProductPojo productPojo: productPojoList){
-//            Response<ProductPojo> response = new Response<>();
-//            response.setData(productPojo);
-//            response.setMessage("No error");
-//            try{
-//                checkDuplicateBarcode(productPojo.getBarcode());
-//            }catch (ApiException e){
-//                response.setMessage(e.getMessage());
-//                errorOccured = true;
-//            }
-//            responseList.add(response);
-//        }
-//        if(!errorOccured){
-//            productDao.batchAdd(productPojoList);
-//        }
-//        return responseList;
-//    }
 
     public ProductPojo getByBarcode(String barcode)throws ApiException{
         return productDao.getByBarcode(barcode);
@@ -74,19 +49,12 @@ public class ProductApi {
         return productDao.getById(id);
     }
 
-    public Long getTotalCount(){
-        return productDao.getTotalCount();
-    }
-
-
     private void checkDuplicateBarcode(String barcode) throws ApiException{
         ProductPojo productPojo = productDao.getByBarcode(barcode);
         if(Objects.nonNull(productPojo)){
             throw new ApiException("Barcode should be unique. Product '"+productPojo.getName()+"' already has barcode: '"+ barcode+"'");
         }
     }
-
-
     public List<String> searchByBarcode(Integer page, Integer size, String barcode) {
         return productDao.searchByBarcode(page, size, barcode);
     }

@@ -36,23 +36,13 @@ public class OrderController {
     @ApiOperation("getting all order's detail.")
     @RequestMapping(method = RequestMethod.GET)
     public PaginatedResponse<OrderData> getAll(@ModelAttribute OrderFiltersForm orderfilters) throws ApiException {
-       System.out.println(orderfilters.getStartDate());
-       System.out.println(orderfilters.getEndDate());
         List<OrderData> data = orderDto.getAll(orderfilters);
         PaginatedResponse<OrderData> response = new PaginatedResponse<>();
         response.setData(data);
         response.setPage(orderfilters.getPage());
         response.setSize(orderfilters.getSize());
-response.setTotalPages(orderDto.getTotalCount(orderfilters) / orderfilters.getSize() + 1);
+        response.setTotalPages((long) data.size() / orderfilters.getSize() + 1);
         return response;
-    }
-
-
-
-    @ApiOperation("getting total no. of orders")
-    @RequestMapping(path = "/get-total-count", method = RequestMethod.GET)
-    public Long getTotalCount(@ModelAttribute OrderFiltersForm orderFiltersForm){
-        return orderDto.getTotalCount(orderFiltersForm);
     }
 
     @ApiOperation(value = "re sync the order")

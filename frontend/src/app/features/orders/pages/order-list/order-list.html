@@ -84,7 +84,7 @@
       <!-- Order Header -->
       <div class="order-header" (click)="toggleOrderExpansion(order.id)">
         <div class="order-info">
-          <div class="order-id">Order #{{ order.id }}</div>
+          <div class="order-id">Order ID : {{ order.id }}</div>
           <div class="order-date">{{ order.dateTime | date: 'MMM dd, yyyy HH:mm' }}</div>
         </div>
 
@@ -193,7 +193,7 @@
     <div class="pagination-info">
       <span class="page-info">Page {{ filter.page + 1 }} of {{ totalPages }}</span>
       <span class="total-info">Showing {{ orders.length }} orders</span>
-      <span class="debug-info" style="font-size: 0.8em; color: #666;">Debug: page={{ filter.page }}, totalPages={{ totalPages }}, disabled={{ filter.page >= totalPages - 1 }}</span>
+
     </div>
     <div class="pagination-controls">
       <button
@@ -257,12 +257,17 @@
       @if (selectedProduct) {
       <div class="selected-product">
         <h3>Selected Product:</h3>
+        <!-- Debug info -->
+        <div style="background: rgba(255,255,255,0.2); padding: 10px; margin: 10px 0; border-radius: 5px; font-size: 12px;">
+<!--          Debug: selectedProduct = {{ selectedProduct  }}-->
+        </div>
         <div class="product-info">
           <span class="product-name">{{ selectedProduct.name }}</span>
           <span class="product-barcode">Barcode: {{ selectedProduct.barcode }}</span>
           <span class="product-price">Price: ₹{{ selectedProduct.price }}</span>
           <span class="product-quantity">Available: {{ selectedProduct.quantity }}</span>
         </div>
+
 
         <div class="quantity-controls">
           <div class="quantity-controls-left">
@@ -293,7 +298,9 @@
               <span class="item-barcode">{{ item.barcode }}</span>
             </div>
             <div class="item-controls">
-              <span class="item-quantity">Qty: {{ item.quantity }}</span>
+              <button type="button" class="quantity-btn" (click)="decreaseCartQuantity(item.barcode)" [disabled]="item.quantity <= 1">-</button>
+              <span class="quantity-display">{{ item.quantity }}</span>
+              <button type="button" class="quantity-btn" (click)="increaseCartQuantity(item.barcode)">+</button>
               <span class="item-price">₹{{ item.price * item.quantity }}</span>
               <button type="button" class="remove-btn" (click)="removeFromCart(item.barcode)">Remove</button>
             </div>
@@ -323,7 +330,7 @@
 <div class="modal-overlay" (click)="closeOrderItemsModal()">
   <div class="modal-content" (click)="$event.stopPropagation()">
     <div class="modal-header">
-      <h2>Order #{{ selectedOrderId }} Details</h2>
+      <h2>Order{{ selectedOrderId }} Details</h2>
       <button type="button" class="close-btn" (click)="closeOrderItemsModal()">×</button>
     </div>
 

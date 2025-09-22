@@ -14,9 +14,9 @@
   align-items: center;
   margin-bottom: 32px;
   padding: 24px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: white;
   border-radius: 16px;
-  color: white;
+  color: black;
   box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
 }
 
@@ -167,7 +167,7 @@
 }
 
 .add-client-btn {
-  background: rgba(255, 255, 255, 0.2);
+  background:  #007bff;
   border: 2px solid rgba(255, 255, 255, 0.3);
   color: white;
   padding: 12px 24px;
@@ -183,7 +183,7 @@
 }
 
 .add-client-btn:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: #0056b3;
   border-color: rgba(255, 255, 255, 0.5);
   transform: translateY(-2px);
 }
@@ -298,7 +298,7 @@
 .client-avatar {
   width: 56px;
   height: 56px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: #007bff;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -413,7 +413,7 @@
 }
 
 .pagination-btn {
-  background: #667eea;
+  background: #007bff;
   color: white;
   border: none;
   padding: 10px 20px;

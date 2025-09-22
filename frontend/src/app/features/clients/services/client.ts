@@ -7,17 +7,13 @@ import {Client} from '../models/client.model';
   providedIn: 'root'
 })
 export class ClientService {
-  private apiURLCreateClient = "http://localhost:8080/pos/api/clients/create"
+  private apiURLCreateClient = "http://localhost:8080/pos/api/clients"
 private apiURLGetClients = "http://localhost:8080/pos/api/clients"
   private apiURLUpdateClient ="http://localhost:8080/pos/api/clients"
 
 
   constructor(private http : HttpClient) {
   }
-
-  // addClient(client: Client):Observable<Client>{
-  //   return this.http.post<Client>(this.apiURLCreateClient,client)
-  // }
   addClient(client: Client): Observable<Client> {
     return this.http.post<Client>(this.apiURLCreateClient, client, { withCredentials: true });
   }

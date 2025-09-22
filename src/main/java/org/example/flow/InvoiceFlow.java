@@ -60,7 +60,7 @@ public class InvoiceFlow {
             invoiceItem.setPrice(orderItemPojo.getSellingPrice());
             invoiceItem.setQuantity(orderItemPojo.getQuantity());
             ProductPojo productPojo = productApi.getById(orderItemPojo.getProductId());
-            invoiceItem.setProductName(productPojo.getName() + "-" + productPojo.getBarcode());
+            invoiceItem.setProductName(productPojo.getName());
 
             invoiceItemDataList.add(invoiceItem);
             total += subTotal;

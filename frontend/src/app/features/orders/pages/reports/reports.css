@@ -1,9 +1,8 @@
-/* Dashboard Container */
+/* Reports Container */
 .reports-container {
+  padding: 2rem;
+  background: #f8f9fa;
   min-height: 100vh;
-
-  padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Header Section */
@@ -11,13 +10,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
-  padding: 30px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-
-  border-radius: 15px;
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 2rem;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .header-left {
@@ -25,25 +22,28 @@
 }
 
 .page-title {
-
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: white;
-  margin: 0 0 10px 0;
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 1rem;
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2c3e50;
+}
+
+.page-title .icon {
+  font-size: 2.5rem;
 }
 
 .page-subtitle {
+  margin: 0.5rem 0 0 0;
+  color: #6c757d;
   font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.8);
-  margin: 0;
 }
 
 .header-actions {
   display: flex;
-  gap: 15px;
+  gap: 1rem;
 }
 
 /* Export Buttons */
@@ -59,88 +59,89 @@
 }
 
 .btn {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 20px;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 8px;
-  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.2s;
   text-decoration: none;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: #007bff;
   color: white;
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
 }
 
 .btn-primary:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+  background: #0056b3;
+  transform: translateY(-1px);
 }
 
 .btn-primary:disabled {
-  opacity: 0.6;
+  background: #adb5bd;
   cursor: not-allowed;
+  transform: none;
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.2);
+  background: #6c757d;
   color: white;
-  border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
+  background: #545b62;
+  transform: translateY(-1px);
 }
 
 /* Cards */
 .card {
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  margin-bottom: 25px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
   overflow: hidden;
 }
 
 .card-header {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  padding: 20px 25px;
-  color: white;
+  padding: 1.5rem;
+  border-bottom: 1px solid #e9ecef;
+  background: #f8f9fa;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .card-title {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 600;
   margin: 0;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0.5rem;
+  color: #495057;
 }
 
 .card-actions {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 0.75rem;
 }
 
 .results-count {
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.8);
+  background: #e3f2fd;
+  color: #1976d2;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
 }
 
 .card-body {
-  padding: 25px;
+  padding: 1.5rem;
 }
 
 /* Filters */
@@ -187,34 +188,32 @@
 /* Table */
 .table-container {
   overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
 }
 
 .data-table {
   width: 100%;
   border-collapse: collapse;
   background: white;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .data-table thead {
-  background: linear-gradient(135deg, #667eea, #764ba2);
-  color: white;
+  background: #f8f9fa;
 }
 
 .data-table th {
-  padding: 15px 20px;
+  padding: 1rem 1.25rem;
   text-align: left;
   font-weight: 600;
+  color: #495057;
   font-size: 0.9rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  border-bottom: 2px solid #dee2e6;
 }
 
 .data-table td {
-  padding: 15px 20px;
-  border-bottom: 1px solid #f1f3f4;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #e9ecef;
   vertical-align: middle;
 }
 
@@ -238,7 +237,7 @@
 }
 
 .quantity-badge {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: #007bff;
   color: white;
   padding: 6px 12px;
   border-radius: 20px;
@@ -296,49 +295,46 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 25px;
-  background: rgba(255, 255, 255, 0.95);
-  border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
 .pagination-info {
   display: flex;
-  gap: 20px;
-  color: #2c3e50;
+  gap: 1rem;
+  color: #6c757d;
   font-size: 0.9rem;
 }
 
 .pagination-controls {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  gap: 0.5rem;
 }
 
 .pagination-btn {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 16px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #6c757d;
   color: white;
   border: none;
-  border-radius: 8px;
-  font-weight: 600;
+  border-radius: 6px;
   cursor: pointer;
-  transition: all 0.3s ease;
   font-size: 0.9rem;
+  transition: all 0.2s;
 }
 
-.pagination-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+.pagination-btn:hover:not(.disabled) {
+  background: #545b62;
+  transform: translateY(-1px);
 }
 
-.pagination-btn:disabled {
-  opacity: 0.5;
+.pagination-btn.disabled {
+  background: #adb5bd;
   cursor: not-allowed;
   transform: none;
 }

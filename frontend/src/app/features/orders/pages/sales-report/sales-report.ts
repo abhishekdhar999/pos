@@ -81,7 +81,7 @@ today :string = "";
 
         // 1. End date cannot be in the future
           if (end > today) {
-            this.toastService.error('End date cannot be greater than today');
+            this.toastService.error('End date cannot be in the future');
             this.filter.endDate = today.toISOString().split('T')[0];
             return;
           }
@@ -98,7 +98,7 @@ today :string = "";
 
         //3 start date should not be greater than today
         if(start > end){
-          this.toastService.error("start date can not be greater than today");
+          this.toastService.error("start date cannot be in the future");
           return;
           }
     this.filter.page = 0;
@@ -120,10 +120,41 @@ today :string = "";
   }
 
   exportReport(): void {
+
     if (!this.filter.startDate || !this.filter.endDate) {
       this.toastService.error('Please select both start and end dates');
       return;
     }
+  const today = new Date();
+               console.log("today",today);
+                const start = new Date(this.filter.startDate);
+                     console.log("startDate",start);
+                const end = new Date(this.filter.endDate);
+                     console.log("endDate",end);
+
+
+          // 1. End date cannot be in the future
+            if (end > today) {
+              this.toastService.error('End date cannot be in the future');
+              this.filter.endDate = today.toISOString().split('T')[0];
+              return;
+            }
+
+            // 2. Start date must not be more than 30 days before end date
+            const minStart = new Date(end);
+            minStart.setDate(minStart.getDate() - 30);
+
+            if (start < minStart) {
+              this.toastService.error('Start date cannot be more than 30 days before end date');
+              this.filter.startDate = minStart.toISOString().split('T')[0];
+              return;
+            }
+
+          //3 start date should not be greater than today
+          if(start > end){
+            this.toastService.error("start date cannot be in the future");
+            return;
+            }
 
     // Convert dates to ISO string format with timezone
     const startDate = new Date(this.filter.startDate + 'T00:00:00.000+05:30').toISOString();

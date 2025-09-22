@@ -93,7 +93,7 @@ export class ProductList implements OnInit {
         this.products = data.data;
         this.page = data.page;
         this.size = data.size;
-        this.totalPages = data.totalPages;
+        this.totalPages = Math.ceil(data.totalPages + 1);
         console.log('Products - Updated pagination - page:', this.page, 'totalPages:', this.totalPages, 'products count:', this.products.length);
         this.loading = false;
       },

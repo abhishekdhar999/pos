@@ -63,9 +63,9 @@ public class OrderDto {
         }
         return orderDataList;
     }
-    public Long getTotalCount(OrderFiltersForm orderFiltersForm) {
-        return orderApi.getTotalCount(orderFiltersForm);
-    }
+//    public Long getTotalCount(OrderFiltersForm orderFiltersForm) {
+//        return orderApi.getTotalCount(orderFiltersForm);
+//    }
     public ErrorData<OrderError> resync(Integer id) throws ApiException{
         return orderFlow.resyncOrders(id);
     }

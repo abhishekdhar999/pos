@@ -24,6 +24,7 @@ public class GlobalExceptionHandler {
         response.put("path", request.getDescription(false));
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+
     }
 }
 

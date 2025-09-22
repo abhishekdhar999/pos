@@ -16,7 +16,6 @@ import java.util.List;
 import static org.example.dto.DtoHelper.convertClientFormToClientPojo;
 
 @Component
-@Service
 public class ClientDto {
 
     @Autowired
@@ -39,19 +38,14 @@ public class ClientDto {
         UtilMethods.validateClientForm(clientForm);
         clientApi.update(id, clientForm.getName());
     }
-
     public ClientData getById(Integer id) throws ApiException{
         ClientPojo clientPojo = clientApi.getById(id);
         return DtoHelper.convertClientPojoToClientData(clientPojo);
     }
-
-    public Long getTotalCount(){
-        return clientApi.getTotalCount();
-    }
-
     public List<String> searchByName(Integer page, Integer size, String name) {
         return clientApi.searchByName(page, size, name);
     }
+
 }
 
 

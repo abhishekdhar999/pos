@@ -19,7 +19,7 @@ public class ClientDao  {
     private static final String getByNameQuery = "select p from ClientPojo p where name=:name";
     private static final String getTotalCountQuery = "select count(p) from ClientPojo p";
     private static final String searchByBarcodeQuery = "select p.name from ClientPojo p where p.name like :name";
-//    select count(*) from ClientPojo client
+
 @PersistenceContext
 private EntityManager em;
 
@@ -34,14 +34,6 @@ private EntityManager em;
         query.setMaxResults(size);
         return query.getResultList();
     }
-
-    public void update(Integer id, String name) {
-        Query query = em.createQuery(update);
-        query.setParameter("id", id);
-        query.setParameter("name", name);
-        query.executeUpdate();
-    }
-
     public ClientPojo getById(Integer id) {
         Query query = em.createQuery(getByIdQuery);
         query.setParameter("id", id);
@@ -51,7 +43,6 @@ private EntityManager em;
             return null;
         }
     }
-
     public ClientPojo getByName(String name) {
         Query query = em.createQuery(getByNameQuery);
         query.setParameter("name", name);

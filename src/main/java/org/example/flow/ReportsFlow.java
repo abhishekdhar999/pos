@@ -44,10 +44,10 @@ public class ReportsFlow {
         ZonedDateTime endDate = dateTime.minusDays(1).with(LocalTime.of(23,59,59));
 
         DaySalesReportsForm daySalesReportsForm = new DaySalesReportsForm();
-daySalesReportsForm.setStartDate(startDate.format(DateTimeFormatter.ISO_DATE_TIME));
-daySalesReportsForm.setEndDate(endDate.format(DateTimeFormatter.ISO_DATE_TIME));
-daySalesReportsForm.setPage(0);
-daySalesReportsForm.setSize(1);
+        daySalesReportsForm.setStartDate(startDate.format(DateTimeFormatter.ISO_DATE_TIME));
+        daySalesReportsForm.setEndDate(endDate.format(DateTimeFormatter.ISO_DATE_TIME));
+        daySalesReportsForm.setPage(0);
+        daySalesReportsForm.setSize(1);
 
         List<DaySalesReportPojo> dailySalesReportPojoList = salesReportApi.getDaySalesReports(daySalesReportsForm);
         if(!Objects.isNull(dailySalesReportPojoList) && !dailySalesReportPojoList.isEmpty()){
@@ -55,8 +55,7 @@ daySalesReportsForm.setSize(1);
             // it means that we have already updated the daily sales report
             return;
         }
-System.out.println(startDate.format(DateTimeFormatter.ISO_DATE_TIME));
-System.out.println(endDate.format(DateTimeFormatter.ISO_DATE_TIME));
+
         List<InvoiceData> invoiceData = invoiceClient.getInvoice(startDate, endDate);
 
         if(Objects.isNull(invoiceData) || invoiceData.isEmpty()){
@@ -106,7 +105,7 @@ return salesReportApi.getDaySalesReportsBetweenDates(startDate,endDate);
 public List<SalesReportData> getSalesReport(SalesReportFilterForm salesReportFilterForm) throws ApiException {
         ZonedDateTime startDate = ZonedDateTime.parse(salesReportFilterForm.getStartDate());
         ZonedDateTime endDate = ZonedDateTime.parse(salesReportFilterForm.getEndDate());
-        List<OrderPojo> listOfOrderPojo = orderApi.getBetweenDates(startDate,endDate);
+        List<OrderPojo> listOfOrderPojo = orderApi.getOrderBetweenDatesStatusFulfillable(startDate,endDate);
 
          HashMap<Integer,Integer> itemCountMap = new HashMap<>();
          HashMap<Integer,Double> revenueMap = new HashMap<>();

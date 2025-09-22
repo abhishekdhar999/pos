@@ -22,7 +22,6 @@ public class ProductController {
     @Autowired
     private ProductDto productDto;
 
-
     @ApiOperation("add a single product")
     @RequestMapping(method = RequestMethod.POST)
     public void add(@RequestBody ProductForm productForm) throws ApiException {
@@ -33,11 +32,12 @@ public class ProductController {
     @RequestMapping(method = RequestMethod.GET)
     public PaginatedResponse<ProductData> getAll(@RequestParam Integer page, @RequestParam Integer size, @RequestParam(defaultValue = "") String keyword) throws ApiException{
         List<ProductData> data =  productDto.getAll(page, size, keyword);
+        Long total = (long) data.size();
         PaginatedResponse<ProductData> response = new PaginatedResponse<>();
         response.setData(data);
         response.setPage(page);
         response.setSize(size);
-        response.setTotalPages(productDto.getTotalCount() / size + 1);
+        response.setTotalPages (total / size + 1);
         return response;
     }
 
@@ -60,11 +60,6 @@ public class ProductController {
     @RequestMapping(path = "/barcode/{barcode}", method = RequestMethod.GET)
     public ProductData getByBarcode(@PathVariable String barcode) throws ApiException{
         return productDto.getByBarcode(barcode);
-    }
-    @ApiOperation("getting total no. of products")
-    @RequestMapping(path = "/count", method = RequestMethod.GET)
-    public Long getTotalCount(){
-        return productDto.getTotalCount();
     }
     @ApiOperation("search by barcode")
     @RequestMapping(path = "/search", method = RequestMethod.GET)

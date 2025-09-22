@@ -1148,3 +1148,48 @@
   font-size: 1.1em;
   color: #2c5aa0;
 }
+/* In order-list.css */
+.quantity-controls-cart {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-right: 1rem;
+}
+
+.quantity-btn {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ddd;
+  background: #f8f9fa;
+  color: #495057;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.quantity-btn:hover:not(:disabled) {
+  background: #e9ecef;
+  border-color: #adb5bd;
+}
+
+.quantity-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.quantity-display {
+  min-width: 30px;
+  text-align: center;
+  font-weight: 600;
+  color: black;
+}
+
+.cart-item .item-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}

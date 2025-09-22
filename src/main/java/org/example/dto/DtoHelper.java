@@ -26,9 +26,9 @@ public class DtoHelper {
         return daySalesReportDataList;
     }
     public static ClientPojo convertClientFormToClientPojo(ClientForm client){
-        ClientPojo c = new ClientPojo();
-        c.setName(client.getName());
-        return c;
+        ClientPojo clientPojo = new ClientPojo();
+        clientPojo.setName(client.getName());
+        return clientPojo;
     }
 
     public static ClientData convertClientPojoToClientData(ClientPojo clientPojo){

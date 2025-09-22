@@ -26,11 +26,11 @@ public class ProductDao {
         em.persist(productPojo);
     }
 
-    public void batchAdd(List<ProductPojo> productPojoList){
-        for(ProductPojo productPojo: productPojoList){
-            em.persist(productPojo);
-        }
-    }
+//    public void batchAdd(List<ProductPojo> productPojoList){
+//        for(ProductPojo productPojo: productPojoList){
+//            em.persist(productPojo);
+//        }
+//    }
 
     public List<ProductPojo> getAll(Integer page, Integer size, String keyword){
         StringBuilder newQuery = new StringBuilder(getAllQuery);
@@ -68,18 +68,18 @@ public class ProductDao {
             return null;
         }
     }
-
-    public void update(Integer id, ProductPojo productPojo){
-        Query query = em.createQuery(updateQuery);
-
-        query.setParameter("id", id);
-        query.setParameter("name", productPojo.getName());
-        query.setParameter("clientId", productPojo.getClientId());
-        query.setParameter("price", productPojo.getPrice());
-        query.setParameter("imageUrl", productPojo.getImageUrl());
-        query.setParameter("barcode", productPojo.getBarcode());
-        query.executeUpdate();
-    }
+//
+//    public void update(Integer id, ProductPojo productPojo){
+//        Query query = em.createQuery(updateQuery);
+//
+//        query.setParameter("id", id);
+//        query.setParameter("name", productPojo.getName());
+//        query.setParameter("clientId", productPojo.getClientId());
+//        query.setParameter("price", productPojo.getPrice());
+//        query.setParameter("imageUrl", productPojo.getImageUrl());
+//        query.setParameter("barcode", productPojo.getBarcode());
+//        query.executeUpdate();
+//    }
 
     public ProductPojo getById(Integer id) throws ApiException {
         Query query = em.createQuery(getByIdQuery);

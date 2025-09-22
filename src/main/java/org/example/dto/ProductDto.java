@@ -10,14 +10,9 @@ import org.example.utils.UtilMethods;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static org.example.utils.UtilMethods.convertFileInToProductFormList;
 
 @Component
 @Service
@@ -37,7 +32,6 @@ public class ProductDto {
     public List<ProductData> getAll(Integer page, Integer size, String keyword) throws ApiException{
         List<ProductPojo> productPojoList = productApi.getAll(page, size, keyword);
 
-        // converting ProductPojoList to ProductDataList
         List<ProductData> productDataList = new ArrayList<>();
         for(ProductPojo productPojo: productPojoList){
             ProductData productData = convert(productPojo);
@@ -54,7 +48,6 @@ public class ProductDto {
     }
 
     public List<Response<ProductForm>> bulkUpload(List<ProductForm> productFormList) throws ApiException {
-
         List<Response<ProductForm>> responseList = new ArrayList<>();
         for(ProductForm productForm: productFormList){
             Response<ProductForm> response = new Response<>();
@@ -76,7 +69,6 @@ public class ProductDto {
         ProductPojo productPojo = productApi.getById(id);
         return convert(productPojo);
     }
-
     public ProductData getByBarcode(String barcode) throws ApiException{
         ProductPojo productPojo = productApi.getByBarcode(barcode);
         if(Objects.isNull(productPojo)){
@@ -84,25 +76,16 @@ public class ProductDto {
         }
         return convert(productPojo);
     }
-
-    public Long getTotalCount() {
-        return productApi.getTotalCount();
-    }
-
     public List<String> searchByBarcode(Integer page, Integer size, String barcode) {
         return productApi.searchByBarcode(page, size, barcode);
     }
-
-
     private ProductData convert(ProductPojo productPojo) throws ApiException{
         String clientName = productFlow.getClientById(productPojo.getClientId()).getName();
         Integer inventory = productFlow.getInventoryByProductId(productPojo.getId()).getQuantity();
         return DtoHelper.convertProductPojoToProductData(productPojo, clientName, inventory);
     }
-
     private ProductPojo convert(ProductForm productForm) throws ApiException{
         Integer clientId = productFlow.getClientByName(productForm.getClientName()).getId();
-
         return DtoHelper.convertProductFormToProductPojo(productForm, clientId);
     }
 }
