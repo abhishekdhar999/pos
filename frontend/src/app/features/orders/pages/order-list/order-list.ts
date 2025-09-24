@@ -119,12 +119,12 @@ export class OrderList implements OnInit{
         // Handle both array response and paginated response
         if (Array.isArray(response)) {
           this.orders = response;
-          this.totalPages = Math.ceil(response.length / this.filter.size);
+//           this.totalPages = Math.ceil(response.totalPages);
           console.log('Array response - totalPages calculated:', this.totalPages);
         } else if (response.data) {
           this.orders = response.data;
-          this.totalPages = response.totalPages || Math.ceil(response.totalElements / this.filter.size);
-          console.log('Paginated response - totalPages:', this.totalPages, 'totalElements:', response.totalElements);
+          this.totalPages = Math.ceil(response.totalPages);
+          console.log('Paginated response - totalPages:', response.totalPages, 'totalElements:', response.totalElements);
         } else {
           this.orders = [];
           this.totalPages = 0;
@@ -210,21 +210,6 @@ if(start > end){
     this.fetchOrders();
   }
 
-
-//   clearFilters(): void {
-//     this.filter = {
-//       startDate: new Date(new Date().setDate(new Date().getDate() - 30))
-//           .toISOString()
-//           .split('T')[0],   // e.g. "2025-08-13"
-//         endDate: new Date().toISOString().split('T')[0],
-//       productBarcode: '',
-//     status: '',
-//     ordeId:''
-//       page: 0,
-//       size: 12
-//     };
-//     this.loadReports();
-//   }
   // Modal and cart methods
   openCreateOrderModal(): void {
     this.showCreateOrderModal = true;
@@ -377,14 +362,15 @@ decreaseCartQuantity(barcode: string): void {
     const orderData: OrderItemForm[] = this.cartItems.map(item => ({
       barcode: item.barcode,
       quantity: item.quantity,
-      sellingPrice: item.price // make sure this exists in your frontend item object
+      sellingPrice: item.price
     }));
 
     this.orderService.createOrder(orderData).subscribe({
       next: (response) => {
+        console.log("response from order",response)
         this.toastService.success('Order created successfully');
         this.closeCreateOrderModal();
-        this.fetchOrders(); // Refresh the order list
+        this.fetchOrders();
       },
       error: (err) => {
         console.error('Error creating order', err);
@@ -407,10 +393,9 @@ decreaseCartQuantity(barcode: string): void {
         this.toastService.success('Invoice generated successfully');
         this.generatingInvoice = null;
 
-        // Add a small delay to ensure backend transaction is committed
         setTimeout(() => {
           console.log('Refreshing orders after invoice generation...');
-          this.fetchOrders(); // Refresh the order list to update isInvoiced status
+          this.fetchOrders();
         }, 500);
       },
       error: (err) => {
@@ -460,7 +445,7 @@ decreaseCartQuantity(barcode: string): void {
     });
   }
 
-  // Order details modal methods
+
   viewOrderDetails(orderId: number): void {
     this.selectedOrderId = orderId;
     this.showOrderItemsModal = true;

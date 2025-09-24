@@ -45,29 +45,30 @@ public class OrderDto {
     }
 
     public OrderData getOrderDetails(Integer orderId) throws ApiException {
-        OrderPojo orderPojo = orderFlow.getOrderById(orderId);
+        OrderPojo orderPojo = orderApi.getById(orderId);
         List<OrderItemPojo> orderItemPojoList = orderFlow.getOrderItemsByOrderId(orderId);
         List<OrderItemData> orderItemDataList = DtoHelper.convertOrderItemPojoListToOrderItemDataList(orderItemPojoList);
         return convertToOrderData(orderPojo, orderItemDataList);
     }
-
+//check
     public List<OrderData> getAll(OrderFiltersForm orderFiltersForm) throws ApiException{
-        List<OrderPojo> orderPojoList = orderFlow.getAllOrders(orderFiltersForm);
+        List<OrderPojo> orderPojoList = orderApi.getAllOrders(orderFiltersForm);
         List<OrderData> orderDataList = new ArrayList<>();
         for(OrderPojo orderPojo: orderPojoList){
             List<OrderItemPojo> orderItemPojoList = orderFlow.getOrderItemsByOrderId(orderPojo.getId());
-
             List<OrderItemData> orderItemDataList = DtoHelper.convertOrderItemPojoListToOrderItemDataList(orderItemPojoList);
             List<OrderItemData> orderItemDataListWithProductName = orderFlow.getOrderItemsByOrderIdWithProductName(orderItemDataList);
             orderDataList.add(convertToOrderData(orderPojo, orderItemDataListWithProductName));
         }
         return orderDataList;
     }
-//    public Long getTotalCount(OrderFiltersForm orderFiltersForm) {
-//        return orderApi.getTotalCount(orderFiltersForm);
-//    }
+
     public ErrorData<OrderError> resync(Integer id) throws ApiException{
         return orderFlow.resyncOrders(id);
+    }
+
+    public Long getTotalCount(OrderFiltersForm orderFilters) throws ApiException {
+        return orderApi.getTotalCount(orderFilters);
     }
 
 

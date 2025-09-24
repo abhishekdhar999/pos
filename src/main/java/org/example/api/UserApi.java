@@ -18,7 +18,4 @@ public class UserApi {
         return userDao.getByEmail(email);
     }
 
-    public void add(UserPojo userPojo) {
-        userDao.add(userPojo);
-    }
 }

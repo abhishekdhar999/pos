@@ -111,6 +111,18 @@
   position: relative;
   overflow: hidden;
   border: 1px solid #e9ecef;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.nav-card-link {
+  cursor: pointer;
+}
+
+.nav-card-link:hover {
+  text-decoration: none;
+  color: inherit;
 }
 
 .nav-card:hover {
@@ -139,29 +151,12 @@
 
 .nav-description {
   font-size: 0.95rem;
-  color: #7f8c8d;
-  margin: 0 0 25px 0;
+  color: #6c757d;
+  margin: 0 0 15px 0;
   line-height: 1.5;
 }
 
-.nav-link {
-  display: inline-block;
-  padding: 12px 24px;
-  background: #007bff;
-  color: white;
-  text-decoration: none;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: all 0.3s ease;
-}
-
-.nav-link:hover {
-  background: #0056b3;
-  transform: translateY(-2px);
-  color: white;
-  text-decoration: none;
-}
+/* Removed nav-link styles since cards are now clickable */
 
 /* Footer Section */
 .dashboard-footer {

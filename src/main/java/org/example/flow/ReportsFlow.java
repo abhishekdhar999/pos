@@ -18,16 +18,15 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import static org.example.dto.DtoHelper.createDaySalesReportPojo;
+
 @Service
 public class ReportsFlow {
 
     @Autowired
     private OrderApi orderApi;
-
-//    private final InvoiceClient invoiceClient;
     @Autowired
     private OrderItemApi orderItemApi;
-
     @Autowired
     private InvoiceClient invoiceClient;
     @Autowired
@@ -37,166 +36,116 @@ public class ReportsFlow {
     @Autowired
     private ClientApi clientApi;
 
-    public void generateDayReport() throws ApiException {
-//        get orders of the day
-        ZonedDateTime dateTime = ZonedDateTime.now();
-        ZonedDateTime startDate = dateTime.minusDays(1).with(LocalTime.of(0,0,0));
-        ZonedDateTime endDate = dateTime.minusDays(1).with(LocalTime.of(23,59,59));
-
-        DaySalesReportsForm daySalesReportsForm = new DaySalesReportsForm();
-        daySalesReportsForm.setStartDate(startDate.format(DateTimeFormatter.ISO_DATE_TIME));
-        daySalesReportsForm.setEndDate(endDate.format(DateTimeFormatter.ISO_DATE_TIME));
-        daySalesReportsForm.setPage(0);
-        daySalesReportsForm.setSize(1);
-
+//    todo refine the code make most of it in report dto
+    public void generateDayReport( DaySalesReportsForm daySalesReportsForm) throws ApiException {
         List<DaySalesReportPojo> dailySalesReportPojoList = salesReportApi.getDaySalesReports(daySalesReportsForm);
         if(!Objects.isNull(dailySalesReportPojoList) && !dailySalesReportPojoList.isEmpty()){
-           System.out.println("already done");
-            // it means that we have already updated the daily sales report
+           System.out.println("already updated the daily sales report");
             return;
         }
+        ZonedDateTime startDate = ZonedDateTime.parse(daySalesReportsForm.getStartDate());
+        ZonedDateTime endDate = ZonedDateTime.parse(daySalesReportsForm.getEndDate());
+    //todo remove the invoice call get it from orders
+        List<OrderPojo> orderPojoList = orderApi.getOrderBetweenDatesStatusFulfillable(startDate,endDate);
 
-        List<InvoiceData> invoiceData = invoiceClient.getInvoice(startDate, endDate);
-
-        if(Objects.isNull(invoiceData) || invoiceData.isEmpty()){
-            System.out.println("no invoice data");
-            return;
-        }
-        for(InvoiceData invoice : invoiceData){
-            System.out.println(invoice.getOrderId());
-            System.out.println(invoice.getId());
-        }
-        int invoiceOrderCount = 0;
-        int invoiceItemCount = 0;
-        Double totalAmount = 0.0;
-
-        for (InvoiceData invoice : invoiceData) {
-            invoiceOrderCount++; // Count each invoice (which represents one order)
-            List<OrderItemPojo> listOfOrderItem = orderItemApi.getByOrderId(invoice.getOrderId());
-            invoiceItemCount += listOfOrderItem.size();
-
-            for(OrderItemPojo orderItem : listOfOrderItem){
-                totalAmount += orderItem.getSellingPrice()*orderItem.getQuantity();
+        int orderCount = 0;
+        int totalOrderCount = 0;
+        Double totalOrderRevenue = 0.0;
+        for(OrderPojo orderPojo : orderPojoList){
+            orderCount++;
+            List<OrderItemPojo> listOfOrderItem = orderItemApi.getByOrderId(orderPojo.getId());
+            totalOrderCount += listOfOrderItem.size();
+            for(OrderItemPojo orderItemPojo : listOfOrderItem){
+                totalOrderRevenue += orderItemPojo.getSellingPrice()*orderItemPojo.getQuantity();
             }
         }
 
-        DaySalesReportPojo daySalesReportPojo = new DaySalesReportPojo();
-        daySalesReportPojo.setDateTime(startDate);
-        daySalesReportPojo.setTotalRevenue(totalAmount);
-        daySalesReportPojo.setInvoicedOrdersCount(invoiceOrderCount);
-        daySalesReportPojo.setInvoicedItemsCount(invoiceItemCount);
+       DaySalesReportPojo daySalesReportPojo =  createDaySalesReportPojo(startDate,totalOrderRevenue,totalOrderCount,orderCount);
         salesReportApi.addDaySalesReport(daySalesReportPojo);
 
     }
-public List<DaySalesReportPojo> getDaysSalesReport(DaySalesReportsForm form) throws ApiException {
-        return  salesReportApi.getDaySalesReports(form);
-}
+//    todo mak e direct call from dto
+//public List<DaySalesReportPojo> getDaysSalesReport(DaySalesReportsForm form) throws ApiException {
+//        return  salesReportApi.getDaySalesReports(form);
+//}
 
 public Long getTotalDayReports(){
         return salesReportApi.getTotalDayReports();
 }
 
-public List<DaySalesReportPojo> getDaySalesReportsBetweenDates(ExportFilterDailyReports form) throws ApiException {
-        ZonedDateTime startDate = ZonedDateTime.parse(form.getStartDate());
-        ZonedDateTime endDate = ZonedDateTime.parse(form.getEndDate());
-return salesReportApi.getDaySalesReportsBetweenDates(startDate,endDate);
-}
-
+//public List<DaySalesReportPojo> getDaySalesReportsBetweenDates(ExportFilterDailyReports form) throws ApiException {
+//        ZonedDateTime startDate = ZonedDateTime.parse(form.getStartDate());
+//        ZonedDateTime endDate = ZonedDateTime.parse(form.getEndDate());
+//return salesReportApi.getDaySalesReportsBetweenDates(startDate,endDate);
+//}
+//todo break down into small methods
 public List<SalesReportData> getSalesReport(SalesReportFilterForm salesReportFilterForm) throws ApiException {
         ZonedDateTime startDate = ZonedDateTime.parse(salesReportFilterForm.getStartDate());
         ZonedDateTime endDate = ZonedDateTime.parse(salesReportFilterForm.getEndDate());
         List<OrderPojo> listOfOrderPojo = orderApi.getOrderBetweenDatesStatusFulfillable(startDate,endDate);
-
          HashMap<Integer,Integer> itemCountMap = new HashMap<>();
          HashMap<Integer,Double> revenueMap = new HashMap<>();
-
-
        for(OrderPojo order : listOfOrderPojo){
            List<OrderItemPojo> listOfOrderItem = orderItemApi.getByOrderId(order.getId());
            for(OrderItemPojo orderItem : listOfOrderItem){
-
                itemCountMap.put(orderItem.getProductId(),itemCountMap.getOrDefault(orderItem.getProductId(),0)+orderItem.getQuantity());
-
                revenueMap.put(orderItem.getProductId(),revenueMap.getOrDefault(orderItem.getProductId(),0.0) + (orderItem.getQuantity() * orderItem.getSellingPrice()));
            }
        }
-
-       List<SalesReportData> listSalesReportData = new ArrayList<>();
-       for(Map.Entry<Integer, Integer> entry : itemCountMap.entrySet()){
-           SalesReportData salesReportData = new SalesReportData();
-
-//           product
-           ProductPojo productPojo = productApi.getById(entry.getKey());
-//           client
-           ClientPojo clientPojo = clientApi.getById(productPojo.getClientId());
-
-//           putting value
-           salesReportData.setProductBarcode(productPojo.getBarcode());
-           salesReportData.setClient(clientPojo.getName());
-           salesReportData.setQuantity(entry.getValue());
-            salesReportData.setRevenue(revenueMap.get(entry.getKey()));
-
-            listSalesReportData.add(salesReportData);
-       }
-
-       List<SalesReportData> listSalesReportDataFilters = new ArrayList<>();
-
-    if(salesReportFilterForm.getClient().isEmpty() && !salesReportFilterForm.getProductBarcode().isEmpty()){
-        System.out.println("in if");
-        System.out.println("client name"+ salesReportFilterForm.getClient());
-        System.out.println("product barcode"+ salesReportFilterForm.getProductBarcode());
-//           only check for barcode
-        for(SalesReportData salesReportData : listSalesReportData ){
-if(salesReportData.getProductBarcode().contains(salesReportFilterForm.getProductBarcode())){
-listSalesReportDataFilters.add(salesReportData);
+       List<SalesReportData> listSalesReportData = createListOfSalesReportData(revenueMap,itemCountMap);
+        List<SalesReportData> listSalesReportDataFiltered =  createFilteredSalesReportData(listSalesReportData, salesReportFilterForm);
+        return listSalesReportDataFiltered;
 }
-        }
-    }else if(salesReportFilterForm.getProductBarcode().isEmpty() &&  !salesReportFilterForm.getClient().isEmpty()){
+
+
+    public List<SalesReportData> createFilteredSalesReportData (List<SalesReportData> listSalesReportData,SalesReportFilterForm salesReportFilterForm){
+        List<SalesReportData> listSalesReportDataFilters = new ArrayList<>();
+        if(salesReportFilterForm.getClient().isEmpty() && !salesReportFilterForm.getProductBarcode().isEmpty()){
+//           only check for barcode
+            for(SalesReportData salesReportData : listSalesReportData ){
+                if(salesReportData.getProductBarcode().contains(salesReportFilterForm.getProductBarcode())){
+                    listSalesReportDataFilters.add(salesReportData);
+                }
+            }
+        }else if(salesReportFilterForm.getProductBarcode().isEmpty() &&  !salesReportFilterForm.getClient().isEmpty()){
 //        only check for client
-        System.out.println("in else if");
-        System.out.println("client name"+ salesReportFilterForm.getClient());
-        System.out.println("product barcode"+ salesReportFilterForm.getProductBarcode());
-        for(SalesReportData salesReportData : listSalesReportData ){
-            if(salesReportData.getClient().contains(salesReportFilterForm.getClient())){
-                listSalesReportDataFilters.add(salesReportData);
+            for(SalesReportData salesReportData : listSalesReportData ){
+                if(salesReportData.getClient().contains(salesReportFilterForm.getClient())){
+                    listSalesReportDataFilters.add(salesReportData);
+                }
             }
-        }
-    }else{
+        }else{
 //        check for both client and barcode
-        System.out.println("in else");
-        System.out.println("client name"+ salesReportFilterForm.getClient());
-        System.out.println("product barcode"+ salesReportFilterForm.getProductBarcode());
-        for(SalesReportData salesReportData : listSalesReportData ){
-            if(salesReportData.getProductBarcode().contains(salesReportFilterForm.getProductBarcode()) && salesReportData.getClient().contains(salesReportFilterForm.getClient())){
-                listSalesReportDataFilters.add(salesReportData);
+            for(SalesReportData salesReportData : listSalesReportData ){
+                if(salesReportData.getProductBarcode().contains(salesReportFilterForm.getProductBarcode()) && salesReportData.getClient().contains(salesReportFilterForm.getClient())){
+                    listSalesReportDataFilters.add(salesReportData);
+                }
             }
         }
+        return listSalesReportDataFilters;
     }
 
-    return listSalesReportDataFilters;
+    public List<SalesReportData> createListOfSalesReportData(HashMap<Integer,Double> revenueMap,HashMap<Integer,Integer> itemCountMap) throws ApiException {
 
-}
-
-public Long getTotalOrdersCount(){
-        return orderApi.getCount();
-}
-
-public Long getTotalSalesReportCount(SalesReportFilterForm salesReportFilterForm) throws ApiException {
-        ZonedDateTime startDate = ZonedDateTime.parse(salesReportFilterForm.getStartDate());
-        ZonedDateTime endDate = ZonedDateTime.parse(salesReportFilterForm.getEndDate());
-        List<OrderPojo> listOfOrderPojo = orderApi.getBetweenDates(startDate,endDate);
-
-        Set<Integer> uniqueProductIds = new HashSet<>();
-        
-        for(OrderPojo order : listOfOrderPojo){
-            List<OrderItemPojo> listOfOrderItem = orderItemApi.getByOrderId(order.getId());
-            for(OrderItemPojo orderItem : listOfOrderItem){
-                uniqueProductIds.add(orderItem.getProductId());
-            }
+        List<SalesReportData> listSalesReportData = new ArrayList<>();
+        for(Map.Entry<Integer, Integer> entry : itemCountMap.entrySet()){
+            SalesReportData salesReportData = new SalesReportData();
+//           product
+            ProductPojo productPojo = productApi.getById(entry.getKey());
+//           client
+            ClientPojo clientPojo = clientApi.getById(productPojo.getClientId());
+//           putting value
+            salesReportData.setProductBarcode(productPojo.getBarcode());
+            salesReportData.setClient(clientPojo.getName());
+            salesReportData.setQuantity(entry.getValue());
+            salesReportData.setRevenue(revenueMap.get(entry.getKey()));
+            listSalesReportData.add(salesReportData);
         }
-        
-        return (long) uniqueProductIds.size();
-}
+        return listSalesReportData;
+    }
+
+
+
 
 
 

@@ -58,8 +58,6 @@ public class InventoryDto {
     public List<Response<InventoryForm>> bulkUpload(List<InventoryForm> listOfInventoryForm) throws ApiException {
 
         List<Response<InventoryForm>> responseList = new ArrayList<>();
-
-
         for(InventoryForm inventoryForm: listOfInventoryForm){
             Response<InventoryForm> response = new Response<>();
             response.setData(inventoryForm);
@@ -83,13 +81,6 @@ public class InventoryDto {
         return inventoryDataList;
     }
 
-    public void edit(InventoryForm inventoryForm) throws ApiException {
-        UtilMethods.normalizeInventoryForm(inventoryForm);
-        UtilMethods.validateInventoryForm(inventoryForm);
-        InventoryPojo inventoryPojo = convert(inventoryForm);
-        inventoryApi.edit(inventoryPojo);
-    }
-
     public InventoryData getByProductId(Integer productId) throws ApiException{
         InventoryPojo inventoryPojo = inventoryApi.getByProductId(productId);
         if(Objects.isNull(inventoryPojo)){
@@ -102,7 +93,6 @@ public class InventoryDto {
         Integer productId = inventoryFlow.getProductByBarcode(barcode).getId();
         return getByProductId(productId);
     }
-
 
     private InventoryPojo convert(InventoryForm inventoryForm) throws ApiException{
         Integer productId = inventoryFlow.getProductByBarcode(inventoryForm.getBarcode()).getId();

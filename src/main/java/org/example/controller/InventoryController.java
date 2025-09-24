@@ -28,21 +28,16 @@ public class InventoryController {
     private InventoryDto inventoryDto;
 
     @ApiOperation("add inventory of a product")
-    @RequestMapping(path = "/create", method = RequestMethod.POST)
+    @RequestMapping( method = RequestMethod.POST)
     public void add(@RequestBody InventoryForm inventoryForm) throws ApiException {
         inventoryDto.add(inventoryForm);
     }
     @ApiOperation("bulk uploading")
     @RequestMapping(path = "/bulk",method = RequestMethod.POST)
     public List<Response<InventoryForm>> bulk(@RequestBody List<InventoryForm> listOfInventoryForm) throws ApiException{
-
         return inventoryDto.bulkUpload(listOfInventoryForm);
     }
-    @ApiOperation("edit inventory of a product")
-    @RequestMapping(method = RequestMethod.PUT)
-    public void edit(@RequestBody InventoryForm inventoryForm) throws ApiException{
-        inventoryDto.edit(inventoryForm);
-    }
+
     @ApiOperation("get all inventories")
     @RequestMapping(method = RequestMethod.GET)
     public List<InventoryData> getAll() throws ApiException{

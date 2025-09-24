@@ -26,21 +26,8 @@ public class OrderApi {
         orderDao.updateOrder(orderPojo);
     }
 
-
-
     public List<OrderPojo> getAllOrders(OrderFiltersForm orderFiltersForm) throws ApiException {
-//        Long totalCount = orderDao.getTotalCount(orderFiltersForm);
-//        if(totalCount!=0 && (long) orderFiltersForm.getPage()* orderFiltersForm.getSize() >= totalCount){
-//            // not gonna invoked by fronted, most probably.
-//            throw new ApiException("Invalid page number");
-//        }
         return orderDao.getAllOrders(orderFiltersForm);
-    }
-
-    public void makeOrderInvoiced(Integer id) throws ApiException {
-        OrderPojo orderPojo = getById(id);
-//       orderPojo.setOrderInvoiced();
-        orderDao.update(id, orderPojo);
     }
 
     public OrderPojo getById(Integer orderId) throws ApiException {
@@ -51,17 +38,13 @@ public class OrderApi {
         return orderPojo;
     }
 
-    public List<OrderPojo> getBetweenDates(ZonedDateTime startDate, ZonedDateTime endDate){
-        return orderDao.getBetweenDates(startDate, endDate);
-    }
+
 
     public List<OrderPojo> getOrderBetweenDatesStatusFulfillable(ZonedDateTime startDate, ZonedDateTime endDate){
         return orderDao.getOrderBetweenDatesStatusFulfillable(startDate,endDate);
     }
-    public Long getTotalCount(OrderFiltersForm orderFiltersForm) {
+
+    public Long getTotalCount(OrderFiltersForm orderFiltersForm) throws ApiException {
         return orderDao.getTotalCount(orderFiltersForm);
-    }
-    public Long getCount(){
-        return orderDao.getCount();
     }
 }

@@ -28,6 +28,6 @@ export class App implements ngOnInit{
   constructor(private http: HttpClient, private router: Router,private auth: AuthService) {}
 
   ngOnInit() {
-     this.auth.checkSession(); // 🔥 always check session on load/refresh
+     this.auth.checkSession();
   }
 }

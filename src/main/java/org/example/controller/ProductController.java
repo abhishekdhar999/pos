@@ -37,7 +37,7 @@ public class ProductController {
         response.setData(data);
         response.setPage(page);
         response.setSize(size);
-        response.setTotalPages (total / size + 1);
+        response.setTotalPages (total / size + 2);
         return response;
     }
 

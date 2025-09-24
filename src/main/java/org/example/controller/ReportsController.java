@@ -47,8 +47,7 @@ public class ReportsController {
         response.setSize(form.getSize());
         response.setData(listOfDaySalesReportData);
         response.setTotalPages(total / form.getSize() + 1);
-
-return response;
+        return response;
     }
 
     @ApiOperation("export daily sales report")
@@ -80,10 +79,8 @@ return response;
         response.setData(reportsDto.getSalesReport(salesReportFilterForm));
         response.setPage(salesReportFilterForm.getPage());
         response.setSize(salesReportFilterForm.getSize());
-
         Long total = (long) response.getData().size();
         response.setTotalPages(total / salesReportFilterForm.getSize());
-        
         return response;
     }
 

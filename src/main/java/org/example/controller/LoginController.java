@@ -34,8 +34,7 @@ public class LoginController {
     private UserApi userApi;
     @Autowired
     private ApplicationProperties properties;
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
     @ApiOperation("login a user")
     @RequestMapping(path = "/session/login", method = RequestMethod.POST)
@@ -44,15 +43,10 @@ public class LoginController {
         if (Objects.isNull(userPojo)) {
             throw new ApiException("Username or password is invalid.");
         }
-        // Create authentication object
         Authentication authentication = convert(userPojo, properties.getSupervisorEmail());
-        // Create new session
         HttpSession session = request.getSession(true);
-        // Attach Spring SecurityContext to this new session
         SecurityUtil.createContext(session);
-        // Attach Authentication object to the Security Context
         SecurityUtil.setAuthentication(authentication);
-
         UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
         return new LoginResponse(principal.getEmail(), principal.getRole());
     }
@@ -65,15 +59,11 @@ public class LoginController {
     @ApiOperation("get current user info")
     @RequestMapping(path = "/api/auth/me", method = RequestMethod.GET)
     public LoginResponse getCurrentUser(HttpServletRequest request) throws ApiException {
-        // Get the current authentication from Spring Security context
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         if (authentication == null || !authentication.isAuthenticated()) {
             throw new ApiException("User not authenticated");
         }
-        // Get the principal (user details)
         UserPrincipal principal = (UserPrincipal) authentication.getPrincipal();
-        // Return user info
         return new LoginResponse(principal.getEmail(), principal.getRole());
     }
 
@@ -93,8 +83,6 @@ public class LoginController {
             authorities.add(new SimpleGrantedAuthority("operator"));
             principal.setRole("operator");
         }
-
-        // Create Authentication
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal, null, authorities);
         return token;
     }

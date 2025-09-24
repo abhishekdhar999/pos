@@ -12,7 +12,7 @@ import java.time.ZonedDateTime;
 @Entity
 @Getter
 @Setter
-public class DaySalesReportPojo {
+public class DaySalesReportPojo extends AbstractPojo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

@@ -6,8 +6,6 @@ import org.example.dto.ApiException;
 import org.example.dto.InvoiceDto;
 import org.example.models.data.InvoiceData;
 import org.example.models.form.InvoiceFilterForm;
-import org.example.models.form.OrderFiltersForm;
-import org.example.pojo.InvoicePojo;
 import org.example.utils.InvoiceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -25,7 +25,6 @@ public class ProductApi {
     }
 
     public List<ProductPojo> getAll(Integer page, Integer size, String keyword) throws ApiException {
-
         return productDao.getAll(page, size, keyword);
     }
 

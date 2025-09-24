@@ -21,7 +21,6 @@ import java.util.List;
 public class ClientController {
     @Autowired
     private ClientDto clientDto;
-//todo create does not required for api
     @ApiOperation("adds a client")
     @RequestMapping(method = RequestMethod.POST)
     public void add(@RequestBody ClientForm client) throws ApiException {
@@ -33,13 +32,12 @@ public class ClientController {
     public void update(@PathVariable Integer id,  @RequestBody ClientForm client) throws ApiException{
         clientDto.update(id, client);
     }
-
+//todo remove buisness logic from here ,remove default values from here
     @ApiOperation("gets all the client")
     @RequestMapping(method = RequestMethod.GET)
     public PaginatedResponse<ClientData> getAll(@RequestParam(defaultValue = "0") Integer page,
                                                 @RequestParam(defaultValue = "12") Integer size){
         List<ClientData> clientDataList = clientDto.getAll(page, size);
-//        todo list.length can be the total count
         Long total = (long) clientDataList.size();
         PaginatedResponse<ClientData> response = new PaginatedResponse<>();
         response.setPage(page);
@@ -53,12 +51,6 @@ public class ClientController {
     public ClientData getById(@PathVariable Integer id) throws ApiException{
         return clientDto.getById(id);
     }
-//todo remove the count api
-
-//    @RequestMapping(path = "/count", method = RequestMethod.GET)
-//    public Long getTotalCount(){
-//        return clientDto.getTotalCount();
-//    }
 
     @RequestMapping(path = "/search", method = RequestMethod.GET)
     public List<String> searchByName(@RequestParam Integer page, @RequestParam Integer size, @RequestParam String name){

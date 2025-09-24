@@ -18,30 +18,22 @@ public class InventoryApi {
     private InventoryDao inventoryDao;
 
     public void add(InventoryPojo inventoryPojo){
-        // checking if inventory already exists
         InventoryPojo inventory = inventoryDao.getByProductId(inventoryPojo.getProductId());
-
-        //if it doesn't exist then we will create a new row, otherwise update the existing inventory
         if(Objects.isNull(inventory)){
             inventoryDao.add(inventoryPojo);
         }else{
-            //increasing inventory
-            inventoryPojo.setQuantity(inventory.getQuantity() + inventoryPojo.getQuantity());
-            inventoryDao.update(inventoryPojo);
+            inventory.setQuantity(inventory.getQuantity() + inventoryPojo.getQuantity());
         }
     }
 
     public void bulkUpload(List<InventoryPojo> inventoryPojoList) {
         for(InventoryPojo inventoryPojo: inventoryPojoList){
-            // checking if inventory already exists
             InventoryPojo inventory = inventoryDao.getByProductId(inventoryPojo.getProductId());
-            //if it doesn't exist then we will create a new row, otherwise update the existing inventory
             if(Objects.isNull(inventory)){
                 inventoryDao.add(inventoryPojo);
             }else{
-                //increasing inventory
-                inventoryPojo.setQuantity(inventory.getQuantity() + inventoryPojo.getQuantity());
-                inventoryDao.update(inventoryPojo);
+                inventory.setQuantity(inventory.getQuantity() + inventoryPojo.getQuantity());
+//                inventoryDao.update(inventoryPojo);
             }
         }
     }
@@ -60,16 +52,13 @@ public class InventoryApi {
         return inventoryPojo;
     }
 
-    public void edit(InventoryPojo inventoryPojo) {
-        // checking if inventory already exists
-        InventoryPojo inventory = inventoryDao.getByProductId(inventoryPojo.getProductId());
-        //if it doesn't exist then we will create a new row, otherwise update the existing inventory
-        if(Objects.isNull(inventory)){
-            inventoryDao.add(inventoryPojo);
-        }else{
-            // Set the ID from existing inventory to ensure proper update
-            inventoryPojo.setId(inventory.getId());
-            inventoryDao.update(inventoryPojo);
-        }
-    }
+//    public void edit(InventoryPojo inventoryPojo) {
+//        InventoryPojo inventory = inventoryDao.getByProductId(inventoryPojo.getProductId());
+//        if(Objects.isNull(inventory)){
+//            inventoryDao.add(inventoryPojo);
+//        }else{
+//            inventoryPojo.setId(inventory.getId());
+//            inventoryDao.update(inventoryPojo);
+//        }
+//    }
 }

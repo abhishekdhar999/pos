@@ -9,6 +9,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class DtoHelper {
 
@@ -86,14 +87,10 @@ public class DtoHelper {
 
     public static OrderItemData convertOrderItemPojoToOrderItemData(OrderItemPojo orderItemPojo) {
         OrderItemData orderItemData = new OrderItemData();
-
         orderItemData.setId(orderItemPojo.getId());
-
         orderItemData.setQuantity(orderItemPojo.getQuantity());
         orderItemData.setProductId(orderItemPojo.getProductId());
         orderItemData.setSellingPrice(orderItemPojo.getSellingPrice());
-
-
         return orderItemData;
     }
 
@@ -160,4 +157,49 @@ public class DtoHelper {
         salesReportFilterForm.setProductBarcode(salesReportFilterForm.getProductBarcode().toLowerCase());
     }
 
+//    dto for orders
+    public static void validateProductInOrderCreation(ProductPojo productPojo ,String barcode,OrderItemPojo orderItemPojo) throws ApiException {
+        if (Objects.isNull(productPojo)) {
+            throw new ApiException("Product with barcode '" + barcode + "' does not exist");
+        }
+        if (productPojo.getPrice() < orderItemPojo.getSellingPrice()) {
+            throw new ApiException("Selling Price is higher than Price for product: " + barcode);
+        }
+    }
+
+    public static void validateInventoryInOrderCreation(InventoryPojo inventory ,String barcode,OrderItemPojo orderItemPojo) throws ApiException {
+        if (inventory == null || inventory.getQuantity() <= 0) {
+            throw new ApiException("Product' with barcode '" + barcode + "' is out of stock");
+        }
+        if (inventory.getQuantity() < orderItemPojo.getQuantity()) {
+            throw new ApiException("Only " + inventory.getQuantity() +
+                    (inventory.getQuantity() == 1 ? " item is" : " items are") +
+                    " left for product ' with barcode '" + barcode + "'");
+        }
+    }
+
+    public static OrderError createError( String message){
+        OrderError error = new OrderError();
+        error.setMessage(message);
+        return error;
+    }
+
+//    reports dto
+public static DaySalesReportPojo createDaySalesReportPojo(ZonedDateTime startDate,Double totalAmount, int invoiceOrderCount, int invoiceItemCount){
+    DaySalesReportPojo daySalesReportPojo = new DaySalesReportPojo();
+    daySalesReportPojo.setDateTime(startDate);
+    daySalesReportPojo.setTotalRevenue(totalAmount);
+    daySalesReportPojo.setInvoicedOrdersCount(invoiceOrderCount);
+    daySalesReportPojo.setInvoicedItemsCount(invoiceItemCount);
+    return daySalesReportPojo;
+}
+
+    public static DaySalesReportsForm createDaySalesReportForm(ZonedDateTime startDate,ZonedDateTime endDate){
+        DaySalesReportsForm daySalesReportsForm = new DaySalesReportsForm();
+        daySalesReportsForm.setStartDate(startDate.format(DateTimeFormatter.ISO_DATE_TIME));
+        daySalesReportsForm.setEndDate(endDate.format(DateTimeFormatter.ISO_DATE_TIME));
+        daySalesReportsForm.setPage(0);
+        daySalesReportsForm.setSize(1);
+        return daySalesReportsForm;
+    }
 }

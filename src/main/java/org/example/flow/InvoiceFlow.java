@@ -4,6 +4,7 @@ package org.example.flow;
 
 
 import org.example.InvoiceClient.InvoiceClient;
+import org.example.api.ClientApi;
 import org.example.api.OrderApi;
 import org.example.api.OrderItemApi;
 import org.example.api.ProductApi;
@@ -40,32 +41,28 @@ public class InvoiceFlow {
     private ProductApi productApi;
     @Autowired
     private InvoiceClient invoiceClient;
-
-//    private final FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
+    @Autowired
+    private ClientApi clientApi;
 
     public InvoiceResponse generateInvoice(Integer orderId) throws ApiException {
         OrderPojo orderPojo = orderApi.getById(orderId);
         if (Objects.isNull(orderPojo)) {
             throw new ApiException("Order doesn't exist.");
         }
-
         Double total = 0.0;
         List<OrderItemPojo> orderItemPojoList = orderItemApi.getByOrderId(orderId);
         List<InvoiceItem> invoiceItemDataList = new ArrayList<>();
         for (OrderItemPojo orderItemPojo : orderItemPojoList) {
             Double subTotal = (orderItemPojo.getSellingPrice() * orderItemPojo.getQuantity());
-
             InvoiceItem invoiceItem = new InvoiceItem();
             invoiceItem.setTotal(subTotal);
             invoiceItem.setPrice(orderItemPojo.getSellingPrice());
             invoiceItem.setQuantity(orderItemPojo.getQuantity());
             ProductPojo productPojo = productApi.getById(orderItemPojo.getProductId());
             invoiceItem.setProductName(productPojo.getName());
-
             invoiceItemDataList.add(invoiceItem);
             total += subTotal;
         }
-
         InvoiceRequest invoiceRequest = new InvoiceRequest();
         invoiceRequest.setTotal(total);
         invoiceRequest.setInvoiceItems(invoiceItemDataList);
@@ -77,9 +74,11 @@ public class InvoiceFlow {
         return invoiceClient.generateInvoice(invoiceRequest);
     }
 
+
     public List<InvoiceData> getInvoices(InvoiceFilterForm filterForm) throws ApiException {
         ZonedDateTime startDate = ZonedDateTime.parse(filterForm.getStartDate());
         ZonedDateTime endDate = ZonedDateTime.parse(filterForm.getEndDate());
        return invoiceClient.getInvoice(startDate, endDate);
     }
+
 }

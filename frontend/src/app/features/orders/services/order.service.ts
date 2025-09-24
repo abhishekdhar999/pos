@@ -31,7 +31,7 @@ private apiurl ='http://localhost:8080/pos/api'
   }
 
   createOrder(orderData: any): Observable<any> {
-    return this.http.post('http://localhost:8080/pos/api/order/create', orderData, {
+    return this.http.post('http://localhost:8080/pos/api/order', orderData, {
       withCredentials: true
     });
   }

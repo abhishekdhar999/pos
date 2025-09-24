@@ -35,24 +35,21 @@ public class InvoiceDto {
 
     public InvoiceResponse generateInvoice(int orderId) throws ApiException {
 
-        OrderPojo orderPojoo =  orderFlow.getOrderById(orderId);
+        OrderPojo orderPojoo = orderApi.getById(orderId);
         if(Objects.isNull(orderPojoo)){
             throw new ApiException("Order id not found");
         }
         if(orderPojoo.getIsInvoiced()){
             throw new ApiException("Order has already invoiced");
         }
-
         InvoiceResponse res = invoiceFlow.generateInvoice(orderId);
-           OrderPojo orderPojo =  orderFlow.getOrderById(orderId);
-           orderPojo.setIsInvoiced(Boolean.TRUE);
-           if(orderPojo.getIsInvoiced() == Boolean.TRUE){
-               orderPojo.setStatus(OrderStatus.INVOICED);
+           orderPojoo.setIsInvoiced(Boolean.TRUE);
+           if(orderPojoo.getIsInvoiced() == Boolean.TRUE){
+               orderPojoo.setStatus(OrderStatus.INVOICED);
            }
-            orderApi.updateOrder(orderPojo);
+           orderApi.updateOrder(orderPojoo);
         InvoiceResponse invoiceResponse = new InvoiceResponse();
         invoiceResponse.setInvoiceId(res.getInvoiceId());
-
         return invoiceResponse;
     }
 
@@ -74,6 +71,5 @@ System.out.println("downloadInvoiceResponse:"+downloadInvoiceResponse);
     public List<InvoiceData> getInvoices(InvoiceFilterForm filterForm) throws ApiException {
         return invoiceFlow.getInvoices(filterForm);
     }
-
 
 }

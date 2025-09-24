@@ -22,7 +22,7 @@ public class OrderController {
     private OrderDto orderDto;
 
     @ApiOperation("create  order")
-    @RequestMapping(path = "/create", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ErrorData<OrderError> create(@RequestBody List<OrderItemForm> orderItemFormList) throws ApiException {
         return orderDto.create(orderItemFormList);
     }
@@ -36,21 +36,28 @@ public class OrderController {
     @ApiOperation("getting all order's detail.")
     @RequestMapping(method = RequestMethod.GET)
     public PaginatedResponse<OrderData> getAll(@ModelAttribute OrderFiltersForm orderfilters) throws ApiException {
+        System.out.println("order filter"+orderfilters.getStartDate()+" "+orderfilters.getEndDate()+" "+orderfilters.getPage()+" "+orderfilters.getSize());
         List<OrderData> data = orderDto.getAll(orderfilters);
+        System.out.println("size"+data.size());
         PaginatedResponse<OrderData> response = new PaginatedResponse<>();
         response.setData(data);
         response.setPage(orderfilters.getPage());
         response.setSize(orderfilters.getSize());
-        response.setTotalPages((long) data.size() / orderfilters.getSize() + 1);
+        response.setTotalPages(getTotalCount(orderfilters) / orderfilters.getSize() + 1);
         return response;
     }
 
-    @ApiOperation(value = "re sync the order")
+    @ApiOperation(value = "resync the order")
     @RequestMapping(value = "/resync/{id}",method = RequestMethod.POST)
     public ErrorData<OrderError> resync(@PathVariable Integer id) throws ApiException{
        return orderDto.resync(id);
     }
 
+    @ApiOperation("getting total no. of orders")
+    @RequestMapping(path = "/get-total-count", method = RequestMethod.GET)
+    public Long getTotalCount(@ModelAttribute OrderFiltersForm orderFilters) throws ApiException {
+        return orderDto.getTotalCount(orderFilters);
+    }
 
 
 

@@ -13,7 +13,6 @@ public class ProductForm {
     private String clientName;
     @NotNull
     private String name;
-    @NotNull
     private Double price;
     @NotNull
     private String imageUrl;

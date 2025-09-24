@@ -14,7 +14,7 @@ import javax.persistence.*;
                 @Index(name = "idx_order_item_",columnList = "orderId")
         }
 )
-public class OrderItemPojo {
+public class OrderItemPojo extends AbstractPojo{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

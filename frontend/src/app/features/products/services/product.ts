@@ -12,7 +12,7 @@ export class ProductService {
   private getApiUrl = "http://localhost:8080/pos/api/product";
   private updateApiUrl = 'http://localhost:8080/pos/api/product';
   private bulkUploadUrl = 'http://localhost:8080/pos/api/product/upload';
-private addInventoryUrl = "http://localhost:8080/pos/api/inventory/create"
+private addInventoryUrl = "http://localhost:8080/pos/api/inventory"
   private bulkUploadInventoryUrl = "http://localhost:8080/pos/api/inventory/bulk"
   constructor(private http: HttpClient) {}
 
@@ -47,9 +47,6 @@ private addInventoryUrl = "http://localhost:8080/pos/api/inventory/create"
     return this.http.post<Inventory>(this.addInventoryUrl,inventory,{withCredentials:true});
   }
 
-  // bulkUploadInventory(inventoryData:FormData):Observable<any>{
-  // return this.http.put(this.bulkUploadInventoryUrl,inventoryData,{withCredentials:true})
-  // }
 
   bulkUploadInventoryList(inventoryList: InventoryForm[]): Observable<any> {
     return this.http.post(this.bulkUploadInventoryUrl, inventoryList, { withCredentials: true });

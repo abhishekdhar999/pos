@@ -11,12 +11,12 @@ import javax.persistence.*;
 @Setter
 
 @Entity
-public class InventoryPojo {
+public class InventoryPojo extends AbstractPojo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private Integer productId;
 
     @Column(nullable = false)

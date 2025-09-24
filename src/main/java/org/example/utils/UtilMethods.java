@@ -71,6 +71,8 @@ return products;
     public static void validateProductForm(ProductForm productForm) throws ApiException{
         if(Objects.isNull(productForm)){
             throw new ApiException("Product should not be null");
+        }else if(Objects.isNull(productForm.getPrice())){
+            throw new ApiException("Product price should not be empty");
         }else if(productForm.getName().isEmpty()){
             throw new ApiException("Product name should not be empty");
         }else if(productForm.getBarcode().isEmpty()){
@@ -84,7 +86,7 @@ return products;
         } else if (productForm.getPrice() <= 0.0) {
         throw new ApiException("Product price should be greater than 0");
         } else if (productForm.getPrice() > FinalValues.FINAL_PRICE) {
-            throw new ApiException("Mrp should not exceed ₹");
+            throw new ApiException("Mrp should not exceed ₹"+ FinalValues.FINAL_PRICE);
         }else if(productForm.getBarcode().length() < 5){
             throw new ApiException("Barcode should be more than 5 letters");
         }else if(productForm.getName().length() < 5){
@@ -92,7 +94,10 @@ return products;
         }
     }
 
-    public static void normalizeProductForm(ProductForm productForm){
+    public static void normalizeProductForm(ProductForm productForm) throws ApiException {
+        if(Objects.isNull(productForm.getPrice())){
+            throw new ApiException("Product price should not be empty");
+        }
         productForm.setPrice( Double.valueOf(new DecimalFormat("0.00").format( productForm.getPrice() )) );
         productForm.setName(productForm.getName().trim().toLowerCase());
         productForm.setBarcode(productForm.getBarcode().trim().toLowerCase());
@@ -101,7 +106,11 @@ return products;
     }
 
     public static void validateInventoryForm(InventoryForm inventoryForm) throws ApiException{
-        if(inventoryForm.getQuantity() <= 0){
+        if(Objects.isNull(inventoryForm.getBarcode())){
+            throw new ApiException("Barcode should not be empty");
+        }else if(Objects.isNull(inventoryForm.getQuantity())){
+            throw new ApiException("Quantity should not be empty");
+        }else if(inventoryForm.getQuantity() <= 0){
             throw new ApiException("Quantity should be greater than 0");
         } else if (inventoryForm.getQuantity() > FinalValues.FINAL_INVENTORY) {
             throw new ApiException("Quantity should not exceed "+ FinalValues.FINAL_INVENTORY);
@@ -146,8 +155,6 @@ return products;
             }catch (ApiException apiException){
                 OrderError orderError = new OrderError();
                 orderError.setMessage(apiException.getMessage());
-                orderError.setIndex(index);
-                orderError.setBarcode(orderItemForm.getBarcode());
                 orderErrorList.add(orderError);
             }
             index++;
@@ -155,10 +162,6 @@ return products;
         return orderErrorList;
     }
 
-//    public static void normalizeSalesReportForm(SalesReportForm salesReportForm) {
-//        salesReportForm.setClient(salesReportForm.getClient().toLowerCase());
-//        salesReportForm.setProductBarcode(salesReportForm.getProductBarcode().toLowerCase());
-//    }
 
     public static ZonedDateTime parseStartDate(String startDate) {
         if(startDate.isEmpty()){

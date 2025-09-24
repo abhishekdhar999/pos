@@ -3,7 +3,14 @@
   padding: 1rem 0;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-
+.logo-img {
+  height: 40px;
+  width: 40px;
+  object-fit: contain;
+  margin-right: 8px;
+  vertical-align: middle;
+  display: inline-block;
+}
 .nav-container {
   max-width: 1200px;
   margin: 0 auto;
@@ -13,11 +20,25 @@
   padding: 0 2rem;
 }
 
+.nav-container > img,
+.nav-container > a {
+  display: inline-flex;
+  align-items: center;
+}
+
+.logo-section {
+  display: flex;
+  align-items: center;
+}
+
 .nav-logo {
   color: white;
   text-decoration: none;
   font-size: 1.5rem;
   font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
 }
 
 .nav-links {

@@ -23,14 +23,12 @@ public class InventoryDao  {
         em.persist(inventoryPojo);
     }
 
-    public void update(InventoryPojo inventoryPojo){
-        Query query = em.createQuery(updateQuery);
-
-        query.setParameter("quantity", inventoryPojo.getQuantity());
-        query.setParameter("productId", inventoryPojo.getProductId());
-
-        query.executeUpdate();
-    }
+//    public void update(InventoryPojo inventoryPojo){
+//        Query query = em.createQuery(updateQuery);
+//        query.setParameter("quantity", inventoryPojo.getQuantity());
+//        query.setParameter("productId", inventoryPojo.getProductId());
+//        query.executeUpdate();
+//    }
 
     public List<InventoryPojo> getAll(){
         Query query = em.createQuery(getAllQuery, InventoryPojo.class);

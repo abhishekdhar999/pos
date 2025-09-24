@@ -30,7 +30,7 @@ public class ClientApi {
         List<ClientPojo> clientPojoList = clientDao.getAll(page, size);
         return clientPojoList;
     }
-//todo dont need to use the update method
+
     public void update(Integer id, String name) throws ApiException{
         ClientPojo clientPojo1 = getByName(name);
         if (Objects.nonNull(clientPojo1)) {
@@ -39,7 +39,7 @@ public class ClientApi {
         ClientPojo clientPojo = getById(id);
         clientPojo.setName(name);
     }
-//todo check for getbyid method refine the code
+
     public ClientPojo getById(Integer id) throws ApiException{
         ClientPojo clientPojo = clientDao.getById(id);
         if(Objects.isNull(clientPojo)){

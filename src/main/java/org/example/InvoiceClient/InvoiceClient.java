@@ -1,5 +1,6 @@
 package org.example.InvoiceClient;
 
+import org.example.config.ApplicationProperties;
 import org.example.models.data.InvoiceData;
 import org.example.models.data.InvoiceRequest;
 import org.example.utils.InvoiceResponse;
@@ -18,20 +19,21 @@ public class InvoiceClient {
 
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private ApplicationProperties applicationProperties;
 
+    String GENERATE_INVOICE = "/generate";
+    String DOWNLOAD_INVOICE = "/download/";
 
     public InvoiceResponse generateInvoice(InvoiceRequest request) {
-        String url = "http://localhost:8000/pos/api/invoice/generate";
-        // adjust port/context-path for invoice-app
+        String url = applicationProperties.getInvoiceBaseUrl() + GENERATE_INVOICE;
 
-        // POST request -> Base64 string as response
         InvoiceResponse resp = restTemplate.postForObject(url, request, InvoiceResponse.class);
         return resp;
     }
 
     public InvoiceResponse downloadInvoice(Integer orderId) {
-        String url = "http://localhost:8000/pos/api/invoice/download/{orderId}";
-
+String url = applicationProperties.getInvoiceBaseUrl() + DOWNLOAD_INVOICE + orderId;
         byte[] pdfBytes = restTemplate.getForObject(url, byte[].class, orderId);
 
         String base64Pdf = java.util.Base64.getEncoder().encodeToString(pdfBytes);
@@ -44,7 +46,7 @@ public class InvoiceClient {
     }
 
     public List<InvoiceData> getInvoice(ZonedDateTime startDate, ZonedDateTime endDate) {
-        String url = "http://localhost:8000/pos/api/invoice/get?startDate="+startDate.toString()+"&endDate="+endDate.toString();
+        String url =  applicationProperties.getInvoiceBaseUrl() + "/get?startDate="+startDate.toString()+"&endDate="+endDate.toString();
 
         ResponseEntity<List<InvoiceData>> response = restTemplate.exchange(
                 url,

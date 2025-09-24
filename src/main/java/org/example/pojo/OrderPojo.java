@@ -14,7 +14,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 
-public class OrderPojo {
+public class OrderPojo extends AbstractPojo{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -22,7 +22,7 @@ public class OrderPojo {
     @Column(nullable = false)
     private ZonedDateTime dateTime;
 
-    @Enumerated(EnumType.STRING) // 👈 Store enum as VARCHAR instead of ordinal
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatus status;
 

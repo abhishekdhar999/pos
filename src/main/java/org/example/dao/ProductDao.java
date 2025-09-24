@@ -26,12 +26,6 @@ public class ProductDao {
         em.persist(productPojo);
     }
 
-//    public void batchAdd(List<ProductPojo> productPojoList){
-//        for(ProductPojo productPojo: productPojoList){
-//            em.persist(productPojo);
-//        }
-//    }
-
     public List<ProductPojo> getAll(Integer page, Integer size, String keyword){
         StringBuilder newQuery = new StringBuilder(getAllQuery);
         if(!keyword.isEmpty()){
@@ -49,64 +43,31 @@ public class ProductDao {
     }
 
 
-
+//todo dont write exception in dao
     public ProductPojo getByBarcode(String barcode) {
         Query query = em.createQuery(getByBarcodeQuery);
         query.setParameter("barcode", barcode);
         try{
-            List<ProductPojo> results = query.getResultList();
-            if (results.isEmpty()) {
-                return null;
-            } else if (results.size() == 1) {
-                return results.get(0);
-            } else {
-                // Handle multiple results - return the first one or throw exception
-                throw new RuntimeException("Multiple products found with barcode: " + barcode);
-            }
+          return (ProductPojo) query.getSingleResult();
+//            List<ProductPojo> results = query.getResultList();
+//                return results.get(0);
         }catch (NoResultException noResultException){
 
             return null;
         }
     }
-//
-//    public void update(Integer id, ProductPojo productPojo){
-//        Query query = em.createQuery(updateQuery);
-//
-//        query.setParameter("id", id);
-//        query.setParameter("name", productPojo.getName());
-//        query.setParameter("clientId", productPojo.getClientId());
-//        query.setParameter("price", productPojo.getPrice());
-//        query.setParameter("imageUrl", productPojo.getImageUrl());
-//        query.setParameter("barcode", productPojo.getBarcode());
-//        query.executeUpdate();
-//    }
 
     public ProductPojo getById(Integer id) throws ApiException {
         Query query = em.createQuery(getByIdQuery);
         query.setParameter("id", id);
         try{
-            List<ProductPojo> results = query.getResultList();
-            if (results.isEmpty()) {
-                return null;
-            } else if (results.size() == 1) {
-                return results.get(0);
-            } else {
-                throw new RuntimeException("Multiple products found with id: " + id);
-            }
+        return  (ProductPojo) query.getSingleResult();
         }catch (NoResultException noResultException){
             return null;
         }
     }
 
-    public Long getTotalCount(){
-        Query query = em.createQuery(getTotalCountQuery);
-        List<Long> results = query.getResultList();
-        if (results.isEmpty()) {
-            return 0L;
-        } else {
-            return results.get(0);
-        }
-    }
+
 
     public List<String> searchByBarcode(Integer page, Integer size, String barcode) {
         Query query = em.createQuery(searchByBarcodeQuery);

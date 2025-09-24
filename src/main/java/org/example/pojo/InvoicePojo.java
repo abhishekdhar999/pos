@@ -7,7 +7,7 @@ import java.time.ZonedDateTime;
 
 @Getter
 @Setter
-public class InvoicePojo {
+public class InvoicePojo  {
     private Integer id;
     private Integer orderId;
     private ZonedDateTime createdAt;

@@ -62,7 +62,7 @@ export class AuthService {
 
   logout() {
     console.log('Logging out user');
-    this.http.post('http://localhost:8080/pos/api/auth/logout', {}, { withCredentials: true })
+    this.http.get('http://localhost:8080/pos/session/logout', { withCredentials: true })
       .subscribe({
         next: () => {
           this.clearAuthData();

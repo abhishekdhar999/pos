@@ -5040,3 +5040,1084 @@ Caused by: java.lang.Error: Unresolved compilation problem:
 2025-09-22 08:44:31 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
 2025-09-22 08:44:31 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
 2025-09-22 08:44:31 INFO  FOUserAgent:83 - Rendered page #1.
+2025-09-22 09:57:40 WARN  SqlExceptionHelper:137 - SQL Error: 1062, SQLState: 23000
+2025-09-22 09:57:40 ERROR SqlExceptionHelper:142 - Duplicate entry '29' for key 'inventorypojo.productId'
+2025-09-22 10:02:04 WARN  SqlExceptionHelper:137 - SQL Error: 1062, SQLState: 23000
+2025-09-22 10:02:04 ERROR SqlExceptionHelper:142 - Duplicate entry '30' for key 'inventorypojo.productId'
+2025-09-22 10:04:42 WARN  SqlExceptionHelper:137 - SQL Error: 1062, SQLState: 23000
+2025-09-22 10:04:42 ERROR SqlExceptionHelper:142 - Duplicate entry '31' for key 'inventorypojo.productId'
+2025-09-22 10:35:37 WARN  SqlExceptionHelper:137 - SQL Error: 1062, SQLState: 23000
+2025-09-22 10:35:37 ERROR SqlExceptionHelper:142 - Duplicate entry '32' for key 'inventorypojo.productId'
+2025-09-22 10:43:02 WARN  SqlExceptionHelper:137 - SQL Error: 1062, SQLState: 23000
+2025-09-22 10:43:02 ERROR SqlExceptionHelper:142 - Duplicate entry '33' for key 'inventorypojo.productId'
+2025-09-22 10:44:04 WARN  SqlExceptionHelper:137 - SQL Error: 1062, SQLState: 23000
+2025-09-22 10:44:04 ERROR SqlExceptionHelper:142 - Duplicate entry '34' for key 'inventorypojo.productId'
+2025-09-22 16:23:08 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 85] (through reference chain: org.example.models.form.ProductForm["price"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 85] (through reference chain: org.example.models.form.ProductForm["price"])
+2025-09-22 17:25:32 WARN  AnnotationConfigWebApplicationContext:550 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'scheduledTasks': Unsatisfied dependency expressed through field 'reportsDto'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'reportsDto': Unsatisfied dependency expressed through field 'orderFlow'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderFlow': Unsatisfied dependency expressed through field 'orderApi'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderApi': Unsatisfied dependency expressed through field 'orderDao'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'orderDao' defined in file [/Users/abhishekdhar/IdeaProjects/pos/target/classes/org/example/dao/OrderDao.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.example.dao.OrderDao]: Constructor threw exception; nested exception is java.lang.Error: Unresolved compilation problem: 
+	Syntax error, insert ";" to complete MethodDeclaration
+
+2025-09-22 17:25:32 ERROR DispatcherServlet:502 - Context initialization failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'scheduledTasks': Unsatisfied dependency expressed through field 'reportsDto'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'reportsDto': Unsatisfied dependency expressed through field 'orderFlow'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderFlow': Unsatisfied dependency expressed through field 'orderApi'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderApi': Unsatisfied dependency expressed through field 'orderDao'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'orderDao' defined in file [/Users/abhishekdhar/IdeaProjects/pos/target/classes/org/example/dao/OrderDao.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.example.dao.OrderDao]: Constructor threw exception; nested exception is java.lang.Error: Unresolved compilation problem: 
+	Syntax error, insert ";" to complete MethodDeclaration
+
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:588)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:366)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1264)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:553)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:483)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:306)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:197)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:761)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:866)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:542)
+	at org.springframework.web.servlet.FrameworkServlet.configureAndRefreshWebApplicationContext(FrameworkServlet.java:668)
+	at org.springframework.web.servlet.FrameworkServlet.initWebApplicationContext(FrameworkServlet.java:540)
+	at org.springframework.web.servlet.FrameworkServlet.initServletBean(FrameworkServlet.java:494)
+	at org.springframework.web.servlet.HttpServletBean.init(HttpServletBean.java:136)
+	at javax.servlet.GenericServlet.init(GenericServlet.java:244)
+	at org.eclipse.jetty.servlet.ServletHolder.initServlet(ServletHolder.java:599)
+	at org.eclipse.jetty.servlet.ServletHolder.initialize(ServletHolder.java:425)
+	at org.eclipse.jetty.servlet.ServletHandler.lambda$initialize$0(ServletHandler.java:751)
+	at java.util.stream.SortedOps$SizedRefSortingSink.end(SortedOps.java:352)
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:483)
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:472)
+	at java.util.stream.StreamSpliterators$WrappingSpliterator.forEachRemaining(StreamSpliterators.java:312)
+	at java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:743)
+	at java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:742)
+	at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:580)
+	at org.eclipse.jetty.servlet.ServletHandler.initialize(ServletHandler.java:744)
+	at org.eclipse.jetty.servlet.ServletContextHandler.startContext(ServletContextHandler.java:361)
+	at org.eclipse.jetty.webapp.WebAppContext.startWebapp(WebAppContext.java:1443)
+	at org.eclipse.jetty.maven.plugin.JettyWebAppContext.startWebapp(JettyWebAppContext.java:328)
+	at org.eclipse.jetty.webapp.WebAppContext.startContext(WebAppContext.java:1407)
+	at org.eclipse.jetty.server.handler.ContextHandler.doStart(ContextHandler.java:821)
+	at org.eclipse.jetty.servlet.ServletContextHandler.doStart(ServletContextHandler.java:276)
+	at org.eclipse.jetty.webapp.WebAppContext.doStart(WebAppContext.java:524)
+	at org.eclipse.jetty.maven.plugin.JettyWebAppContext.doStart(JettyWebAppContext.java:397)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:72)
+	at org.eclipse.jetty.maven.plugin.JettyRunMojo.restartWebApp(JettyRunMojo.java:513)
+	at org.eclipse.jetty.maven.plugin.JettyRunMojo$1.onPathWatchEvents(JettyRunMojo.java:357)
+	at org.eclipse.jetty.util.PathWatcher.notifyEvents(PathWatcher.java:1342)
+	at org.eclipse.jetty.util.PathWatcher.run(PathWatcher.java:1169)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'reportsDto': Unsatisfied dependency expressed through field 'orderFlow'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderFlow': Unsatisfied dependency expressed through field 'orderApi'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderApi': Unsatisfied dependency expressed through field 'orderDao'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'orderDao' defined in file [/Users/abhishekdhar/IdeaProjects/pos/target/classes/org/example/dao/OrderDao.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.example.dao.OrderDao]: Constructor threw exception; nested exception is java.lang.Error: Unresolved compilation problem: 
+	Syntax error, insert ";" to complete MethodDeclaration
+
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:588)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:366)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1264)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:553)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:483)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:306)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:208)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1138)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1066)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:585)
+	... 42 more
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderFlow': Unsatisfied dependency expressed through field 'orderApi'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderApi': Unsatisfied dependency expressed through field 'orderDao'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'orderDao' defined in file [/Users/abhishekdhar/IdeaProjects/pos/target/classes/org/example/dao/OrderDao.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.example.dao.OrderDao]: Constructor threw exception; nested exception is java.lang.Error: Unresolved compilation problem: 
+	Syntax error, insert ";" to complete MethodDeclaration
+
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:588)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:366)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1264)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:553)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:483)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:306)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:208)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1138)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1066)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:585)
+	... 55 more
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderApi': Unsatisfied dependency expressed through field 'orderDao'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'orderDao' defined in file [/Users/abhishekdhar/IdeaProjects/pos/target/classes/org/example/dao/OrderDao.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.example.dao.OrderDao]: Constructor threw exception; nested exception is java.lang.Error: Unresolved compilation problem: 
+	Syntax error, insert ";" to complete MethodDeclaration
+
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:588)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:366)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1264)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:553)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:483)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:306)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:208)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1138)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1066)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:585)
+	... 68 more
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'orderDao' defined in file [/Users/abhishekdhar/IdeaProjects/pos/target/classes/org/example/dao/OrderDao.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.example.dao.OrderDao]: Constructor threw exception; nested exception is java.lang.Error: Unresolved compilation problem: 
+	Syntax error, insert ";" to complete MethodDeclaration
+
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1155)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1099)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:513)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:483)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:306)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:208)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1138)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1066)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:585)
+	... 81 more
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.example.dao.OrderDao]: Constructor threw exception; nested exception is java.lang.Error: Unresolved compilation problem: 
+	Syntax error, insert ";" to complete MethodDeclaration
+
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:154)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:89)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1147)
+	... 92 more
+Caused by: java.lang.Error: Unresolved compilation problem: 
+	Syntax error, insert ";" to complete MethodDeclaration
+
+	at org.example.dao.OrderDao.<init>(OrderDao.java:109)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:142)
+	... 94 more
+2025-09-23 09:36:35 WARN  SqlExceptionHelper:137 - SQL Error: 1062, SQLState: 23000
+2025-09-23 09:36:35 ERROR SqlExceptionHelper:142 - Duplicate entry '28' for key 'inventorypojo.productId'
+2025-09-23 10:03:23 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 85] (through reference chain: org.example.models.form.ProductForm["price"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 85] (through reference chain: org.example.models.form.ProductForm["price"])
+2025-09-23 10:04:33 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 85] (through reference chain: org.example.models.form.ProductForm["price"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 85] (through reference chain: org.example.models.form.ProductForm["price"])
+2025-09-23 10:06:11 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 85] (through reference chain: org.example.models.form.ProductForm["price"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 85] (through reference chain: org.example.models.form.ProductForm["price"])
+2025-09-23 10:07:54 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 85] (through reference chain: org.example.models.form.ProductForm["price"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 85] (through reference chain: org.example.models.form.ProductForm["price"])
+2025-09-23 10:09:17 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 85] (through reference chain: org.example.models.form.ProductForm["price"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 85] (through reference chain: org.example.models.form.ProductForm["price"])
+2025-09-23 10:09:52 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 85] (through reference chain: org.example.models.form.ProductForm["price"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 85] (through reference chain: org.example.models.form.ProductForm["price"])
+2025-09-23 10:10:24 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 85] (through reference chain: org.example.models.form.ProductForm["price"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 85] (through reference chain: org.example.models.form.ProductForm["price"])
+2025-09-23 10:29:03 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 85] (through reference chain: org.example.models.form.ProductForm["price"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 85] (through reference chain: org.example.models.form.ProductForm["price"])
+2025-09-23 10:30:57 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 85] (through reference chain: org.example.models.form.ProductForm["price"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 85] (through reference chain: org.example.models.form.ProductForm["price"])
+2025-09-23 10:34:02 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 85] (through reference chain: org.example.models.form.ProductForm["price"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 85] (through reference chain: org.example.models.form.ProductForm["price"])
+2025-09-23 10:34:33 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 85] (through reference chain: org.example.models.form.ProductForm["price"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 85] (through reference chain: org.example.models.form.ProductForm["price"])
+2025-09-23 14:04:43 WARN  PageNotFound:1161 - No mapping found for HTTP request with URI [/pos/api/auth/logout] in DispatcherServlet with name 'dispatcher'
+2025-09-23 14:08:53 WARN  PageNotFound:1161 - No mapping found for HTTP request with URI [/pos/api/auth/logout] in DispatcherServlet with name 'dispatcher'
+2025-09-23 15:18:14 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2025-09-23 15:18:14 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2025-09-23 15:18:14 INFO  FOUserAgent:83 - Rendered page #1.
+2025-09-24 09:40:51 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	The method createDaySalesReportPojo(ZonedDateTime, Double, int, int) is undefined for the type ReportsFlow
+	Syntax error, insert ";" to complete Statement
+
+	at org.example.flow.ReportsFlow.generateDayReport(ReportsFlow.java:79)
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:51)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 09:41:41 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	The method createDaySalesReportPojo(ZonedDateTime, Double, int, int) is undefined for the type ReportsFlow
+	Syntax error, insert ";" to complete Statement
+
+	at org.example.flow.ReportsFlow.generateDayReport(ReportsFlow.java:79)
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:51)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 09:42:31 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	The method createDaySalesReportPojo(ZonedDateTime, Double, int, int) is undefined for the type ReportsFlow
+	Syntax error, insert ";" to complete Statement
+
+	at org.example.flow.ReportsFlow.generateDayReport(ReportsFlow.java:79)
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:51)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 09:43:21 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	The method createDaySalesReportPojo(ZonedDateTime, Double, int, int) is undefined for the type ReportsFlow
+	Syntax error, insert ";" to complete Statement
+
+	at org.example.flow.ReportsFlow.generateDayReport(ReportsFlow.java:79)
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:51)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 09:44:11 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	The method createDaySalesReportPojo(ZonedDateTime, Double, int, int) is undefined for the type ReportsFlow
+	Syntax error, insert ";" to complete Statement
+
+	at org.example.flow.ReportsFlow.generateDayReport(ReportsFlow.java:79)
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:51)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 09:45:01 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	The method createDaySalesReportPojo(ZonedDateTime, Double, int, int) is undefined for the type ReportsFlow
+	Syntax error, insert ";" to complete Statement
+
+	at org.example.flow.ReportsFlow.generateDayReport(ReportsFlow.java:79)
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:51)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 09:45:51 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	The method createDaySalesReportPojo(ZonedDateTime, Double, int, int) is undefined for the type ReportsFlow
+	Syntax error, insert ";" to complete Statement
+
+	at org.example.flow.ReportsFlow.generateDayReport(ReportsFlow.java:79)
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:51)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 09:46:41 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	The method createDaySalesReportPojo(ZonedDateTime, Double, int, int) is undefined for the type ReportsFlow
+	Syntax error, insert ";" to complete Statement
+
+	at org.example.flow.ReportsFlow.generateDayReport(ReportsFlow.java:79)
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:51)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 09:47:31 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	The method createDaySalesReportPojo(ZonedDateTime, Double, int, int) is undefined for the type ReportsFlow
+	Syntax error, insert ";" to complete Statement
+
+	at org.example.flow.ReportsFlow.generateDayReport(ReportsFlow.java:79)
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:51)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 09:48:21 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	The method createDaySalesReportPojo(ZonedDateTime, Double, int, int) is undefined for the type ReportsFlow
+	Syntax error, insert ";" to complete Statement
+
+	at org.example.flow.ReportsFlow.generateDayReport(ReportsFlow.java:79)
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:51)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 09:49:11 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	The method createDaySalesReportPojo(ZonedDateTime, Double, int, int) is undefined for the type ReportsFlow
+	Syntax error, insert ";" to complete Statement
+
+	at org.example.flow.ReportsFlow.generateDayReport(ReportsFlow.java:79)
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:51)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 09:50:02 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	The method createDaySalesReportPojo(ZonedDateTime, Double, int, int) is undefined for the type ReportsFlow
+	Syntax error, insert ";" to complete Statement
+
+	at org.example.flow.ReportsFlow.generateDayReport(ReportsFlow.java:79)
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:51)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 09:50:52 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	The method createDaySalesReportPojo(ZonedDateTime, Double, int, int) is undefined for the type ReportsFlow
+	Syntax error, insert ";" to complete Statement
+
+	at org.example.flow.ReportsFlow.generateDayReport(ReportsFlow.java:79)
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:51)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 09:51:25 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	startDate cannot be resolved to a variable
+	endDate cannot be resolved to a variable
+	The method generateDayReport() in the type ReportsFlow is not applicable for the arguments (DaySalesReportsForm)
+
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:51)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 09:52:15 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	startDate cannot be resolved to a variable
+	endDate cannot be resolved to a variable
+	The method generateDayReport() in the type ReportsFlow is not applicable for the arguments (DaySalesReportsForm)
+
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:51)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 09:53:05 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	startDate cannot be resolved to a variable
+	endDate cannot be resolved to a variable
+	The method generateDayReport() in the type ReportsFlow is not applicable for the arguments (DaySalesReportsForm)
+
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:51)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 09:53:55 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	startDate cannot be resolved to a variable
+	endDate cannot be resolved to a variable
+	The method generateDayReport() in the type ReportsFlow is not applicable for the arguments (DaySalesReportsForm)
+
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:51)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 09:54:45 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	startDate cannot be resolved to a variable
+	endDate cannot be resolved to a variable
+	The method generateDayReport() in the type ReportsFlow is not applicable for the arguments (DaySalesReportsForm)
+
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:51)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 09:55:35 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	startDate cannot be resolved to a variable
+	endDate cannot be resolved to a variable
+	The method generateDayReport() in the type ReportsFlow is not applicable for the arguments (DaySalesReportsForm)
+
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:51)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 09:56:25 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	startDate cannot be resolved to a variable
+	endDate cannot be resolved to a variable
+	The method generateDayReport() in the type ReportsFlow is not applicable for the arguments (DaySalesReportsForm)
+
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:51)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 09:57:15 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	startDate cannot be resolved to a variable
+	endDate cannot be resolved to a variable
+	The method generateDayReport() in the type ReportsFlow is not applicable for the arguments (DaySalesReportsForm)
+
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:51)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 09:58:05 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	startDate cannot be resolved to a variable
+	endDate cannot be resolved to a variable
+	The method generateDayReport() in the type ReportsFlow is not applicable for the arguments (DaySalesReportsForm)
+
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:51)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 09:58:55 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	startDate cannot be resolved to a variable
+	endDate cannot be resolved to a variable
+	The method generateDayReport() in the type ReportsFlow is not applicable for the arguments (DaySalesReportsForm)
+
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:51)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 09:59:45 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	startDate cannot be resolved to a variable
+	endDate cannot be resolved to a variable
+	The method generateDayReport() in the type ReportsFlow is not applicable for the arguments (DaySalesReportsForm)
+
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:51)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 13:15:07 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	List cannot be resolved to a variable
+	InvoiceData cannot be resolved to a variable
+	invoiceData cannot be resolved to a variable
+	Syntax error on token "=", <= expected
+	invoiceData cannot be resolved to a variable
+
+	at org.example.flow.ReportsFlow.generateDayReport(ReportsFlow.java:51)
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:58)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 13:15:57 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	List cannot be resolved to a variable
+	InvoiceData cannot be resolved to a variable
+	invoiceData cannot be resolved to a variable
+	Syntax error on token "=", <= expected
+	invoiceData cannot be resolved to a variable
+
+	at org.example.flow.ReportsFlow.generateDayReport(ReportsFlow.java:51)
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:58)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 13:16:47 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	List cannot be resolved to a variable
+	InvoiceData cannot be resolved to a variable
+	invoiceData cannot be resolved to a variable
+	Syntax error on token "=", <= expected
+	invoiceData cannot be resolved to a variable
+
+	at org.example.flow.ReportsFlow.generateDayReport(ReportsFlow.java:51)
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:58)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 13:17:37 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	List cannot be resolved to a variable
+	InvoiceData cannot be resolved to a variable
+	invoiceData cannot be resolved to a variable
+	Syntax error on token "=", <= expected
+	invoiceData cannot be resolved to a variable
+
+	at org.example.flow.ReportsFlow.generateDayReport(ReportsFlow.java:51)
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:58)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 13:18:27 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	List cannot be resolved to a variable
+	InvoiceData cannot be resolved to a variable
+	invoiceData cannot be resolved to a variable
+	Syntax error on token "=", <= expected
+	invoiceData cannot be resolved to a variable
+
+	at org.example.flow.ReportsFlow.generateDayReport(ReportsFlow.java:51)
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:58)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 13:19:17 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	List cannot be resolved to a variable
+	InvoiceData cannot be resolved to a variable
+	invoiceData cannot be resolved to a variable
+	Syntax error on token "=", <= expected
+	invoiceData cannot be resolved to a variable
+
+	at org.example.flow.ReportsFlow.generateDayReport(ReportsFlow.java:51)
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:58)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 13:20:07 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	List cannot be resolved to a variable
+	InvoiceData cannot be resolved to a variable
+	invoiceData cannot be resolved to a variable
+	Syntax error on token "=", <= expected
+	invoiceData cannot be resolved to a variable
+
+	at org.example.flow.ReportsFlow.generateDayReport(ReportsFlow.java:51)
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:58)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 13:20:57 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	List cannot be resolved to a variable
+	InvoiceData cannot be resolved to a variable
+	invoiceData cannot be resolved to a variable
+	Syntax error on token "=", <= expected
+	invoiceData cannot be resolved to a variable
+
+	at org.example.flow.ReportsFlow.generateDayReport(ReportsFlow.java:51)
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:58)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 13:21:47 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	List cannot be resolved to a variable
+	InvoiceData cannot be resolved to a variable
+	invoiceData cannot be resolved to a variable
+	Syntax error on token "=", <= expected
+	invoiceData cannot be resolved to a variable
+
+	at org.example.flow.ReportsFlow.generateDayReport(ReportsFlow.java:51)
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:58)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 13:22:37 ERROR TaskUtils$LoggingErrorHandler:95 - Unexpected error occurred in scheduled task.
+java.lang.Error: Unresolved compilation problems: 
+	List cannot be resolved to a variable
+	InvoiceData cannot be resolved to a variable
+	invoiceData cannot be resolved to a variable
+	Syntax error on token "=", <= expected
+	invoiceData cannot be resolved to a variable
+
+	at org.example.flow.ReportsFlow.generateDayReport(ReportsFlow.java:51)
+	at org.example.dto.ReportsDto.generateDayReports(ReportsDto.java:58)
+	at org.example.Schedular.ScheduledTasks.generateDayReport(ScheduledTasks.java:17)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.scheduling.support.ScheduledMethodRunnable.run(ScheduledMethodRunnable.java:65)
+	at org.springframework.scheduling.support.DelegatingErrorHandlingRunnable.run(DelegatingErrorHandlingRunnable.java:54)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.runAndReset(FutureTask.java:308)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.access$301(ScheduledThreadPoolExecutor.java:180)
+	at java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:294)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2025-09-24 13:34:55 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 27] (through reference chain: org.example.models.form.ProductForm["price"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 27] (through reference chain: org.example.models.form.ProductForm["price"])
+2025-09-24 13:35:05 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 27] (through reference chain: org.example.models.form.ProductForm["price"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 27] (through reference chain: org.example.models.form.ProductForm["price"])
+2025-09-24 13:35:50 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 27] (through reference chain: org.example.models.form.ProductForm["price"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 27] (through reference chain: org.example.models.form.ProductForm["price"])
+2025-09-24 13:38:36 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 27] (through reference chain: org.example.models.form.ProductForm["price"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 27] (through reference chain: org.example.models.form.ProductForm["price"])
+2025-09-24 13:38:52 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: name is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 9] (through reference chain: org.example.models.form.ProductForm["name"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: name is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 9] (through reference chain: org.example.models.form.ProductForm["name"])
+2025-09-24 13:45:00 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 35] (through reference chain: org.example.models.form.ProductForm["price"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 35] (through reference chain: org.example.models.form.ProductForm["price"])
+2025-09-24 13:46:42 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 27] (through reference chain: org.example.models.form.ProductForm["price"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 27] (through reference chain: org.example.models.form.ProductForm["price"])
+2025-09-24 13:47:07 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 27] (through reference chain: org.example.models.form.ProductForm["price"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 27] (through reference chain: org.example.models.form.ProductForm["price"])
+2025-09-24 13:49:47 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 27] (through reference chain: org.example.models.form.ProductForm["price"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 27] (through reference chain: org.example.models.form.ProductForm["price"])
+2025-09-24 13:50:54 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 27] (through reference chain: org.example.models.form.ProductForm["price"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 27] (through reference chain: org.example.models.form.ProductForm["price"])
+2025-09-24 13:52:36 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 27] (through reference chain: org.example.models.form.ProductForm["price"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 27] (through reference chain: org.example.models.form.ProductForm["price"])
+2025-09-24 13:52:52 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 27] (through reference chain: org.example.models.form.ProductForm["price"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: price is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 27] (through reference chain: org.example.models.form.ProductForm["price"])
+2025-09-24 14:05:31 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: quantity is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 40] (through reference chain: org.example.models.form.InventoryForm["quantity"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: quantity is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 40] (through reference chain: org.example.models.form.InventoryForm["quantity"])
+2025-09-24 14:05:31 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: quantity is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 40] (through reference chain: org.example.models.form.InventoryForm["quantity"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: quantity is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 40] (through reference chain: org.example.models.form.InventoryForm["quantity"])
+2025-09-24 14:06:02 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: quantity is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 40] (through reference chain: org.example.models.form.InventoryForm["quantity"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: quantity is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 40] (through reference chain: org.example.models.form.InventoryForm["quantity"])
+2025-09-24 14:06:02 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: quantity is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 40] (through reference chain: org.example.models.form.InventoryForm["quantity"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: quantity is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 40] (through reference chain: org.example.models.form.InventoryForm["quantity"])
+2025-09-24 14:06:09 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: quantity is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 40] (through reference chain: org.example.models.form.InventoryForm["quantity"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: quantity is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 40] (through reference chain: org.example.models.form.InventoryForm["quantity"])
+2025-09-24 14:06:09 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: quantity is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 40] (through reference chain: org.example.models.form.InventoryForm["quantity"]); nested exception is com.fasterxml.jackson.databind.JsonMappingException: quantity is marked non-null but is null
+ at [Source: (PushbackInputStream); line: 1, column: 40] (through reference chain: org.example.models.form.InventoryForm["quantity"])
+2025-09-24 14:20:36 WARN  SqlExceptionHelper:137 - SQL Error: 1062, SQLState: 23000
+2025-09-24 14:20:36 ERROR SqlExceptionHelper:142 - Duplicate entry '35' for key 'inventorypojo.productId'
+2025-09-24 14:21:40 WARN  SqlExceptionHelper:137 - SQL Error: 1062, SQLState: 23000
+2025-09-24 14:21:40 ERROR SqlExceptionHelper:142 - Duplicate entry '36' for key 'inventorypojo.productId'
+2025-09-24 14:22:08 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2025-09-24 14:22:08 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2025-09-24 14:22:08 INFO  FOUserAgent:83 - Rendered page #1.
+2025-09-24 14:22:12 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2025-09-24 14:22:12 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2025-09-24 14:22:12 INFO  FOUserAgent:83 - Rendered page #1.
+2025-09-24 14:30:35 WARN  FOUserAgent:94 - Font "Symbol,normal,700" not found. Substituting with "Symbol,normal,400".
+2025-09-24 14:30:35 WARN  FOUserAgent:94 - Font "ZapfDingbats,normal,700" not found. Substituting with "ZapfDingbats,normal,400".
+2025-09-24 14:30:35 INFO  FOUserAgent:83 - Rendered page #1.
+2025-09-24 15:31:18 WARN  AnnotationConfigWebApplicationContext:550 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderController': Unsatisfied dependency expressed through field 'orderDto'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'orderDto': Failed to introspect bean class [org.example.dto.OrderDto] for lookup method metadata: could not find class that it depends on; nested exception is java.lang.NoClassDefFoundError: OrderFilters
+2025-09-24 15:31:18 ERROR DispatcherServlet:502 - Context initialization failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderController': Unsatisfied dependency expressed through field 'orderDto'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'orderDto': Failed to introspect bean class [org.example.dto.OrderDto] for lookup method metadata: could not find class that it depends on; nested exception is java.lang.NoClassDefFoundError: OrderFilters
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:588)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:366)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1264)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:553)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:483)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:306)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:197)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:761)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:866)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:542)
+	at org.springframework.web.servlet.FrameworkServlet.configureAndRefreshWebApplicationContext(FrameworkServlet.java:668)
+	at org.springframework.web.servlet.FrameworkServlet.initWebApplicationContext(FrameworkServlet.java:540)
+	at org.springframework.web.servlet.FrameworkServlet.initServletBean(FrameworkServlet.java:494)
+	at org.springframework.web.servlet.HttpServletBean.init(HttpServletBean.java:136)
+	at javax.servlet.GenericServlet.init(GenericServlet.java:244)
+	at org.eclipse.jetty.servlet.ServletHolder.initServlet(ServletHolder.java:599)
+	at org.eclipse.jetty.servlet.ServletHolder.initialize(ServletHolder.java:425)
+	at org.eclipse.jetty.servlet.ServletHandler.lambda$initialize$0(ServletHandler.java:751)
+	at java.util.stream.SortedOps$SizedRefSortingSink.end(SortedOps.java:352)
+	at java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:483)
+	at java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:472)
+	at java.util.stream.StreamSpliterators$WrappingSpliterator.forEachRemaining(StreamSpliterators.java:312)
+	at java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:743)
+	at java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:742)
+	at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:580)
+	at org.eclipse.jetty.servlet.ServletHandler.initialize(ServletHandler.java:744)
+	at org.eclipse.jetty.servlet.ServletContextHandler.startContext(ServletContextHandler.java:361)
+	at org.eclipse.jetty.webapp.WebAppContext.startWebapp(WebAppContext.java:1443)
+	at org.eclipse.jetty.maven.plugin.JettyWebAppContext.startWebapp(JettyWebAppContext.java:328)
+	at org.eclipse.jetty.webapp.WebAppContext.startContext(WebAppContext.java:1407)
+	at org.eclipse.jetty.server.handler.ContextHandler.doStart(ContextHandler.java:821)
+	at org.eclipse.jetty.servlet.ServletContextHandler.doStart(ServletContextHandler.java:276)
+	at org.eclipse.jetty.webapp.WebAppContext.doStart(WebAppContext.java:524)
+	at org.eclipse.jetty.maven.plugin.JettyWebAppContext.doStart(JettyWebAppContext.java:397)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:72)
+	at org.eclipse.jetty.maven.plugin.JettyRunMojo.restartWebApp(JettyRunMojo.java:513)
+	at org.eclipse.jetty.maven.plugin.JettyRunMojo$1.onPathWatchEvents(JettyRunMojo.java:357)
+	at org.eclipse.jetty.util.PathWatcher.notifyEvents(PathWatcher.java:1342)
+	at org.eclipse.jetty.util.PathWatcher.run(PathWatcher.java:1169)
+	at java.lang.Thread.run(Thread.java:750)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'orderDto': Failed to introspect bean class [org.example.dto.OrderDto] for lookup method metadata: could not find class that it depends on; nested exception is java.lang.NoClassDefFoundError: OrderFilters
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.determineCandidateConstructors(AutowiredAnnotationBeanPostProcessor.java:269)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.determineConstructorsFromBeanPostProcessors(AbstractAutowireCapableBeanFactory.java:1118)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1091)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:513)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:483)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:306)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:208)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1138)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1066)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:585)
+	... 42 more
+Caused by: java.lang.NoClassDefFoundError: OrderFilters
+	at java.lang.Class.getDeclaredMethods0(Native Method)
+	at java.lang.Class.privateGetDeclaredMethods(Class.java:2701)
+	at java.lang.Class.getDeclaredMethods(Class.java:1975)
+	at org.springframework.util.ReflectionUtils.getDeclaredMethods(ReflectionUtils.java:613)
+	at org.springframework.util.ReflectionUtils.doWithMethods(ReflectionUtils.java:524)
+	at org.springframework.util.ReflectionUtils.doWithMethods(ReflectionUtils.java:510)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.determineCandidateConstructors(AutowiredAnnotationBeanPostProcessor.java:247)
+	... 54 more
+Caused by: java.lang.ClassNotFoundException: OrderFilters
+	at org.codehaus.plexus.classworlds.strategy.SelfFirstStrategy.loadClass(SelfFirstStrategy.java:42)
+	at org.codehaus.plexus.classworlds.realm.ClassRealm.unsynchronizedLoadClass(ClassRealm.java:225)
+	at org.codehaus.plexus.classworlds.realm.ClassRealm.loadClass(ClassRealm.java:210)
+	at org.codehaus.plexus.classworlds.realm.ClassRealm.loadClass(ClassRealm.java:205)
+	at org.eclipse.jetty.webapp.WebAppClassLoader.loadClass(WebAppClassLoader.java:543)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:351)
+	... 61 more

@@ -26,7 +26,5 @@ public class UserDao {
         }
     }
 
-    public void add(UserPojo userPojo) {
-        em.persist(userPojo);
-    }
+
 }

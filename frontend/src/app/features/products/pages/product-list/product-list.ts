@@ -64,11 +64,11 @@ export class ProductList implements OnInit {
   ) {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
-      price: [0, [Validators.required, Validators.min(1)]],
+      price: [0],
       barcode: ['', Validators.required],
       imageUrl: ['', Validators.required],
       clientName: ['', Validators.required],
-      quantity: [0, [Validators.required, Validators.min(0)]]
+//       quantity: [0, [Validators.required, Validators.min(0)]]
     });
 
     this.inventoryForm = this.fb.group({
@@ -183,12 +183,12 @@ export class ProductList implements OnInit {
   // Dropdown toggles
   toggleAddProductDropdown(): void {
     this.showAddProductDropdown = !this.showAddProductDropdown;
-    this.showInventoryDropdown = false; // Close other dropdown
+    this.showInventoryDropdown = false;
   }
 
   toggleInventoryDropdown(): void {
     this.showInventoryDropdown = !this.showInventoryDropdown;
-    this.showAddProductDropdown = false; // Close other dropdown
+    this.showAddProductDropdown = false;
   }
 
   // Product modals
@@ -244,8 +244,8 @@ export class ProductList implements OnInit {
   // Product operations
   onSubmitProduct(): void {
     // if (this.productForm.valid) {
-
       const productData: Product = this.productForm.value;
+
       this.productService.addProduct(productData).subscribe({
         next: (res: any) => {
           console.log('Saved Product:', res);
@@ -280,10 +280,6 @@ this.fetchProducts();
         }
       })
 
-//     }else{
-// //       console.log("errrrrr",err);
-//       this.toastService.error(" ")
-//       }
   }
 
   onFileSelected(event: any): void {
@@ -415,11 +411,6 @@ this.fetchProducts();
           const imageUrlIndex = headers.findIndex(h => h.includes('image') || h.includes('url'));
           const clientNameIndex = headers.findIndex(h => h.includes('client'));
 
-//           if (nameIndex === -1 || barcodeIndex === -1 || priceIndex === -1 ||
-//               imageUrlIndex === -1 || clientNameIndex === -1) {
-//             reject(new Error('File must contain "name", "barcode", "price", "imageUrl", and "clientName" columns'));
-//             return;
-//           }
 
           // Parse data rows
           const productList: ProductForm[] = [];
@@ -427,10 +418,7 @@ this.fetchProducts();
           for (let i = 1; i < lines.length; i++) {
             const columns = lines[i].split('\t');
 
-//             if (columns.length < Math.max(nameIndex, barcodeIndex, priceIndex, imageUrlIndex, clientNameIndex) + 1) {
-//               console.warn(`Skipping row ${i + 1}: insufficient columns`);
-//               continue;
-//             }
+
 
             const name = columns[nameIndex]?.trim();
             const barcode = columns[barcodeIndex]?.trim();
@@ -438,16 +426,7 @@ this.fetchProducts();
             const imageUrl = columns[imageUrlIndex]?.trim();
             const clientName = columns[clientNameIndex]?.trim();
 
-//             if (!name || !barcode || !priceStr || !imageUrl || !clientName) {
-//               console.warn(`Skipping row ${i + 1}: missing required fields`);
-//               continue;
-//             }
-
              const price = parseFloat(priceStr);
-//             if (isNaN(price)) {
-//               console.warn(`Skipping row ${i + 1}: invalid price "${priceStr}"`);
-//               continue;
-//             }
 
             productList.push({
               name: name,
@@ -457,11 +436,6 @@ this.fetchProducts();
               clientName: clientName
             });
           }
-
-//           if (productList.length === 0) {
-//             reject(new Error('No valid product data found in file'));
-//             return;
-//           }
 
           console.log(`Successfully parsed ${productList.length} products`);
           resolve(productList);
@@ -499,11 +473,6 @@ this.fetchProducts();
           // Find column indices
           const barcodeIndex = headers.findIndex(h => h.includes('barcode'));
           const quantityIndex = headers.findIndex(h => h.includes('quantity'));
-//
-//           if (barcodeIndex === -1 || quantityIndex === -1) {
-//             reject(new Error('File must contain "barcode" and "quantity" columns'));
-//             return;
-//           }
 
           // Parse data rows
           const inventoryList: InventoryForm[] = [];
@@ -511,37 +480,16 @@ this.fetchProducts();
           for (let i = 1; i < lines.length; i++) {
             const columns = lines[i].split('\t');
 
-//             if (columns.length < Math.max(barcodeIndex, quantityIndex) + 1) {
-//               console.warn(`Skipping row ${i + 1}: insufficient columns`);
-//               continue;
-//             }
-
             const barcode = columns[barcodeIndex]?.trim();
             const quantityStr = columns[quantityIndex]?.trim();
 
-//             if (!barcode || !quantityStr) {
-//               console.warn(`Skipping row ${i + 1}: missing barcode or quantity`);
-//               continue;
-//             }
-
             const quantity = parseInt(quantityStr, 10);
-//             if (isNaN(quantity)) {
-//               console.warn(`Skipping row ${i + 1}: invalid quantity "${quantityStr}"`);
-//               continue;
-//             }
-
             inventoryList.push({
               barcode: barcode,
               quantity: quantity
             });
           }
 
-//           if (inventoryList.length === 0) {
-//             reject(new Error('No valid inventory data found in file'));
-//             return;
-//           }
-
-//           console.log(`Successfully parsed ${inventoryList.length} inventory items`);
           resolve(inventoryList);
         } catch (error) {
           reject(new Error('Error parsing file: ' + (error as Error).message));
@@ -569,7 +517,10 @@ this.fetchProducts();
 
   updateProduct(): void {
     if (!this.selectedProduct) return;
-
+if(this.selectedProduct.price == null){
+   this.toastService.error("product price can not be empty");
+   return;
+  }
     this.productService.updateProduct(this.selectedProduct.id!, this.selectedProduct).subscribe({
       next: () => {
         this.toastService.success('Product updated successfully!');

@@ -18,7 +18,7 @@ public class ClientDao  {
     private static final String getByIdQuery = "select p from ClientPojo p where id=:id";
     private static final String getByNameQuery = "select p from ClientPojo p where name=:name";
     private static final String getTotalCountQuery = "select count(p) from ClientPojo p";
-    private static final String searchByBarcodeQuery = "select p.name from ClientPojo p where p.name like :name";
+    private static final String searchByNameQuery = "select p.name from ClientPojo p where p.name like :name";
 
 @PersistenceContext
 private EntityManager em;
@@ -52,14 +52,8 @@ private EntityManager em;
             return null;
         }
     }
-
-    public Long getTotalCount(){
-        Query query = em.createQuery(getTotalCountQuery);
-        return (Long) query.getSingleResult();
-    }
-
     public List<String> searchByName(Integer page, Integer size, String name) {
-        Query query = em.createQuery(searchByBarcodeQuery);
+        Query query = em.createQuery(searchByNameQuery);
         query.setParameter("name", "%"+name+"%");
         query.setFirstResult(page*size);
         query.setMaxResults(size);

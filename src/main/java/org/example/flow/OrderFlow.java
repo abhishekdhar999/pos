@@ -16,7 +16,7 @@ import org.example.pojo.OrderPojo;
 import org.example.pojo.ProductPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import static org.example.dto.DtoHelper.*;
 import javax.transaction.Transactional;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -33,165 +33,124 @@ public class OrderFlow {
     private OrderApi orderApi;
     @Autowired
     private OrderItemApi orderItemApi;
-
+//todo move in helper method
+//    todo inventory updates to be optimized
     public ErrorData<OrderError> create(List<OrderItemPojo> orderItemPojoList, List<String> barcodeList) {
         List<OrderError> orderErrorList = new ArrayList<>();
-
         OrderPojo order = new OrderPojo();
         order.setDateTime(ZonedDateTime.now(ZoneId.of("UTC")));
         order.setStatus(OrderStatus.CREATED);
         Integer orderId = orderApi.addOrder(order);
-
-        // Step 1: Validate everything first
         int i = 0;
         Map<OrderItemPojo, InventoryPojo> validatedItems = new HashMap<>();
-        List<OrderItemPojo> allItems = new ArrayList<>(); // Store all items for saving
-        
+        List<OrderItemPojo> allItems = new ArrayList<>();
         for (OrderItemPojo item : orderItemPojoList) {
             try {
                 ProductPojo product = productApi.getByBarcode(barcodeList.get(i));
-                if (product == null) {
-                    throw new ApiException("Product with barcode '" + barcodeList.get(i) + "' does not exist");
-                }
-                if (product.getPrice() < item.getSellingPrice()) {
-                    throw new ApiException("Selling Price is higher than MRP for product: " + product.getBarcode());
-                }
+                String barcode = barcodeList.get(i);
+                validateProductInOrderCreation(product, barcode, item);
                 item.setProductId(product.getId());
-
                 InventoryPojo inventory = inventoryApi.getByProductId(product.getId());
-                if (inventory == null || inventory.getQuantity() <= 0) {
-                    throw new ApiException("Product '" + product.getName() + "' with barcode '" + product.getBarcode() + "' is out of stock");
-                }
-                if (inventory.getQuantity() < item.getQuantity()) {
-                    throw new ApiException("Only " + inventory.getQuantity() +
-                            (inventory.getQuantity() == 1 ? " item is" : " items are") +
-                            " left for product '" + product.getName() + "' with barcode '" + product.getBarcode() + "'");
-                }
-
+                validateInventoryInOrderCreation(inventory, barcode, item);
                 validatedItems.put(item, inventory);
-                allItems.add(item); // Add to all items
-
+                allItems.add(item);
             } catch (ApiException e) {
-                OrderError error = new OrderError();
-                error.setBarcode(barcodeList.get(i));
-                error.setIndex(i);
-                error.setMessage(e.getMessage());
+                OrderError error = createError(e.getMessage());
                 orderErrorList.add(error);
-                
-                // Still add the item to allItems even if validation failed
                 allItems.add(item);
             }
             i++;
         }
-
-        // Step 2: Save all order items (both valid and invalid)
-        for (OrderItemPojo item : allItems) {
-            item.setOrderId(order.getId());
-            orderItemApi.addOrderItem(item);
-        }
-
-        // Step 3: Decide status and reduce inventory
-        if (!orderErrorList.isEmpty()) {
-            order.setStatus(OrderStatus.UNFULFILLABLE);
-            orderApi.updateOrder(order);
-        } else {
-            // All good → reduce inventory
-            for (Map.Entry<OrderItemPojo, InventoryPojo> entry : validatedItems.entrySet()) {
-                OrderItemPojo item = entry.getKey();
-                InventoryPojo inventory = entry.getValue();
-
-                inventory.setQuantity(inventory.getQuantity() - item.getQuantity());
-                inventoryApi.edit(inventory);
-            }
-            order.setStatus(OrderStatus.FULFILLABLE);
-            orderApi.updateOrder(order);
-        }
-
-        ErrorData<OrderError> result = new ErrorData<>();
-        result.setErrorList(orderErrorList);
-        result.setId(orderId);
-        return result;
+        addOrderItem(order, allItems);
+        updateInventory(orderErrorList,validatedItems,order);
+        return createErrorData(orderErrorList,orderId);
     }
 
+        public void addOrderItem(OrderPojo order,List<OrderItemPojo> allItems ){
+            for (OrderItemPojo item : allItems) {
+                item.setOrderId(order.getId());
+                orderItemApi.addOrderItem(item);
+            }
+        }
+
+        public void updateInventory(List<OrderError> orderErrorList,Map<OrderItemPojo, InventoryPojo> validatedItems,OrderPojo order) {
+            if (!orderErrorList.isEmpty()) {
+                order.setStatus(OrderStatus.UNFULFILLABLE);
+                orderApi.updateOrder(order);
+            } else {
+                for (Map.Entry<OrderItemPojo, InventoryPojo> entry : validatedItems.entrySet()) {
+                    OrderItemPojo item = entry.getKey();
+                    InventoryPojo inventory = entry.getValue();
+
+                    inventory.setQuantity(inventory.getQuantity() - item.getQuantity());
+//                    inventoryApi.edit(inventory);
+                }
+                order.setStatus(OrderStatus.FULFILLABLE);
+                orderApi.updateOrder(order);
+            }
+        }
 
 
+//todo remove duplicate calls ,remove error data
     @Transactional
     public ErrorData<OrderError> resyncOrders(Integer id) throws ApiException {
         OrderPojo orderPojo = orderApi.getById(id);
         List<OrderError> errorList = new ArrayList<>();
         List<OrderItemPojo> orderItemPojoList = orderItemApi.getByOrderId(id);
-
+        Map<Integer, InventoryPojo> inventoryMap = new HashMap<>();
         boolean allAvailable = true;
         for (int i = 0; i < orderItemPojoList.size(); i++) {
             OrderItemPojo orderItemPojo = orderItemPojoList.get(i);
             ProductPojo product = productApi.getById(orderItemPojo.getProductId());
-
             if (product == null) {
                 allAvailable = false;
-                OrderError error = new OrderError();
-                error.setIndex(i);
-                error.setBarcode(null);
-                error.setMessage("Product does not exist");
-                errorList.add(error);
+            OrderError error = createError("product doesn't exist");
+            errorList.add(error);
             } else {
                 InventoryPojo inventory = inventoryApi.getByProductId(product.getId());
+                inventoryMap.put(product.getId(), inventory);
                 if (inventory == null) {
                     allAvailable = false;
-                    OrderError error = new OrderError();
-                    error.setIndex(i);
-                    error.setBarcode(product.getBarcode());
-                    error.setMessage("No inventory found for product '" + product.getName() + "'");
+                    OrderError error = createError("No inventory found for product '" + product.getName() + "'");
                     errorList.add(error);
                 } else if (inventory.getQuantity() < orderItemPojo.getQuantity()) {
                     allAvailable = false;
-                    OrderError error = new OrderError();
-                    error.setIndex(i);
-                    error.setBarcode(product.getBarcode());
-                    error.setMessage("Only " + inventory.getQuantity() + " left, but "
-                            + orderItemPojo.getQuantity() + " required");
+                    OrderError error = createError("Only " + inventory.getQuantity() + " left, but " + orderItemPojo.getQuantity() + " required");
                     errorList.add(error);
                 }
             }
         }
+        updateStatusWithInventory(allAvailable,orderPojo,orderItemPojoList,inventoryMap);
+        return createErrorData(errorList,orderPojo.getId());
+    }
 
+    public void updateStatusWithInventory( boolean allAvailable,OrderPojo orderPojo,List<OrderItemPojo> orderItemPojoList, Map<Integer, InventoryPojo> inventoryMap) throws ApiException {
         if (allAvailable) {
             orderPojo.setStatus(OrderStatus.FULFILLABLE);
             orderApi.updateOrder(orderPojo);
             for (OrderItemPojo item : orderItemPojoList) {
-                InventoryPojo inventory = inventoryApi.getByProductId(item.getProductId());
+                InventoryPojo inventory = inventoryMap.get(item.getProductId());
                 inventory.setQuantity(inventory.getQuantity() - item.getQuantity());
             }
         } else {
-            // Mark order as unfulfillable when inventory is insufficient
             orderPojo.setStatus(OrderStatus.UNFULFILLABLE);
             orderApi.updateOrder(orderPojo);
         }
-
-
-
-        ErrorData<OrderError> result = new ErrorData<>();
-        result.setId(orderPojo.getId());
-        result.setErrorList(errorList);
-        return result;
-    }
-
-
-    public List<OrderItemPojo> getAllOrderItem(){
-        return orderItemApi.getAllOrderItems();
     }
 
     public List<OrderItemPojo> getOrderItemsByOrderId(Integer orderId){
         return orderItemApi.getByOrderId(orderId);
     }
+//    todo remove below methods move it to api
+//    public List<OrderPojo> getAllOrders(OrderFiltersForm orderFiltersForm) throws ApiException{
+//        return orderApi.getAllOrders(orderFiltersForm);
+//    }
 
-    public List<OrderPojo> getAllOrders(OrderFiltersForm orderFiltersForm) throws ApiException{
-        return orderApi.getAllOrders(orderFiltersForm);
-    }
+//    public OrderPojo getOrderById(Integer orderId) throws ApiException {
+//        return orderApi.getById(orderId);
+//    }
 
-    public OrderPojo getOrderById(Integer orderId) throws ApiException {
-        return orderApi.getById(orderId);
-    }
-
+//    todo set name in one flow for order items
 public List<OrderItemData> getOrderItemsByOrderIdWithProductName(List<OrderItemData> orderItemDataList) throws ApiException {
        for (OrderItemData orderItemData : orderItemDataList) {
            ProductPojo productPojo = productApi.getById(orderItemData.getProductId());
@@ -199,10 +158,15 @@ public List<OrderItemData> getOrderItemsByOrderIdWithProductName(List<OrderItemD
                throw new ApiException("Product not found");
            }
            orderItemData.setProductName(productPojo.getName());
-           // Removed duplicate add - the item is already in the list
        }
        return orderItemDataList;
 }
 
+    public ErrorData<OrderError> createErrorData(List<OrderError> orderErrorList,Integer orderId) {
+        ErrorData<OrderError> result = new ErrorData<>();
+        result.setErrorList(orderErrorList);
+        result.setId(orderId);
+        return result;
+    }
 
 }

@@ -4,6 +4,7 @@ import org.apache.fop.apps.FOUserAgent;
 import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.MimeConstants;
+import org.example.api.SalesReportApi;
 import org.example.flow.OrderFlow;
 import org.example.flow.ReportsFlow;
 import org.example.models.data.DaySalesReportData;
@@ -24,13 +25,14 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
+import java.time.LocalTime;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 
-import static org.example.dto.DtoHelper.convertDaySalesReportPojoToDaySalesReportData;
-import static org.example.dto.DtoHelper.normalizeSalesReportFilterForm;
+import static org.example.dto.DtoHelper.*;
 
 @Component
 public class ReportsDto {
@@ -38,23 +40,29 @@ public class ReportsDto {
     private OrderFlow orderFlow;
     @Autowired
     private ReportsFlow reportsFlow;
-
+    @Autowired
+    private SalesReportApi salesReportApi;
 
     public List<DaySalesReportData> getDaysSalesReports(DaySalesReportsForm form) throws ApiException{
 
-        List<DaySalesReportPojo> daySalesReportsPojo =  reportsFlow.getDaysSalesReport(form);
+        List<DaySalesReportPojo> daySalesReportsPojo = salesReportApi.getDaySalesReports(form);
        return convertDaySalesReportPojoToDaySalesReportData(daySalesReportsPojo);
 
     }
 
    public void generateDayReports() throws ApiException {
-      reportsFlow.generateDayReport();
+       ZonedDateTime dateTime = ZonedDateTime.now();
+       ZonedDateTime startDate = dateTime.minusDays(1).with(LocalTime.of(0,0,0));
+       ZonedDateTime endDate = dateTime.minusDays(1).with(LocalTime.of(23,59,59));
+       DaySalesReportsForm daySalesReportsForm =  createDaySalesReportForm(startDate,endDate);
+      reportsFlow.generateDayReport(daySalesReportsForm);
    }
-   public Long getTotalDayReports() throws ApiException{
-        return reportsFlow.getTotalDayReports();
-   }
+
    public String getDaySalesReportsBetweenDates(ExportFilterDailyReports form, HttpServletResponse response) throws ApiException, IOException {
-     List<DaySalesReportPojo> daySalesReportPojos =  reportsFlow.getDaySalesReportsBetweenDates(form);
+       ZonedDateTime startDate = ZonedDateTime.parse(form.getStartDate());
+       ZonedDateTime endDate = ZonedDateTime.parse(form.getEndDate());
+     List<DaySalesReportPojo> daySalesReportPojos = salesReportApi.getDaySalesReportsBetweenDates(startDate,endDate);
+
      if(Objects.isNull(daySalesReportPojos)){
          throw new ApiException("error generating the sales report data");
      }
@@ -129,13 +137,7 @@ public class ReportsDto {
         normalizeSalesReportFilterForm(salesReportFilterForm);
         return reportsFlow.getSalesReport(salesReportFilterForm);
    }
-   public Long getTotalOrdersCount(){
-        return reportsFlow.getTotalOrdersCount();
-   }
-   
-   public Long getTotalSalesReportCount(SalesReportFilterForm salesReportFilterForm) throws ApiException {
-        return reportsFlow.getTotalSalesReportCount(salesReportFilterForm);
-   }
+
    public String exportSalesReport(SalesReportFilterForm salesReportFilterForm) throws ApiException {
        normalizeSalesReportFilterForm(salesReportFilterForm);
        List<SalesReportData> listOfSalesReportData = reportsFlow.getSalesReport(salesReportFilterForm);
@@ -204,5 +206,6 @@ public class ReportsDto {
            throw new ApiException("Failed to generate PDF", e);
        }
    }
+
 
 }
