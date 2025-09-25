@@ -102,14 +102,14 @@ public class OrderFlow {
         for (int i = 0; i < orderItemPojoList.size(); i++) {
             OrderItemPojo orderItemPojo = orderItemPojoList.get(i);
             ProductPojo product = productApi.getById(orderItemPojo.getProductId());
-            if (product == null) {
+            if (Objects.isNull(product)) {
                 allAvailable = false;
             OrderError error = createError("product doesn't exist");
             errorList.add(error);
             } else {
                 InventoryPojo inventory = inventoryApi.getByProductId(product.getId());
                 inventoryMap.put(product.getId(), inventory);
-                if (inventory == null) {
+                if (Objects.isNull(inventory)) {
                     allAvailable = false;
                     OrderError error = createError("No inventory found for product '" + product.getName() + "'");
                     errorList.add(error);

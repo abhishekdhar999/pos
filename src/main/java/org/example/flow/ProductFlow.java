@@ -47,6 +47,8 @@ public class ProductFlow {
         }
         return clientPojo;
     }
+
+//    todo save only integer
     public InventoryPojo getInventoryByProductId(Integer productId) throws ApiException {
         ProductPojo productPojo = productApi.getById(productId);
         return inventoryApi.getByProductId(productId);

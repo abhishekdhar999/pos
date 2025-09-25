@@ -44,10 +44,7 @@ public class SpringConfig  {
         return new RestTemplate();
     }
 
-    @Bean(name = "bCryptPasswordEncoder")
-    public BCryptPasswordEncoder getBCryptPasswordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
+
 
 
 
