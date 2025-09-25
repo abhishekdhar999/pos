@@ -7,6 +7,7 @@ import org.example.dto.ApiException;
 import org.example.dto.ClientDto;
 import org.example.dto.ProductDto;
 import org.example.models.data.ProductData;
+import org.example.models.data.Response;
 import org.example.models.form.ClientForm;
 import org.example.models.form.ProductForm;
 import org.example.pojo.ClientPojo;
@@ -15,6 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -38,83 +40,139 @@ public class ProductDtoTest extends AbstractUnitTest {
         clientDto.add(clientForm);
     }
 
-    @Test
-    public void testCreateProduct() throws ApiException {
-        ClientPojo clientPojo = clientDao.getByName(clientForm.getName());
-        ProductForm productForm = TestHelper.createProductForm("barcode",clientPojo.getName(),"demo_product",200.0,"");
-        productDto.add(productForm);
-        ProductPojo pojo = productDao.getByBarcode(productForm.getBarcode());
-        assertNotNull(pojo);  // product exists
-        assertEquals(productForm.getBarcode(), pojo.getBarcode());
-        assertEquals(productForm.getBarcode(), pojo.getBarcode());
-        assertEquals(productForm.getName(), pojo.getName());
-        assertEquals(productForm.getPrice(), pojo.getPrice());
-        productForm.setPrice(-90.00);
-        assertThrows(ApiException.class, () -> productDto.add(productForm));
-    }
-    @Test
-    public void testAddProductWithEmptyBarcode() throws ApiException {
-        ClientPojo clientPojo = clientDao.getByName(clientForm.getName());
+@Test
+public void testCreateProductComprehensive() throws ApiException {
+    ClientPojo clientPojo = clientDao.getByName(clientForm.getName());
+    //Positive test: valid product
 
-        // Create a product form with empty barcode
-        ProductForm emptyBarcodeForm = TestHelper.createProductForm(
-                "",                     // empty barcode
-                clientPojo.getName(),
-                "product_no_barcode",
-                100.0,
-                "image.jpg"
-        );
+    ProductForm validProductForm = TestHelper.createProductForm(
+            "barcode_valid",
+            clientPojo.getName(),
+            "demo_product",
+            200.0,
+            "image.jpg"
+    );
+    productDto.add(validProductForm);
 
-        // Expect ApiException because barcode is invalid
-        assertThrows(ApiException.class, () -> productDto.add(emptyBarcodeForm));
-    }
+    ProductPojo savedProduct = productDao.getByBarcode(validProductForm.getBarcode());
+    assertNotNull(savedProduct);
+    assertEquals(validProductForm.getBarcode(), savedProduct.getBarcode());
+    assertEquals(validProductForm.getName(), savedProduct.getName());
+    assertEquals(validProductForm.getPrice(), savedProduct.getPrice(), 0.001);
+    assertEquals(validProductForm.getImageUrl(), savedProduct.getImageUrl());
 
-    @Test
-    public void testAddProductWithEmptyClient() throws ApiException {
+    // empty barcode
+    ProductForm emptyBarcodeForm = TestHelper.createProductForm(
+            "",
+            clientPojo.getName(),
+            "product_no_barcode",
+            100.0,
+            "image.jpg"
+    );
+    assertThrows(ApiException.class, () -> productDto.add(emptyBarcodeForm));
 
-        // Empty client
-        ProductForm emptyClientForm = TestHelper.createProductForm(
-                "barcode_empty_client",
-                "",
-                "product_empty_client",
-                100.0,
-                "image.jpg"
-        );
-        assertThrows(ApiException.class, () -> productDto.add(emptyClientForm));
+//     empty client
+    ProductForm emptyClientForm = TestHelper.createProductForm(
+            "barcode_empty_client",
+            "",
+            "product_empty_client",
+            100.0,
+            "image.jpg"
+    );
+    assertThrows(ApiException.class, () -> productDto.add(emptyClientForm));
 
-        // Client with spaces only
-        ProductForm spacesClientForm = TestHelper.createProductForm(
-                "barcode_spaces_client",
-                "   ",
-                "product_spaces_client",
-                100.0,
-                "image.jpg"
-        );
-        assertThrows(ApiException.class, () -> productDto.add(spacesClientForm));
-    }
+//  empty product name
+    ProductForm emptyNameForm = TestHelper.createProductForm(
+            "barcode_empty_name",
+            clientPojo.getName(),
+            "",
+            100.0,
+            "image.jpg"
+    );
+    assertThrows(ApiException.class, () -> productDto.add(emptyNameForm));
 
+    ProductForm spacesNameForm = TestHelper.createProductForm(
+            "barcode_spaces_name",
+            clientPojo.getName(),
+            "   ",
+            100.0,
+            "image.jpg"
+    );
+    assertThrows(ApiException.class, () -> productDto.add(spacesNameForm));
 
-    @Test
-    public void testCreateProductWithNegativePrice() throws ApiException {
-        ClientPojo clientPojo = clientDao.getByName(clientForm.getName());
-        ProductForm productForm = TestHelper.createProductForm("barcode",clientPojo.getName(),"demo_product",-200.0,"");
-
-    }
+//  negative price
+    ProductForm negativePriceForm = TestHelper.createProductForm(
+            "barcode_negative_price",
+            clientPojo.getName(),
+            "product_negative_price",
+            -50.0,
+            "image.jpg"
+    );
+    assertThrows(ApiException.class, () -> productDto.add(negativePriceForm));
+}
 
     @Test
     public void testUpdateProduct() throws ApiException {
         ClientPojo clientPojo = clientDao.getByName(clientForm.getName());
-        ProductForm productForm = TestHelper.createProductForm("barcode",clientPojo.getName(),"demo_product",200.0,"");
+
+        ProductForm productForm = TestHelper.createProductForm(
+                "barcode123",
+                clientPojo.getName(),
+                "demo_product",
+                200.0,
+                "image.jpg"
+        );
         productDto.add(productForm);
+
         ProductPojo savedProduct = productDao.getByBarcode(productForm.getBarcode());
-        ProductForm updateProductForm = TestHelper.createProductForm("barcode",clientPojo.getName(),"demo_product_updated",400.00,"");
-        productDto.update(savedProduct.getId(), updateProductForm);
-        ProductPojo updatedProductPojo = productDao.getByBarcode(productForm.getBarcode());
-        assertNotNull(updatedProductPojo);
-        assertEquals(updateProductForm.getPrice(), updatedProductPojo.getPrice(), 0.001);
-        assertEquals(updateProductForm.getName(), updatedProductPojo.getName());
-        assertEquals(updateProductForm.getImageUrl(), updatedProductPojo.getImageUrl());
+        assertNotNull(savedProduct);
+
+        ProductForm updateForm = TestHelper.createProductForm(
+                "barcode123",               // keep same barcode
+                clientPojo.getName(),
+                "demo_product_updated",
+                400.0,
+                "updated_image.jpg"
+        );
+        productDto.update(savedProduct.getId(), updateForm);
+
+        ProductPojo updatedProduct = productDao.getByBarcode(productForm.getBarcode());
+        assertNotNull(updatedProduct);
+        assertEquals(updateForm.getName(), updatedProduct.getName());
+        assertEquals(updateForm.getPrice(), updatedProduct.getPrice(), 0.001);
+        assertEquals(updateForm.getImageUrl(), updatedProduct.getImageUrl());
+
+        //  invalid price
+        ProductForm invalidPriceForm = TestHelper.createProductForm(
+                "barcode123",
+                clientPojo.getName(),
+                "demo_product_invalid",
+                -50.0,
+                "image.jpg"
+        );
+        assertThrows(ApiException.class, () -> productDto.update(savedProduct.getId(), invalidPriceForm));
+
+        //  empty name
+        ProductForm emptyNameForm = TestHelper.createProductForm(
+                "barcode123",
+                clientPojo.getName(),
+                "",
+                300.0,
+                "image.jpg"
+        );
+        assertThrows(ApiException.class, () -> productDto.update(savedProduct.getId(), emptyNameForm));
+
+        //  empty client
+        ProductForm emptyClientForm = TestHelper.createProductForm(
+                "barcode123",
+                "",
+                "demo_product",
+                300.0,
+                "image.jpg"
+        );
+        assertThrows(ApiException.class, () -> productDto.update(savedProduct.getId(), emptyClientForm));
     }
+
 
     @Test
     public void testGetProductById() throws ApiException {
@@ -140,12 +198,46 @@ public class ProductDtoTest extends AbstractUnitTest {
     @Test
     public void testSearchByBarcode() throws ApiException {
         ClientPojo clientPojo = clientDao.getByName(clientForm.getName());
-        ProductForm productForm = TestHelper.createProductForm("barcode_1",clientPojo.getName(),"demo_product_1",400.0,"");
-        productDto.add(productForm);
+        ProductForm productForm1 = TestHelper.createProductForm("barcode_1",clientPojo.getName(),"demo_product_1",400.0,"");
+        productDto.add(productForm1);
         ProductForm productForm2 = TestHelper.createProductForm("barcode_2",clientPojo.getName(),"demo_product_2",200.0,"");
         productDto.add(productForm2);
 
+        List<String> productData  = productDto.searchByBarcode(0,10,"barcode");
 
-
+        assertNotNull(productData);
+        assertEquals(2, productData.size());
+        assertTrue(productData.contains("barcode_1"));
+        assertTrue(productData.contains("barcode_2"));
     }
+
+    @Test
+    public void testBulkUploadWithValidation() throws ApiException {
+        ClientPojo clientPojo = clientDao.getByName(clientForm.getName());
+
+        List<ProductForm> productFormList = new ArrayList<>();
+        productFormList.add(TestHelper.createProductForm("", clientPojo.getName(), "valid_name", 100.0, "img.jpg"));
+        productFormList.add(TestHelper.createProductForm("barcode2", clientPojo.getName(), "", 200.0, "img.jpg"));
+        productFormList.add(TestHelper.createProductForm("barcode3", clientPojo.getName(), "valid_name_2", -10.0, "img.jpg"));
+        productFormList.add(TestHelper.createProductForm("barcode4", clientPojo.getName(), "valid_name_3", 300.0, "img.jpg"));
+        List<Response<ProductForm>> responses = productDto.bulkUpload(productFormList);
+        assertNotNull(responses);
+        assertEquals(4, responses.size());
+
+        assertNotEquals("success", responses.get(0).getMessage());
+        assertNotEquals("success", responses.get(1).getMessage());
+        assertNotEquals("success", responses.get(2).getMessage());
+        assertEquals("success", responses.get(3).getMessage());
+    }
+    @Test
+    public void testBulkUploadWithoutClient() throws ApiException {
+       List<ProductForm> productFormList = new ArrayList<>();
+       productFormList.add(TestHelper.createProductForm("barcode","non_existing_client","valid_name",200.00,"img.jpg"));
+       List<Response<ProductForm>> responses = productDto.bulkUpload(productFormList);
+       assertNotNull(responses);
+       assertEquals(1, responses.size());
+        assertNotEquals("success", responses.get(0).getMessage());
+    }
+
+
 }
