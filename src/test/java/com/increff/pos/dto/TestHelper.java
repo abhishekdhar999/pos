@@ -2,6 +2,7 @@ package com.increff.pos.dto;
 
 import com.sun.istack.NotNull;
 import org.example.models.form.ClientForm;
+import org.example.models.form.InventoryForm;
 import org.example.models.form.ProductForm;
 import org.example.pojo.ClientPojo;
 
@@ -32,5 +33,13 @@ public static ClientPojo CreateClientPojo(String name){
         productForm.setImageUrl(imageUrl);
         return productForm;
 
+    }
+
+//    inventory test dto helper
+    public static InventoryForm createInventoryForm(String barcode,Integer quantity){
+        InventoryForm inventoryForm = new InventoryForm();
+        inventoryForm.setBarcode(barcode);
+        inventoryForm.setQuantity(quantity);
+        return inventoryForm;
     }
 }

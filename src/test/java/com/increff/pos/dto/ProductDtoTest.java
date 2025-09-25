@@ -34,6 +34,7 @@ public class ProductDtoTest extends AbstractUnitTest {
     private ProductDao productDao;
 
     private ClientForm clientForm ;
+
     @Before
     public void setup() throws ApiException {
         clientForm  = TestHelper.createClientForm("amazon");
@@ -41,10 +42,9 @@ public class ProductDtoTest extends AbstractUnitTest {
     }
 
 @Test
-public void testCreateProductComprehensive() throws ApiException {
+public void testCreateProduct() throws ApiException {
     ClientPojo clientPojo = clientDao.getByName(clientForm.getName());
-    //Positive test: valid product
-
+    // valid product
     ProductForm validProductForm = TestHelper.createProductForm(
             "barcode_valid",
             clientPojo.getName(),
@@ -61,7 +61,7 @@ public void testCreateProductComprehensive() throws ApiException {
     assertEquals(validProductForm.getPrice(), savedProduct.getPrice(), 0.001);
     assertEquals(validProductForm.getImageUrl(), savedProduct.getImageUrl());
 
-    // empty barcode
+
     ProductForm emptyBarcodeForm = TestHelper.createProductForm(
             "",
             clientPojo.getName(),
@@ -71,7 +71,7 @@ public void testCreateProductComprehensive() throws ApiException {
     );
     assertThrows(ApiException.class, () -> productDto.add(emptyBarcodeForm));
 
-//     empty client
+
     ProductForm emptyClientForm = TestHelper.createProductForm(
             "barcode_empty_client",
             "",
@@ -192,6 +192,7 @@ public void testCreateProductComprehensive() throws ApiException {
         productDto.add(productForm);
         List<ProductData> productData = productDto.getAll(0,1,"");
         assertNotNull(productData);
+        assertEquals(1,productData.size());
         assertEquals(productForm.getBarcode(), productData.get(0).getBarcode());
     }
 
