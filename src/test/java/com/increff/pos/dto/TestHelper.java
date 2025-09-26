@@ -10,9 +10,11 @@ import org.example.pojo.ClientPojo;
 import org.example.pojo.DaySalesReportPojo;
 import org.example.pojo.OrderPojo;
 import org.example.utils.FinalValues;
+import org.example.utils.InvoiceResponse;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TestHelper {
@@ -147,5 +149,52 @@ public static ClientPojo CreateClientPojo(String name){
         invoiceData.setAmount(amount);
         return invoiceData;
     }
+
+    public static OrderPojo createOrderPojo(boolean isInvoiced) {
+        OrderPojo orderPojo = new OrderPojo();
+        orderPojo.setId(1);
+        orderPojo.setIsInvoiced(isInvoiced);
+        orderPojo.setStatus(OrderStatus.CREATED);
+        return orderPojo;
+    }
+
+    public static InvoiceResponse createInvoiceResponse(Integer invoiceId, String base64Pdf, String filePath) {
+        InvoiceResponse response = new InvoiceResponse();
+        response.setInvoiceId(invoiceId);
+        response.setBase64Pdf(base64Pdf);
+        response.setFilePath(filePath);
+        return response;
+    }
+
+    public static InvoiceFilterForm createInvoiceFilterForm() {
+        InvoiceFilterForm form = new InvoiceFilterForm();
+        form.setStartDate("2025-01-01T00:00:00Z");
+        form.setEndDate("2025-01-31T23:59:59Z");
+        return form;
+    }
+
+    public static List<InvoiceData> createInvoiceDataList() {
+        List<InvoiceData> invoices = new ArrayList<>();
+        InvoiceData invoice1 = new InvoiceData();
+        invoice1.setId(1);
+        invoice1.setOrderId(101);
+        invoice1.setAmount(1000.0);
+        invoice1.setStatus("CREATED");
+        invoice1.setCreatedAt("2025-01-15T10:30:00Z");
+        invoice1.setPdfPath("/invoices/invoice1.pdf");
+        invoices.add(invoice1);
+
+        InvoiceData invoice2 = new InvoiceData();
+        invoice2.setId(2);
+        invoice2.setOrderId(102);
+        invoice2.setAmount(1500.0);
+        invoice2.setStatus("CREATED");
+        invoice2.setCreatedAt("2025-01-20T14:45:00Z");
+        invoice2.setPdfPath("/invoices/invoice2.pdf");
+        invoices.add(invoice2);
+
+        return invoices;
+    }
+
 
 }

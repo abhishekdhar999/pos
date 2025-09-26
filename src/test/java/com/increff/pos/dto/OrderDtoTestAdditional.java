@@ -222,23 +222,23 @@ public class OrderDtoTestAdditional extends AbstractUnitTest {
         String secondBarcode = "TEST-BARCODE-003";
         ProductForm secondProduct = TestHelper.createProductForm(secondBarcode, "test-client", "Third Product", 150.00, "test-image3.jpg");
         productDto.add(secondProduct);
-        
+
         InventoryForm secondInventory = TestHelper.createInventoryForm(secondBarcode, 20);
         inventoryDto.add(secondInventory);
-        
+
         List<OrderItemForm> orderItemFormList = new ArrayList<>();
         OrderItemForm item1 = TestHelper.createOrderItemForm(testBarcode, 5, 100.00);
         OrderItemForm item2 = TestHelper.createOrderItemForm(secondBarcode, 3, 150.00);
         orderItemFormList.add(item1);
         orderItemFormList.add(item2);
-        
+
         ErrorData<OrderError> createResult = orderDto.create(orderItemFormList);
         assertNotNull(createResult);
         assertNotNull(createResult.getId());
-        
+
         // Test get order details
         OrderData orderData = orderDto.getOrderDetails(createResult.getId());
-        
+
         assertNotNull(orderData);
         assertEquals(createResult.getId(), orderData.getId());
         assertEquals(OrderStatus.FULFILLABLE, orderData.getStatus());
