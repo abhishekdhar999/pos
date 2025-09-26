@@ -33,8 +33,7 @@ public class OrderFlow {
     private OrderApi orderApi;
     @Autowired
     private OrderItemApi orderItemApi;
-//todo move in helper method
-//    todo inventory updates to be optimized
+
     public ErrorData<OrderError> create(List<OrderItemPojo> orderItemPojoList, List<String> barcodeList) {
         List<OrderError> orderErrorList = new ArrayList<>();
         OrderPojo order = new OrderPojo();
@@ -90,8 +89,6 @@ public class OrderFlow {
             }
         }
 
-
-//todo remove duplicate calls ,remove error data
     @Transactional
     public ErrorData<OrderError> resyncOrders(Integer id) throws ApiException {
         OrderPojo orderPojo = orderApi.getById(id);

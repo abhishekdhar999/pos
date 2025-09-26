@@ -1,10 +1,19 @@
 package com.increff.pos.dto;
 
 import com.sun.istack.NotNull;
-import org.example.models.form.ClientForm;
-import org.example.models.form.InventoryForm;
-import org.example.models.form.ProductForm;
+import org.example.enums.OrderStatus;
+import org.example.models.data.InvoiceData;
+import org.example.models.data.InvoiceItem;
+import org.example.models.data.InvoiceRequest;
+import org.example.models.form.*;
 import org.example.pojo.ClientPojo;
+import org.example.pojo.DaySalesReportPojo;
+import org.example.pojo.OrderPojo;
+import org.example.utils.FinalValues;
+
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.List;
 
 public class TestHelper {
 
@@ -42,4 +51,101 @@ public static ClientPojo CreateClientPojo(String name){
         inventoryForm.setQuantity(quantity);
         return inventoryForm;
     }
+
+//    order test dto helper
+    public static OrderItemForm createOrderItemForm(String barcode,Integer quantity,Double price){
+        OrderItemForm orderItemForm = new OrderItemForm();
+        orderItemForm.setQuantity(quantity);
+        orderItemForm.setSellingPrice(price);
+        orderItemForm.setBarcode(barcode);
+        return orderItemForm;
+    }
+
+    public static OrderPojo createOrderPojo() {
+        OrderPojo pojo = new OrderPojo();
+        pojo.setDateTime(ZonedDateTime.now(ZoneId.of("UTC")));
+        pojo.setStatus(OrderStatus.CREATED);
+        return pojo;
+    }
+
+    public static OrderFiltersForm createOrderFilters(Integer page, Integer size, String startDate, String endDate) {
+        OrderFiltersForm filters = new OrderFiltersForm();
+        filters.setPage(page);
+        filters.setSize(size);
+        filters.setStartDate(startDate);
+        filters.setEndDate(endDate);
+        filters.setStatus("");
+        return filters;
+    }
+
+//    reports dto test helper
+    public static SalesReportFilterForm createSalesReportFilterForm(Integer page, Integer size, String startDate, String endDate,String client,String barcode ) {
+        SalesReportFilterForm filters = new SalesReportFilterForm();
+        filters.setPage(page);
+        filters.setSize(size);
+        filters.setStartDate(startDate);
+        filters.setEndDate(endDate);
+        filters.setClient(client);
+        filters.setProductBarcode(barcode);
+        return filters;
+    }
+
+    public static DaySalesReportPojo createDailySalesReportPojo(ZonedDateTime dateTime, Integer invoicedOrdersCount, Integer invoicedItemsCount, Double totalRevenue) {
+        DaySalesReportPojo pojo = new DaySalesReportPojo();
+        pojo.setDateTime(dateTime);
+        pojo.setInvoicedOrdersCount(invoicedOrdersCount);
+        pojo.setInvoicedItemsCount(invoicedItemsCount);
+        pojo.setTotalRevenue(totalRevenue);
+        return pojo;
+    }
+    public static DaySalesReportsForm createDaySalesReportForm(Integer page, Integer size, String startDate, String endDate) {
+        DaySalesReportsForm form = new DaySalesReportsForm();
+        form.setPage(page);
+        form.setSize(size);
+        form.setStartDate(startDate);
+        form.setEndDate(endDate);
+        return form;
+    }
+
+
+    public static DaySalesReportsForm createDaySalesReportForm(String startDate, String endDate, Integer page, Integer size) {
+        DaySalesReportsForm form = new DaySalesReportsForm();
+        form.setStartDate(startDate);
+        form.setEndDate(endDate);
+        form.setPage(page);
+        form.setSize(size);
+        return form;
+    }
+
+//    invoice dto helper test
+    public static InvoiceItem createInvoiceItem(String productName,Integer quantity,Double price,Double total){
+        InvoiceItem invoiceItem = new InvoiceItem();
+        invoiceItem.setProductName(productName);
+        invoiceItem.setPrice(price);
+        invoiceItem.setQuantity(quantity);
+        invoiceItem.setTotal(total);
+        return invoiceItem;
+    }
+
+    public static InvoiceRequest createInvoiceRequest(Integer orderId,String orderDateTime,String invoiceDateTime,Double total,List<InvoiceItem> invoiceItems){
+        InvoiceRequest invoiceRequest = new InvoiceRequest();
+        invoiceRequest.setOrderId(orderId);
+        invoiceRequest.setOrderDateTime(orderDateTime);
+        invoiceRequest.setInvoiceDateTime(invoiceDateTime);
+        invoiceRequest.setTotal(total);
+        invoiceRequest.setInvoiceItems(invoiceItems);
+        return invoiceRequest;
+    }
+
+    public static InvoiceData createInvoiceData(Integer id,Integer orderId,String createdAt,String status,Double amount,String pdfPath){
+        InvoiceData invoiceData = new InvoiceData();
+        invoiceData.setCreatedAt(createdAt);
+        invoiceData.setId(id);
+        invoiceData.setStatus(status);
+        invoiceData.setOrderId(orderId);
+        invoiceData.setPdfPath(pdfPath);
+        invoiceData.setAmount(amount);
+        return invoiceData;
+    }
+
 }

@@ -59,11 +59,9 @@ private ProductForm productForm;
         InventoryPojo inventoryPojo = inventoryDao.getByProductId(productPojo.getId());
         assertNotNull(inventoryPojo);
         assertEquals(inventoryPojo.getProductId(),productPojo.getId());
-
 //        negative price
         InventoryForm negativeFormInventoryForm = TestHelper.createInventoryForm(productForm.getBarcode(), -100);
         assertThrows(ApiException.class, () -> inventoryDto.add(negativeFormInventoryForm));
-
 //        invalid barcode
         InventoryForm invalidBarcodeInventoryForm = TestHelper.createInventoryForm("invalid_barcode",inventoryForm.getQuantity());
         assertThrows(ApiException.class, () -> inventoryDto.add(invalidBarcodeInventoryForm));
