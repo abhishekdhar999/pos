@@ -92,16 +92,6 @@ public class OrderDtoTest extends AbstractUnitTest {
         assertNotNull(response);
         assertEquals(1, response.size());
     }
-//    @Test
-//    public void testCreateWithInvalidBarcode() {
-//        List<OrderItemForm> orderItemFormList = new ArrayList<>();
-//        OrderItemForm orderItemForm = TestHelper.createOrderItemForm("invalid-barcode", 10, 80.0);
-//        orderItemFormList.add(orderItemForm);
-//        ErrorData<OrderError> result = orderDto.create(orderItemFormList);
-//
-//        assertNotNull(result);
-//        assertNotNull(result.getId());
-//        assertEquals(1, result.getErrorList().size());
-//    }
+
 
 }
