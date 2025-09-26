@@ -3,6 +3,7 @@ package org.example.flow;
 
 
 
+import lombok.Setter;
 import org.example.InvoiceClient.InvoiceClient;
 import org.example.api.ClientApi;
 import org.example.api.OrderApi;
@@ -31,6 +32,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Component
+@Setter
 @Transactional(rollbackFor = ApiException.class)
 public class InvoiceFlow {
     @Autowired

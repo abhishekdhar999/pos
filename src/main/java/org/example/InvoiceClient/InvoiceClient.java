@@ -1,5 +1,6 @@
 package org.example.InvoiceClient;
 
+import lombok.Setter;
 import org.example.config.ApplicationProperties;
 import org.example.models.data.InvoiceData;
 import org.example.models.data.InvoiceRequest;
@@ -15,6 +16,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
+@Setter
 public class InvoiceClient {
 
     @Autowired

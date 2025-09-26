@@ -1,6 +1,7 @@
 package org.example.dto;
 
 
+import lombok.Setter;
 import org.example.InvoiceClient.InvoiceClient;
 import org.example.api.OrderApi;
 import org.example.enums.OrderStatus;
@@ -13,6 +14,7 @@ import org.example.pojo.OrderPojo;
 import org.example.utils.InvoiceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
@@ -21,6 +23,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Component
+@Setter
 public class InvoiceDto {
 
     @Autowired

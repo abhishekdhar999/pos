@@ -1,7 +1,6 @@
 package com.increff.pos.dto;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
 import com.increff.pos.AbstractUnitTest;
 import org.example.dao.ClientDao;

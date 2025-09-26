@@ -12,5 +12,5 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @ContextConfiguration(classes = QaConfig.class)
 @WebAppConfiguration
 @Transactional(rollbackFor = ApiException.class)
-public class AbstractUnitTest {
+public abstract class AbstractUnitTest {
 }
